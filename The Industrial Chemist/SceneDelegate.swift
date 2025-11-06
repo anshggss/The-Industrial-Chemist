@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
 
             // 👇 change only this line
-            let storyboard = UIStoryboard(name: "Sign-Up", bundle: nil)
+            let storyboard = UIStoryboard(name: "Forgot Password", bundle: nil)
             let initialVC = storyboard.instantiateInitialViewController()!
 
             window.rootViewController = initialVC
