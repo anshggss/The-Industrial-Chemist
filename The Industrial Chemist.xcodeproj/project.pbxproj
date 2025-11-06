@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		366FB7992EBAEF5500BF1653 /* Exceptions for "The Industrial Chemist" folder in "The Industrial Chemist" target */ = {
+		36BEA76C2EBC528B00ED7C59 /* Exceptions for "The Industrial Chemist" folder in "The Industrial Chemist" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -21,10 +21,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		366FB7892EBAEF5500BF1653 /* The Industrial Chemist */ = {
+		36BEA7622EBC528B00ED7C59 /* The Industrial Chemist */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				366FB7992EBAEF5500BF1653 /* Exceptions for "The Industrial Chemist" folder in "The Industrial Chemist" target */,
+				36BEA76C2EBC528B00ED7C59 /* Exceptions for "The Industrial Chemist" folder in "The Industrial Chemist" target */,
 			);
 			path = "The Industrial Chemist";
 			sourceTree = "<group>";
@@ -45,7 +45,7 @@
 		366FB77E2EBAEF5500BF1653 = {
 			isa = PBXGroup;
 			children = (
-				366FB7892EBAEF5500BF1653 /* The Industrial Chemist */,
+				36BEA7622EBC528B00ED7C59 /* The Industrial Chemist */,
 				366FB7882EBAEF5500BF1653 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -74,7 +74,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				366FB7892EBAEF5500BF1653 /* The Industrial Chemist */,
+				36BEA7622EBC528B00ED7C59 /* The Industrial Chemist */,
 			);
 			name = "The Industrial Chemist";
 			packageProductDependencies = (
