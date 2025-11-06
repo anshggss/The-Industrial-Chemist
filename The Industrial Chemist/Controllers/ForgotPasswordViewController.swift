@@ -14,7 +14,13 @@ class ForgotPasswordViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    
+    @IBOutlet weak var sendOtpButton: UIButton!
+    @IBAction func sendOtpTapped(_ sender: UIButton) {
+        
+        sender.backgroundColor = UIColor.systemBlue
+        sender.setTitle("OTP Sent", for: .normal)
+        sender.isEnabled = false
+    }
 
     /*
     // MARK: - Navigation
