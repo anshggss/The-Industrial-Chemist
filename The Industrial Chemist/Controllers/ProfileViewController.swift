@@ -1,28 +1,20 @@
 //
-//  LogInViewController.swift
+//  ProfileViewController.swift
 //  The Industrial Chemist
 //
-//  Created by admin25 on 06/11/25.
+//  Created by admin25 on 07/11/25.
 //
 
 import UIKit
 
-class LogInViewController: UIViewController {
-    
-    
-    @IBOutlet weak var topView: UIView!
-    
+class ProfileViewController: UIViewController {
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        topView.layer.cornerRadius = 40
-        topView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-    }
 
     /*
     // MARK: - Navigation
