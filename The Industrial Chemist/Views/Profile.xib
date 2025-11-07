@@ -3,8 +3,7 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -53,7 +52,7 @@
                     </constraints>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="filled" title="Sign Out">
-                        <color key="baseBackgroundColor" red="0.2205810547" green="0.13427732880000001" blue="0.3181152344" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <color key="baseBackgroundColor" red="0.2941894531" green="0.039215091620000003" blue="0.505859375" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </buttonConfiguration>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="fill" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v2t-lj-qRE">
@@ -177,6 +176,8 @@
             </constraints>
             <point key="canvasLocation" x="380.91603053435114" y="-611.26760563380287"/>
         </view>
+<<<<<<< HEAD
+=======
         <view clipsSubviews="YES" contentMode="scaleToFill" id="zI8-NV-tCm">
             <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -286,6 +287,7 @@
             </userDefinedRuntimeAttributes>
             <point key="canvasLocation" x="1179" y="44"/>
         </view>
+>>>>>>> logIn
     </objects>
     <resources>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
