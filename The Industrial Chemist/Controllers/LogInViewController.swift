@@ -9,12 +9,17 @@ import UIKit
 
 class LogInViewController: UIViewController {
 
+    @IBOutlet weak var logInImageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        logInImageView.roundCorners(topLeft: 30, topRight: 0, bottomLeft: 30, bottomRight: 0)
+    }
 
     /*
     // MARK: - Navigation
