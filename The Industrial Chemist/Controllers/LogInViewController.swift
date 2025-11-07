@@ -8,13 +8,21 @@
 import UIKit
 
 class LogInViewController: UIViewController {
-
+    
+    
+    @IBOutlet weak var topView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        topView.layer.cornerRadius = 40
+        topView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+    }
 
     /*
     // MARK: - Navigation

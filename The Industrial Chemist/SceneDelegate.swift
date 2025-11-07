@@ -19,11 +19,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
 
-            // 👇 change only this line
-            let storyboard = UIStoryboard(name: "Forgot Password", bundle: nil)
-            let initialVC = storyboard.instantiateInitialViewController()!
+            // Loading storyboard file
+//            let storyboard = UIStoryboard(name: "LogIn", bundle: nil)
+//            let initialVC = storyboard.instantiateInitialViewController()!
+        let vc = LogInViewController(nibName: "LogIn", bundle: nil)
 
-            window.rootViewController = initialVC
+            window.rootViewController = vc
             self.window = window
             window.makeKeyAndVisible()
     }
