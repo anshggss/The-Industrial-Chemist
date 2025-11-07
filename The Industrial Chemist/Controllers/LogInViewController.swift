@@ -8,8 +8,10 @@
 import UIKit
 
 class LogInViewController: UIViewController {
-
-    @IBOutlet weak var logInImageView: UIImageView!
+    
+    
+    @IBOutlet weak var topView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,7 +20,8 @@ class LogInViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        logInImageView.roundCorners(topLeft: 30, topRight: 0, bottomLeft: 30, bottomRight: 0)
+        topView.layer.cornerRadius = 40
+        topView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     }
 
     /*

@@ -4,49 +4,89 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
-        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <viewController id="9JP-mT-oa8" customClass="LogInViewController" customModule="The_Industrial_Chemist" customModuleProvider="target">
-            <view key="view" contentMode="scaleToFill" id="mOW-St-nxA">
-                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uob-TC-st8">
-                        <rect key="frame" x="0.0" y="146" width="393" height="638"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="XFT-Td-gCb">
-                                <rect key="frame" x="76" y="24" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.29411764709999999" green="0.16862745100000001" blue="0.46666666670000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" red="0.89803921568627454" green="0.85490196078431369" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                </subviews>
-                <viewLayoutGuide key="safeArea" id="aSn-he-1z6"/>
-                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                <constraints>
-                    <constraint firstItem="uob-TC-st8" firstAttribute="leading" secondItem="aSn-he-1z6" secondAttribute="leading" id="F28-mA-Psw"/>
-                    <constraint firstItem="aSn-he-1z6" firstAttribute="bottom" secondItem="uob-TC-st8" secondAttribute="bottom" id="ONF-CL-gkc"/>
-                    <constraint firstItem="uob-TC-st8" firstAttribute="top" secondItem="aSn-he-1z6" secondAttribute="top" constant="28" id="ShR-ae-vqm"/>
-                    <constraint firstItem="aSn-he-1z6" firstAttribute="trailing" secondItem="uob-TC-st8" secondAttribute="trailing" id="fm5-fC-sdm"/>
-                </constraints>
-            </view>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LogInViewController" customModule="The_Industrial_Chemist" customModuleProvider="target">
             <connections>
-                <outlet property="logInImageView" destination="XFT-Td-gCb" id="1BL-Ed-mdD"/>
+                <outlet property="topView" destination="x1S-JN-fp9" id="WrC-8E-VzR"/>
+                <outlet property="view" destination="I7d-7x-q9T" id="yDS-Ga-hiO"/>
             </connections>
-            <point key="canvasLocation" x="-198" y="-573"/>
-        </viewController>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="I7d-7x-q9T">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x1S-JN-fp9">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="275"/>
+                    <color key="backgroundColor" red="0.29411764705882354" green="0.16862745098039217" blue="0.46666666666666667" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="275" id="nJW-Jm-Q1i"/>
+                    </constraints>
+                </view>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Hlo-QJ-Y8N">
+                    <rect key="frame" x="136" y="205.33333333333331" width="131" height="128.00000000000006"/>
+                    <color key="backgroundColor" red="0.1764705882352941" green="0.086274509803921567" blue="0.25882352941176467" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="131" id="muF-ee-Tt2"/>
+                        <constraint firstAttribute="height" constant="131.33000000000001" id="rHt-OB-aGs"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="65"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="clipToBounds" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Log In" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b7x-t5-TSt">
+                    <rect key="frame" x="150.33333333333334" y="383" width="92.666666666666657" height="38.333333333333314"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="32"/>
+                    <color key="textColor" red="0.30196078431372547" green="0.18823529411764706" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="iuk-ls-siM">
+                    <rect key="frame" x="34" y="471.33333333333331" width="325" height="34"/>
+                    <color key="backgroundColor" red="0.792156862745098" green="0.69411764705882351" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="325" id="ER0-LO-fRi"/>
+                    </constraints>
+                    <color key="textColor" red="0.30196078430000001" green="0.18823529410000001" blue="0.42352941179999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BkK-7o-0SH">
+                    <rect key="frame" x="34" y="525.33333333333337" width="325" height="34"/>
+                    <color key="backgroundColor" red="0.792156862745098" green="0.69411764705882351" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="325" id="i7R-zm-l2n"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="py7-Dj-HVH"/>
+            <color key="backgroundColor" red="0.89803921568627454" green="0.85490196078431369" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="BkK-7o-0SH" firstAttribute="top" secondItem="iuk-ls-siM" secondAttribute="bottom" constant="20" id="2Oc-xG-GRS"/>
+                <constraint firstItem="BkK-7o-0SH" firstAttribute="width" secondItem="iuk-ls-siM" secondAttribute="width" id="3CM-66-M7u"/>
+                <constraint firstItem="x1S-JN-fp9" firstAttribute="leading" secondItem="py7-Dj-HVH" secondAttribute="leading" id="4Al-fC-ngl"/>
+                <constraint firstItem="b7x-t5-TSt" firstAttribute="top" secondItem="Hlo-QJ-Y8N" secondAttribute="bottom" constant="48" id="5bj-tj-dDm"/>
+                <constraint firstItem="iuk-ls-siM" firstAttribute="top" secondItem="b7x-t5-TSt" secondAttribute="bottom" constant="50" id="B1u-jV-kSN"/>
+                <constraint firstItem="iuk-ls-siM" firstAttribute="centerX" secondItem="I7d-7x-q9T" secondAttribute="centerX" id="WRV-2L-trS"/>
+                <constraint firstItem="b7x-t5-TSt" firstAttribute="centerX" secondItem="I7d-7x-q9T" secondAttribute="centerX" id="dHn-St-RI8"/>
+                <constraint firstItem="Hlo-QJ-Y8N" firstAttribute="leading" secondItem="py7-Dj-HVH" secondAttribute="leading" constant="136" id="jYi-9h-Lah"/>
+                <constraint firstItem="BkK-7o-0SH" firstAttribute="leading" secondItem="iuk-ls-siM" secondAttribute="leading" id="lMY-ia-boo"/>
+                <constraint firstItem="BkK-7o-0SH" firstAttribute="trailing" secondItem="iuk-ls-siM" secondAttribute="trailing" id="n30-fc-Hr5"/>
+                <constraint firstItem="py7-Dj-HVH" firstAttribute="trailing" secondItem="x1S-JN-fp9" secondAttribute="trailing" id="tdr-Bp-SHG"/>
+                <constraint firstItem="x1S-JN-fp9" firstAttribute="top" secondItem="I7d-7x-q9T" secondAttribute="top" id="y0Z-wq-Kcb"/>
+                <constraint firstItem="Hlo-QJ-Y8N" firstAttribute="bottom" secondItem="x1S-JN-fp9" secondAttribute="bottom" constant="60" id="zLv-U9-Hni"/>
+            </constraints>
+            <point key="canvasLocation" x="-529.00763358778624" y="-1262.6760563380283"/>
+        </view>
     </objects>
     <resources>
         <image name="person.fill" catalog="system" width="128" height="120"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>
