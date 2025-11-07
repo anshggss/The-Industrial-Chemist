@@ -8,7 +8,19 @@
 import UIKit
 
 class SignUpViewController: UIViewController {
-
+    
+    private var user: User = User(name: "", email: "", password: "", phone: "")
+    
+    private var password: String = ""
+    
+    @IBOutlet weak var nameTextField: UITextField!
+    
+    @IBOutlet weak var numberTextField: UITextField!
+    @IBOutlet weak var mailTextField: UITextField!
+    
+    @IBOutlet weak var confirmPasswordTextField: UITextField!
+    
+    @IBOutlet weak var passwordTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -16,6 +28,29 @@ class SignUpViewController: UIViewController {
     }
     
 
+    @IBAction func signInButtonPressed(_ sender: UIButton) {
+        
+        guard let nameTextField = self.nameTextField?.text, let numberTextField = self.numberTextField?.text, let mailTextField = self.mailTextField?.text, let passwordTextField = self.passwordTextField?.text, let confirmPasswordTextField = self.confirmPasswordTextField?.text else {
+            return
+        }
+        
+        if passwordTextField != confirmPasswordTextField {
+            print("Type same password")
+            return
+        }
+        
+        user.email = mailTextField
+        user.name = nameTextField
+        user.phone = numberTextField
+        user.password = passwordTextField
+        
+        
+        
+        
+        let loginVC = LogInViewController(nibName: "LogIn", bundle: nil)
+        loginVC.modalPresentationStyle = .fullScreen
+        self.present(loginVC, animated: false)
+    }
     /*
     // MARK: - Navigation
 

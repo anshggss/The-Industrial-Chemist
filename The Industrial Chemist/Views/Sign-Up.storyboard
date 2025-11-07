@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -10,7 +10,7 @@
         <!--Sign Up View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController id="Y6W-OH-hqX" customClass="SignUpViewController" customModule="The_Industrial_Chemist" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SignUpViewController" id="Y6W-OH-hqX" customClass="SignUpViewController" customModule="The_Industrial_Chemist" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -93,7 +93,7 @@
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ebe-0c-Cgj">
-                                <rect key="frame" x="30" y="677" width="333" height="34.333333333333371"/>
+                                <rect key="frame" x="30" y="677" width="333" height="40.333333333333371"/>
                                 <color key="backgroundColor" red="0.1764705882352941" green="0.086274509803921567" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Button"/>
@@ -106,7 +106,7 @@
                                 </userDefinedRuntimeAttributes>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M5S-ws-mre">
-                                <rect key="frame" x="159" y="731.33333333333337" width="12" height="14"/>
+                                <rect key="frame" x="159" y="737.33333333333337" width="12" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="12" id="2ht-kI-2sK"/>
                                     <constraint firstAttribute="height" constant="14" id="dXV-d6-6mE"/>
@@ -116,7 +116,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wED-VC-voR">
-                                <rect key="frame" x="161" y="724.33333333333337" width="72" height="28"/>
+                                <rect key="frame" x="161" y="730.33333333333337" width="72" height="28"/>
                                 <color key="tintColor" red="0.1764705882" green="0.086274509799999996" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <buttonConfiguration key="configuration" style="plain">
                                     <attributedString key="attributedTitle">
@@ -130,6 +130,9 @@
                                         </fragment>
                                     </attributedString>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="signInButtonPressed:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="DLY-X4-HhN"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
@@ -187,6 +190,13 @@
                             <constraint firstItem="ebe-0c-Cgj" firstAttribute="top" secondItem="cEH-kg-Muq" secondAttribute="bottom" constant="58" id="zYC-Rf-rha"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="confirmPasswordTextField" destination="cEH-kg-Muq" id="CQy-Za-Rag"/>
+                        <outlet property="mailTextField" destination="ArP-Jc-c8R" id="o9A-ia-76l"/>
+                        <outlet property="nameTextField" destination="wDw-J5-obo" id="qfb-nC-Mer"/>
+                        <outlet property="numberTextField" destination="gH6-X0-jCD" id="1GH-uh-Wk4"/>
+                        <outlet property="passwordTextField" destination="R0a-kF-M7H" id="AD3-s9-l63"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
