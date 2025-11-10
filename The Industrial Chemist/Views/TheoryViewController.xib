@@ -33,7 +33,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.badge.checkmark.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1X2-Qt-rep">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.badge.checkmark.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="S7y-gN-uFV">
                                             <rect key="frame" x="0.0" y="28.333333333333321" width="45.666666666666671" height="20.333333333333336"/>
                                             <color key="tintColor" red="0.2901961207" green="0.035294115539999997" blue="0.50588238240000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         </imageView>
@@ -54,7 +54,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="circle.inset.filled" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="tGt-cH-YkV">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="circle.inset.filled" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="FdV-vD-Sig">
                                             <rect key="frame" x="0.0" y="21" width="54" height="26.333333333333343"/>
                                             <color key="tintColor" red="0.2901961207" green="0.035294115539999997" blue="0.50588238240000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         </imageView>
@@ -135,13 +135,13 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 2 to 5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Svi-SR-Rl4">
-                    <rect key="frame" x="30.000000000000007" y="122.66666666666667" width="83.666666666666686" height="20.333333333333329"/>
+                    <rect key="frame" x="30.000000000000007" y="117.66666666666667" width="83.666666666666686" height="20.333333333333329"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="40% Completed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emA-Jy-3ed">
-                    <rect key="frame" x="238.66666666666666" y="122.66666666666667" width="124.33333333333334" height="20.333333333333329"/>
+                    <rect key="frame" x="238.66666666666666" y="117.66666666666667" width="124.33333333333334" height="20.333333333333329"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -236,7 +236,7 @@
                 <constraint firstItem="r4n-bX-uWS" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="30" id="4w2-7r-OXP"/>
                 <constraint firstItem="gKP-c9-fPn" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="30" id="8GF-bG-K0t"/>
                 <constraint firstItem="Svi-SR-Rl4" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="30" id="Azt-dZ-ppK"/>
-                <constraint firstItem="HdH-JI-bDm" firstAttribute="top" secondItem="emA-Jy-3ed" secondAttribute="bottom" constant="5" id="Hth-LV-HHv"/>
+                <constraint firstItem="HdH-JI-bDm" firstAttribute="top" secondItem="emA-Jy-3ed" secondAttribute="bottom" constant="10" id="Hth-LV-HHv"/>
                 <constraint firstItem="vzt-sE-PpX" firstAttribute="trailing" secondItem="HdH-JI-bDm" secondAttribute="trailing" id="LvT-c3-r5r"/>
                 <constraint firstItem="HdH-JI-bDm" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="30" id="OJ0-Jm-dW5"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="emA-Jy-3ed" secondAttribute="trailing" constant="30" id="T9f-Uk-crl"/>
@@ -248,7 +248,7 @@
                 <constraint firstItem="r4n-bX-uWS" firstAttribute="top" secondItem="vzt-sE-PpX" secondAttribute="bottom" constant="20" id="m3Y-H5-tQ1"/>
                 <constraint firstItem="gKP-c9-fPn" firstAttribute="top" secondItem="r4n-bX-uWS" secondAttribute="bottom" constant="20" id="nTS-aI-W45"/>
                 <constraint firstItem="vzt-sE-PpX" firstAttribute="leading" secondItem="HdH-JI-bDm" secondAttribute="leading" id="pY3-h4-npq"/>
-                <constraint firstItem="HdH-JI-bDm" firstAttribute="top" secondItem="Svi-SR-Rl4" secondAttribute="bottom" constant="5" id="xq1-yG-6lG"/>
+                <constraint firstItem="HdH-JI-bDm" firstAttribute="top" secondItem="Svi-SR-Rl4" secondAttribute="bottom" constant="10" id="xq1-yG-6lG"/>
             </constraints>
             <point key="canvasLocation" x="-5.343511450381679" y="82.394366197183103"/>
         </view>

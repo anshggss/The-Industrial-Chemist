@@ -19,7 +19,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kor-xI-tWL">
-                    <rect key="frame" x="30" y="176" width="333" height="60.333333333333343"/>
+                    <rect key="frame" x="30" y="176" width="333" height="68"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QqO-Yg-YZl">
                             <rect key="frame" x="0.0" y="0.0" width="324.66666666666669" height="48"/>
@@ -134,34 +134,34 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 1 of 5" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cDH-D4-N9L">
-                    <rect key="frame" x="29.999999999999993" y="138" width="81.333333333333314" height="20.333333333333343"/>
+                    <rect key="frame" x="29.999999999999993" y="145.66666666666666" width="81.333333333333314" height="20.333333333333343"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20% Completed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HAo-xY-iJf">
-                    <rect key="frame" x="239.33333333333334" y="138" width="123.66666666666666" height="20.333333333333343"/>
+                    <rect key="frame" x="239.33333333333334" y="145.66666666666666" width="123.66666666666666" height="20.333333333333343"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="___________________________________" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OOS-nl-FD5">
-                    <rect key="frame" x="30" y="229.33333333333334" width="333" height="21.666666666666657"/>
+                    <rect key="frame" x="30" y="237" width="333" height="21.666666666666686"/>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BAW-ed-TM2">
-                    <rect key="frame" x="30" y="266" width="333" height="244"/>
+                    <rect key="frame" x="30" y="273.66666666666669" width="333" height="236.33333333333331"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Setup Your Workspace" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="81N-Iw-KtN">
-                            <rect key="frame" x="77" y="7.9999999999999982" width="179" height="20.333333333333329"/>
-                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <rect key="frame" x="77" y="7.9999999999999982" width="179" height="19.333333333333329"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bjo-5R-IzT">
-                            <rect key="frame" x="40" y="43.333333333333314" width="253" height="131.33333333333334"/>
+                            <rect key="frame" x="40" y="42.333333333333321" width="253" height="124.66666666666669"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Before diving into Chemistry let’s set up your workspace. Gather your notebook, calculator, and reference notes." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YIS-2Y-5VJ">
                                     <rect key="frame" x="16" y="8" width="237" height="106"/>
@@ -181,7 +181,7 @@
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kav-G5-JWm">
-                            <rect key="frame" x="120" y="189.66666666666669" width="93" height="34.333333333333343"/>
+                            <rect key="frame" x="120" y="182" width="93" height="34.333333333333343"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="filled" title="Proceed">
                                 <color key="baseBackgroundColor" red="0.2901961207" green="0.035294115539999997" blue="0.50588238240000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -252,7 +252,7 @@
                 <constraint firstItem="Kor-xI-tWL" firstAttribute="leading" secondItem="cDH-D4-N9L" secondAttribute="leading" id="CU4-bh-dIe"/>
                 <constraint firstItem="Kor-xI-tWL" firstAttribute="trailing" secondItem="HAo-xY-iJf" secondAttribute="trailing" id="Cuc-w0-QHM"/>
                 <constraint firstItem="BpO-zY-Z7f" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="525" id="EQG-1G-7ss"/>
-                <constraint firstItem="Kor-xI-tWL" firstAttribute="top" secondItem="cDH-D4-N9L" secondAttribute="bottom" constant="17.666666666666657" id="ItR-eg-RiG"/>
+                <constraint firstItem="Kor-xI-tWL" firstAttribute="top" secondItem="cDH-D4-N9L" secondAttribute="bottom" constant="10" id="ItR-eg-RiG"/>
                 <constraint firstItem="3aJ-0W-H3r" firstAttribute="trailing" secondItem="81N-Iw-KtN" secondAttribute="trailing" id="JT4-Eh-zqC"/>
                 <constraint firstItem="BAW-ed-TM2" firstAttribute="top" secondItem="OOS-nl-FD5" secondAttribute="bottom" constant="15" id="Kpn-vC-LqI"/>
                 <constraint firstItem="BpO-zY-Z7f" firstAttribute="top" secondItem="BAW-ed-TM2" secondAttribute="bottom" constant="15" id="Pen-tk-0qF"/>
