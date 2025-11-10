@@ -6,7 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0F94D98C2EC1C01F004CD94C /* README.MD in Sources */ = {isa = PBXBuildFile; fileRef = 0F94D94E2EC1C01F004CD94C /* README.MD */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		0F94D94E2EC1C01F004CD94C /* README.MD */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.MD; sourceTree = "<group>"; };
 		366FB7872EBAEF5500BF1653 /* The Industrial Chemist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Industrial Chemist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -15,28 +20,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
-				README.MD,
 			);
 			target = 366FB7862EBAEF5500BF1653 /* The Industrial Chemist */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		363CA0922EC1B92B000DBFBB /* Exceptions for "The Industrial Chemist" folder in "Compile Sources" phase from "The Industrial Chemist" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 366FB7832EBAEF5500BF1653 /* Sources */;
-			membershipExceptions = (
-				README.MD,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		36BEA7622EBC528B00ED7C59 /* The Industrial Chemist */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				36BEA76C2EBC528B00ED7C59 /* Exceptions for "The Industrial Chemist" folder in "The Industrial Chemist" target */,
-				363CA0922EC1B92B000DBFBB /* Exceptions for "The Industrial Chemist" folder in "Compile Sources" phase from "The Industrial Chemist" target */,
 			);
 			path = "The Industrial Chemist";
 			sourceTree = "<group>";
@@ -57,6 +50,7 @@
 		366FB77E2EBAEF5500BF1653 = {
 			isa = PBXGroup;
 			children = (
+				0F94D94E2EC1C01F004CD94C /* README.MD */,
 				36BEA7622EBC528B00ED7C59 /* The Industrial Chemist */,
 				366FB7882EBAEF5500BF1653 /* Products */,
 			);
@@ -144,6 +138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F94D98C2EC1C01F004CD94C /* README.MD in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
