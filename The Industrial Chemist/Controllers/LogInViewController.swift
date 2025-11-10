@@ -51,6 +51,7 @@ class LogInViewController: UIViewController {
         self.email = email
         self.password = password
         print("\(email), \(password)")
+        
     }
     
     
