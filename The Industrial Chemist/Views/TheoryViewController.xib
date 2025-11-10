@@ -33,8 +33,8 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.inset.filled" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1X2-Qt-rep">
-                                            <rect key="frame" x="0.0" y="28.333333333333321" width="43" height="19"/>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.badge.checkmark.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1X2-Qt-rep">
+                                            <rect key="frame" x="0.0" y="28.333333333333321" width="45.666666666666671" height="20.333333333333336"/>
                                             <color key="tintColor" red="0.2901961207" green="0.035294115539999997" blue="0.50588238240000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         </imageView>
                                     </subviews>
@@ -48,13 +48,13 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="aAM-qb-cL1">
                                     <rect key="frame" x="70.333333333333329" y="0.0" width="54" height="48"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Theory" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="byV-6q-MvU">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Theory" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="byV-6q-MvU">
                                             <rect key="frame" x="0.0" y="0.0" width="54" height="20.333333333333332"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" image="circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="wKS-FN-HhB">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="circle.inset.filled" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="tGt-cH-YkV">
                                             <rect key="frame" x="0.0" y="21" width="54" height="26.333333333333343"/>
                                             <color key="tintColor" red="0.2901961207" green="0.035294115539999997" blue="0.50588238240000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         </imageView>
@@ -255,6 +255,7 @@
     </objects>
     <resources>
         <image name="circle" catalog="system" width="128" height="123"/>
+        <image name="circle.badge.checkmark.fill" catalog="system" width="128" height="114"/>
         <image name="circle.inset.filled" catalog="system" width="128" height="123"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
