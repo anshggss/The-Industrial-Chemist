@@ -30,8 +30,8 @@ This file tracks the progress made by each team member, date-wise.
 
 ### **Day 7**
 - **AMT:** Finished work on *LogIn* page, added navigation to/from all pages
-- **AA:** Created and worked on *Modules* page
-- **DS:** Created *Profile* page and *Edit Details* page
+- **AA:** Created and worked on *Modules* page and tried working on *blender*
+- **DS:** Created *Profile* page , *Notification page* and *Edit Details* page
 
 ---
 
