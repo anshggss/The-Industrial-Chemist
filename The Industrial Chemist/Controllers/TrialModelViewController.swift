@@ -17,50 +17,65 @@ class TrialModelViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        arView = ARView(frame: view.bounds, cameraMode: .nonAR, automaticallyConfigureSession: false)
-
-        view.addSubview(arView)
-        loadModel()
-        // Do any additional setup after loading the view.
+        let boxSize: CGFloat = 300
+                let boxFrame = CGRect(
+                    x: (view.bounds.width - boxSize) / 2,
+                    y: (view.bounds.height - boxSize) / 2,
+                    width: boxSize,
+                    height: boxSize
+                )
+                
+                // Create ARView in non-AR mode
+                arView = ARView(frame: boxFrame, cameraMode: .nonAR, automaticallyConfigureSession: false)
+                arView.layer.cornerRadius = 20
+                arView.clipsToBounds = true
+                arView.backgroundColor = .systemBackground
+                
+                view.addSubview(arView)
+                
+                loadModel()
         
         
     }
     
     func loadModel() {
             do {
-                // Load model as a generic Entity
+                // Load model entity
                 let entity = try Entity.load(named: "computer")
                 entity.setScale([0.1, 0.1, 0.1], relativeTo: nil)
                 entity.position = [0, 0, 0]
                 
-                // ✅ Wrap in a ModelEntity-like parent so we can attach gestures
+                // Wrap inside a parent ModelEntity
                 let parentEntity = ModelEntity()
                 parentEntity.addChild(entity)
                 
-                // ✅ Now generate collision on the parent
+                // Generate collisions for gestures
                 parentEntity.generateCollisionShapes(recursive: true)
-
-                // Create anchor
+                
+                // Add to an anchor
                 let anchor = AnchorEntity(world: [0, 0, 0])
                 anchor.addChild(parentEntity)
                 arView.scene.addAnchor(anchor)
-
-                // ✅ Gestures now work (no casting)
+                
+                // Add gestures
                 arView.installGestures([.rotation, .translation, .scale], for: parentEntity)
-
-                // Optional: lighting
+                
+                // Optional: improve lighting
+                arView.environment.background = .color(.white)
                 arView.environment.lighting.intensityExponent = 1.0
-                arView.environment.lighting.resource = nil
-                arView.environment.background = .color(.systemBackground)
                 arView.renderOptions.insert(.disableMotionBlur)
                 arView.renderOptions.insert(.disableDepthOfField)
-
+                
             } catch {
                 print("❌ Failed to load model: \(error)")
             }
         }
-    
 
+    @IBAction func backButtonPressed(_ sender: UIButton) {
+        let profileVC = ProfileViewController(nibName: "Profile", bundle: nil)
+        profileVC.modalPresentationStyle = .fullScreen
+        self.present(profileVC, animated: true, completion: nil)
+    }
     /*
     // MARK: - Navigation
 
