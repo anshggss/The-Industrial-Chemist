@@ -18,10 +18,10 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Onboarding Logo" translatesAutoresizingMaskIntoConstraints="NO" id="eBm-Ub-Lgi">
-                    <rect key="frame" x="136.66666666666666" y="238" width="119.99999999999997" height="120"/>
+                    <rect key="frame" x="146.66666666666666" y="208" width="100" height="100"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="120" id="EOi-hv-eov"/>
-                        <constraint firstAttribute="height" constant="120" id="urN-Id-mwQ"/>
+                        <constraint firstAttribute="width" constant="100" id="EOi-hv-eov"/>
+                        <constraint firstAttribute="height" constant="100" id="urN-Id-mwQ"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VLu-8J-Crm">
@@ -69,25 +69,95 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="petri-dish" translatesAutoresizingMaskIntoConstraints="NO" id="NeU-Xr-ZWQ">
+                    <rect key="frame" x="76.666666666666671" y="268" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="7fM-LX-mTJ"/>
+                        <constraint firstAttribute="width" constant="40" id="IUs-0i-yZl"/>
+                    </constraints>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TestTube" translatesAutoresizingMaskIntoConstraints="NO" id="gGT-ee-yv3">
+                    <rect key="frame" x="276.66666666666669" y="268" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="2IT-sP-k6I"/>
+                        <constraint firstAttribute="height" constant="40" id="Px0-Kd-px4"/>
+                    </constraints>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="science" translatesAutoresizingMaskIntoConstraints="NO" id="xrU-Ga-FyM">
+                    <rect key="frame" x="176.66666666666666" y="340" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="PYp-yC-3L9"/>
+                        <constraint firstAttribute="width" constant="40" id="fn9-9S-are"/>
+                    </constraints>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon-2" translatesAutoresizingMaskIntoConstraints="NO" id="Zyy-OP-bEh">
+                    <rect key="frame" x="318" y="330" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="oou-cC-IS6"/>
+                        <constraint firstAttribute="width" constant="25" id="x1z-C4-KzG"/>
+                    </constraints>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="danger" translatesAutoresizingMaskIntoConstraints="NO" id="zWI-4p-72n">
+                    <rect key="frame" x="253" y="366" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="KvE-kx-tUp"/>
+                        <constraint firstAttribute="width" constant="25" id="wSf-rp-2hO"/>
+                    </constraints>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Group 289591" translatesAutoresizingMaskIntoConstraints="NO" id="xds-U8-cTb">
+                    <rect key="frame" x="73" y="365" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="ccl-43-4GM"/>
+                        <constraint firstAttribute="height" constant="25" id="yza-74-9yv"/>
+                    </constraints>
+                </imageView>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon-1" translatesAutoresizingMaskIntoConstraints="NO" id="38D-Hm-9hE">
+                    <rect key="frame" x="33.666666666666664" y="310" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="8pU-qx-Idf"/>
+                        <constraint firstAttribute="height" constant="25" id="EWG-1R-dMD"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="nlD-R3-3X6"/>
             <color key="backgroundColor" red="0.9018554688" green="0.8159179688" blue="0.98828125" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
+                <constraint firstItem="Zyy-OP-bEh" firstAttribute="leading" secondItem="zWI-4p-72n" secondAttribute="trailing" constant="40" id="8da-aE-bFR"/>
                 <constraint firstItem="3G2-y4-5Hk" firstAttribute="top" secondItem="5PE-fy-1zY" secondAttribute="bottom" constant="10" id="9jN-Qx-D5I"/>
+                <constraint firstItem="5PE-fy-1zY" firstAttribute="top" secondItem="Zyy-OP-bEh" secondAttribute="bottom" constant="245" id="CQG-C5-7eW"/>
+                <constraint firstItem="gGT-ee-yv3" firstAttribute="leading" secondItem="eBm-Ub-Lgi" secondAttribute="trailing" constant="30" id="DUt-Sw-Wuj"/>
                 <constraint firstItem="eBm-Ub-Lgi" firstAttribute="centerX" secondItem="pt4-sW-7kf" secondAttribute="centerX" id="GoR-yd-qV9"/>
-                <constraint firstItem="VLu-8J-Crm" firstAttribute="top" secondItem="eBm-Ub-Lgi" secondAttribute="bottom" constant="200" id="Lrc-gy-mcV"/>
+                <constraint firstItem="5PE-fy-1zY" firstAttribute="top" secondItem="xds-U8-cTb" secondAttribute="bottom" constant="210" id="JiT-aA-eeQ"/>
+                <constraint firstItem="VLu-8J-Crm" firstAttribute="top" secondItem="eBm-Ub-Lgi" secondAttribute="bottom" constant="250" id="Lrc-gy-mcV"/>
                 <constraint firstItem="KA1-mj-IDw" firstAttribute="centerX" secondItem="pt4-sW-7kf" secondAttribute="centerX" id="RFi-dI-lPA"/>
                 <constraint firstItem="5PE-fy-1zY" firstAttribute="top" secondItem="VLu-8J-Crm" secondAttribute="bottom" constant="1" id="Sod-jF-sIp"/>
+                <constraint firstItem="eBm-Ub-Lgi" firstAttribute="leading" secondItem="NeU-Xr-ZWQ" secondAttribute="trailing" constant="30" id="TQf-mO-LqS"/>
+                <constraint firstItem="5PE-fy-1zY" firstAttribute="top" secondItem="38D-Hm-9hE" secondAttribute="bottom" constant="265" id="TSe-jt-ZQt"/>
                 <constraint firstItem="3G2-y4-5Hk" firstAttribute="centerX" secondItem="pt4-sW-7kf" secondAttribute="centerX" id="YnG-IQ-KOV"/>
+                <constraint firstItem="NeU-Xr-ZWQ" firstAttribute="leading" secondItem="38D-Hm-9hE" secondAttribute="trailing" constant="17.670000000000002" id="atQ-CG-Mdf"/>
+                <constraint firstItem="zWI-4p-72n" firstAttribute="leading" secondItem="xds-U8-cTb" secondAttribute="trailing" constant="155" id="bcY-aw-Kzp"/>
+                <constraint firstItem="xrU-Ga-FyM" firstAttribute="top" secondItem="eBm-Ub-Lgi" secondAttribute="bottom" constant="32" id="br8-7k-4fl"/>
+                <constraint firstItem="VLu-8J-Crm" firstAttribute="top" secondItem="gGT-ee-yv3" secondAttribute="bottom" constant="250" id="dID-SC-SN4"/>
                 <constraint firstItem="5PE-fy-1zY" firstAttribute="centerX" secondItem="pt4-sW-7kf" secondAttribute="centerX" id="dSA-xj-3ps"/>
+                <constraint firstItem="xrU-Ga-FyM" firstAttribute="centerX" secondItem="pt4-sW-7kf" secondAttribute="centerX" id="eA5-XK-myI"/>
+                <constraint firstItem="VLu-8J-Crm" firstAttribute="top" secondItem="zWI-4p-72n" secondAttribute="bottom" constant="167" id="ea7-3g-hFz"/>
                 <constraint firstAttribute="bottom" secondItem="KA1-mj-IDw" secondAttribute="bottom" constant="50" id="oLb-dg-lOM"/>
+                <constraint firstItem="VLu-8J-Crm" firstAttribute="top" secondItem="NeU-Xr-ZWQ" secondAttribute="bottom" constant="250" id="ov4-0v-5nL"/>
                 <constraint firstItem="KA1-mj-IDw" firstAttribute="top" secondItem="3G2-y4-5Hk" secondAttribute="bottom" constant="40" id="rA0-oz-PJJ"/>
+                <constraint firstItem="nlD-R3-3X6" firstAttribute="trailing" secondItem="Zyy-OP-bEh" secondAttribute="trailing" constant="50" id="rat-8U-8OE"/>
                 <constraint firstItem="VLu-8J-Crm" firstAttribute="centerX" secondItem="pt4-sW-7kf" secondAttribute="centerX" id="y80-Qg-aAc"/>
             </constraints>
             <point key="canvasLocation" x="-37.404580152671755" y="-178.16901408450704"/>
         </view>
     </objects>
     <resources>
+        <image name="Group 289591" width="28" height="28"/>
+        <image name="Icon-1" width="28" height="28"/>
+        <image name="Icon-2" width="28" height="28"/>
         <image name="Onboarding Logo" width="83" height="84"/>
+        <image name="TestTube" width="29" height="37"/>
+        <image name="danger" width="23" height="28"/>
+        <image name="petri-dish" width="42" height="42"/>
+        <image name="science" width="42" height="42"/>
     </resources>
 </document>
