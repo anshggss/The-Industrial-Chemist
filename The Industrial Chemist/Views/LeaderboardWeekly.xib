@@ -4,7 +4,6 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,14 +12,45 @@
         <view contentMode="scaleToFill" id="OGB-jk-6IY">
             <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nQ1-Gs-MzT">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="250"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leaderboard" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDQ-OI-pDf">
+                            <rect key="frame" x="30" y="140" width="333" height="34"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="28"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="unF-8A-f3r">
+                            <rect key="frame" x="60" y="189" width="273" height="32"/>
+                            <color key="backgroundColor" red="0.79215681550000006" green="0.69411766529999996" blue="0.87843137979999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <segments>
+                                <segment title="Weekly"/>
+                                <segment title="All Time"/>
+                            </segments>
+                        </segmentedControl>
+                    </subviews>
+                    <color key="backgroundColor" red="0.1764705926" green="0.086274504660000001" blue="0.2588235438" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="unF-8A-f3r" secondAttribute="bottom" constant="30" id="SCH-S4-w4L"/>
+                        <constraint firstItem="unF-8A-f3r" firstAttribute="leading" secondItem="nQ1-Gs-MzT" secondAttribute="leading" constant="60" id="epZ-yb-Z8I"/>
+                        <constraint firstAttribute="height" constant="250" id="iBJ-pg-42e"/>
+                        <constraint firstAttribute="trailing" secondItem="zDQ-OI-pDf" secondAttribute="trailing" constant="30" id="qRg-EC-HIN"/>
+                        <constraint firstItem="unF-8A-f3r" firstAttribute="top" secondItem="zDQ-OI-pDf" secondAttribute="bottom" constant="15" id="sIw-xX-R9R"/>
+                        <constraint firstAttribute="trailing" secondItem="unF-8A-f3r" secondAttribute="trailing" constant="60" id="tBF-OY-M2z"/>
+                        <constraint firstItem="zDQ-OI-pDf" firstAttribute="leading" secondItem="nQ1-Gs-MzT" secondAttribute="leading" constant="30" id="yzr-Ro-3Uy"/>
+                    </constraints>
+                </view>
+            </subviews>
             <viewLayoutGuide key="safeArea" id="14c-IL-hfT"/>
-            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-            <point key="canvasLocation" x="68" y="97"/>
+            <color key="backgroundColor" red="0.79215681550000006" green="0.69411766529999996" blue="0.87843137979999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <constraints>
+                <constraint firstItem="nQ1-Gs-MzT" firstAttribute="top" secondItem="OGB-jk-6IY" secondAttribute="top" id="WLs-Rb-JRh"/>
+                <constraint firstItem="nQ1-Gs-MzT" firstAttribute="leading" secondItem="14c-IL-hfT" secondAttribute="leading" id="eI4-wm-aF8"/>
+                <constraint firstItem="nQ1-Gs-MzT" firstAttribute="trailing" secondItem="14c-IL-hfT" secondAttribute="trailing" id="xWN-Gl-OuH"/>
+            </constraints>
+            <point key="canvasLocation" x="67.938931297709928" y="96.478873239436624"/>
         </view>
     </objects>
-    <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-    </resources>
 </document>
