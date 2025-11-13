@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            let initialVC = storyboard.instantiateInitialViewController()!
         
         
-        let vc = LeaderboardWeeklyViewController(nibName: "LeaderBoardWeekly", bundle: nil)
+        let vc = OnboardingThreeViewController(nibName: "OnboardingThree", bundle: nil)
 
             window.rootViewController = vc
             self.window = window
