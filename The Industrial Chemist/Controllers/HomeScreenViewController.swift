@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FSCalendar
 extension UIColor {
     convenience init?(hex: String, alpha: CGFloat = 1.0) {
         var hexSanitized = hex.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -30,9 +31,11 @@ extension UIColor {
     }
 }
 
-class HomeScreenViewController: UIViewController {
+class HomeScreenViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
     
     @IBOutlet weak var progressView: UIProgressView!
+    
+    @IBOutlet weak var calendarView: FSCalendar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,9 +59,17 @@ class HomeScreenViewController: UIViewController {
             }
             
             progressView.setProgress(0.6, animated: true)
+        calendarView.dataSource = self
+                calendarView.delegate = self
+                
+                // Optional: Customization
+                calendarView.scope = .month // Sets the calendar to month view
+                calendarView.appearance.headerDateFormat = "MMMM yyyy" // Custom date format
+                calendarView.appearance.todayColor = UIColor(hex: "9E87B3") // Use your theme color for today
+                calendarView.appearance.selectionColor = .systemBlue
         }
     
-    @IBOutlet weak var streakHeatmap: UICollectionView!
+  
     func collectionView(_ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -70,6 +81,32 @@ class HomeScreenViewController: UIViewController {
         let itemWidth = (collectionView.bounds.width - totalSpacing) / numberOfItemsPerRow
         return CGSize(width: itemWidth, height: itemWidth)
     }
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMM d, yyyy"
+            let dateString = formatter.string(from: date)
+            
+            print("FSCalendar: Selected date: \(dateString)")
+            // Add your logic to handle the selected date here (e.g., loading events)
+        }
+        
+        // MARK: - FSCalendarDataSource (Step 6: Data & Events)
 
-
+        // Example of adding an event indicator (optional)
+    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
+        // Replace with actual logic to check for events on the given date
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let eventDates = ["2025-11-10", "2025-11-13", "2025-12-01"]
+        let dateString = dateFormatter.string(from: date)
+        
+        if eventDates.contains(dateString) {
+            return 1 // Show one dot for dates that have an event
+        }
+        return 0 // No events
+        
+    }
+    
 }
