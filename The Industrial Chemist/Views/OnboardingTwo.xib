@@ -33,14 +33,48 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </button>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="OnboardingTwo" translatesAutoresizingMaskIntoConstraints="NO" id="9js-sJ-Iwe">
+                    <rect key="frame" x="21.666666666666657" y="163.33333333333337" width="350" height="290"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="350" id="DBG-kT-RJ9"/>
+                        <constraint firstAttribute="height" constant="290" id="d9w-uN-926"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Perform safe virtual labs and simulations - no equipment needed" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jC4-dW-tae">
+                    <rect key="frame" x="46.666666666666657" y="611.33333333333337" width="300" height="40.666666666666629"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="300" id="24w-Wv-22G"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Learn By Doing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfC-qW-0hv">
+                    <rect key="frame" x="77.666666666666686" y="553.33333333333337" width="238" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="238" id="dW2-Z5-x1x"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="34"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.9018554688" green="0.8159179688" blue="0.98828125" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
+                <constraint firstItem="qfC-qW-0hv" firstAttribute="top" secondItem="9js-sJ-Iwe" secondAttribute="bottom" constant="100" id="3Tc-C9-UBX"/>
+                <constraint firstItem="jC4-dW-tae" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="4qb-zY-Jw3"/>
                 <constraint firstItem="esf-K0-lUD" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="5ZS-PC-hE7"/>
                 <constraint firstAttribute="bottom" secondItem="esf-K0-lUD" secondAttribute="bottom" constant="50" id="VDW-MM-qd0"/>
+                <constraint firstItem="esf-K0-lUD" firstAttribute="top" secondItem="jC4-dW-tae" secondAttribute="bottom" constant="100" id="XHu-p8-0GZ"/>
+                <constraint firstItem="jC4-dW-tae" firstAttribute="top" secondItem="qfC-qW-0hv" secondAttribute="bottom" constant="17" id="dsa-ib-rV6"/>
+                <constraint firstItem="qfC-qW-0hv" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="jCR-cO-cUZ"/>
+                <constraint firstItem="9js-sJ-Iwe" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="qx7-71-gvD"/>
             </constraints>
-            <point key="canvasLocation" x="68" y="-11"/>
+            <point key="canvasLocation" x="67.938931297709928" y="-11.267605633802818"/>
         </view>
     </objects>
+    <resources>
+        <image name="OnboardingTwo" width="349" height="289"/>
+    </resources>
 </document>
