@@ -17,9 +17,6 @@
             <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding 4" translatesAutoresizingMaskIntoConstraints="NO" id="bPG-Gx-BYU">
-                    <rect key="frame" x="30" y="218" width="333" height="356"/>
-                </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Track Your Growth" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wJF-hP-dIz">
                     <rect key="frame" x="78.666666666666671" y="624" width="235.66666666666663" height="36"/>
                     <fontDescription key="fontDescription" type="system" pointSize="30"/>
@@ -39,6 +36,9 @@
                         <color key="baseBackgroundColor" red="0.1764705926" green="0.086274504660000001" blue="0.2588235438" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </buttonConfiguration>
                 </button>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="onboarding 4" translatesAutoresizingMaskIntoConstraints="NO" id="bPG-Gx-BYU">
+                    <rect key="frame" x="30" y="213" width="333" height="356"/>
+                </imageView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.79215681550000006" green="0.69411766529999996" blue="0.87843137979999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

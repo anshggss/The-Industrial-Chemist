@@ -6,7 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0F94D98C2EC1C01F004CD94C /* README.MD in Sources */ = {isa = PBXBuildFile; fileRef = 0F94D94E2EC1C01F004CD94C /* README.MD */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		0F94D94E2EC1C01F004CD94C /* README.MD */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.MD; sourceTree = "<group>"; };
 		366FB7872EBAEF5500BF1653 /* The Industrial Chemist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Industrial Chemist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -45,6 +50,7 @@
 		366FB77E2EBAEF5500BF1653 = {
 			isa = PBXGroup;
 			children = (
+				0F94D94E2EC1C01F004CD94C /* README.MD */,
 				36BEA7622EBC528B00ED7C59 /* The Industrial Chemist */,
 				366FB7882EBAEF5500BF1653 /* Products */,
 			);
@@ -132,6 +138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0F94D98C2EC1C01F004CD94C /* README.MD in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
