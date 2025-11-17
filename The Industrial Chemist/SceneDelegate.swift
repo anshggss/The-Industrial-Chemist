@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            let initialVC = storyboard.instantiateInitialViewController()!
         
         
-        let vc = OnboardingThreeViewController(nibName: "OnboardingThree", bundle: nil)
+        let vc = GasPreparationViewController(nibName: "GasPreparation", bundle: nil)
 
             window.rootViewController = vc
             self.window = window
