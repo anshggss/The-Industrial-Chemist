@@ -20,9 +20,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
 
             // Loading storyboard file
-        let vc = LogInViewController(nibName: "LogIn", bundle: nil)
+//        let vc = OnboardingOneViewController(nibName: "OnboardingOne", bundle: nil)
+//
+//            window.rootViewController = vc
+        let vc = OnboardingPageViewController(
+            transitionStyle: .scroll,
+            navigationOrientation: .horizontal,
+            options: nil
+        )
 
-            window.rootViewController = vc
+        window.rootViewController = vc
             self.window = window
             window.makeKeyAndVisible()
     }

@@ -176,7 +176,7 @@
                 </imageView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="nlD-R3-3X6"/>
-            <color key="backgroundColor" red="0.9018554688" green="0.8159179688" blue="0.98828125" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color key="backgroundColor" red="0.90196078431372551" green="0.81568627450980391" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
                 <constraint firstItem="eBm-Ub-Lgi" firstAttribute="leading" secondItem="p0U-mm-p9i" secondAttribute="trailing" constant="63.670000000000002" id="0cj-eB-9YD"/>
                 <constraint firstItem="SYp-dl-9gv" firstAttribute="leading" secondItem="W7r-V7-eNz" secondAttribute="trailing" constant="100" id="5EQ-Kx-dpE"/>

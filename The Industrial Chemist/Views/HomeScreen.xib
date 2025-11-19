@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24128" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -50,7 +50,7 @@
                     <rect key="frame" x="11" y="265" width="371" height="4"/>
                 </progressView>
                 <searchBar contentMode="scaleAspectFit" text="" translatesAutoresizingMaskIntoConstraints="NO" id="jEF-z2-9vz">
-                    <rect key="frame" x="0.0" y="301" width="393" height="64"/>
+                    <rect key="frame" x="0.0" y="301" width="393" height="56"/>
                     <color key="barTintColor" red="0.2205810547" green="0.13427732880000001" blue="0.3181152344" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
@@ -103,23 +103,43 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c13-W1-DkC">
-                    <rect key="frame" x="11" y="649" width="371" height="135"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c13-W1-DkC">
+                    <rect key="frame" x="11" y="647" width="371" height="119"/>
                     <subviews>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="startExpermentIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Ekt-kH-8bn">
-                            <rect key="frame" x="153" y="8" width="65" height="58"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="re9-eh-p6V">
+                            <rect key="frame" x="0.0" y="0.0" width="371" height="119"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain">
+                                <attributedString key="attributedTitle">
+                                    <fragment content="Start Experiment">
+                                        <attributes>
+                                            <color key="NSColor" red="0.98624443931834116" green="1" blue="0.98323709857041641" alpha="0.84705883264541626" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <font key="NSFont" size="20" name="Helvetica"/>
+                                            <font key="NSOriginalFont" size="12" name="Helvetica"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                            </buttonConfiguration>
+                        </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="startExpermentIcon" translatesAutoresizingMaskIntoConstraints="NO" id="LAH-HW-sQM">
+                            <rect key="frame" x="164" y="8" width="43" height="35"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="35" id="9C6-p7-9Sl"/>
+                                <constraint firstAttribute="width" constant="43" id="zJN-Z9-xWx"/>
+                            </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Start Experiment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ne5-dk-7tx">
-                            <rect key="frame" x="118" y="65" width="135" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                     </subviews>
                     <viewLayoutGuide key="safeArea" id="wb4-ms-4iG"/>
                     <color key="backgroundColor" red="0.2205810547" green="0.13427732880000001" blue="0.3181152344" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <constraints>
+                        <constraint firstItem="LAH-HW-sQM" firstAttribute="top" secondItem="wb4-ms-4iG" secondAttribute="top" constant="8" id="VqM-nU-OJN"/>
+                        <constraint firstItem="re9-eh-p6V" firstAttribute="top" secondItem="wb4-ms-4iG" secondAttribute="top" id="dgz-lZ-2wN"/>
+                        <constraint firstItem="wb4-ms-4iG" firstAttribute="trailing" secondItem="LAH-HW-sQM" secondAttribute="trailing" constant="164" id="j3f-FP-fCw"/>
+                        <constraint firstItem="wb4-ms-4iG" firstAttribute="bottom" secondItem="re9-eh-p6V" secondAttribute="bottom" id="lAI-t9-5kY"/>
+                        <constraint firstItem="wb4-ms-4iG" firstAttribute="trailing" secondItem="re9-eh-p6V" secondAttribute="trailing" id="lEN-4D-8GG"/>
+                        <constraint firstItem="LAH-HW-sQM" firstAttribute="leading" secondItem="wb4-ms-4iG" secondAttribute="leading" constant="164" id="oHN-k4-njr"/>
+                        <constraint firstItem="re9-eh-p6V" firstAttribute="leading" secondItem="wb4-ms-4iG" secondAttribute="leading" id="tu6-jY-Rjm"/>
+                    </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                             <integer key="value" value="24"/>
