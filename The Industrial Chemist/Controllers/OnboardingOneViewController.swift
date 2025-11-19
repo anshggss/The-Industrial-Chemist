@@ -15,7 +15,19 @@ class OnboardingOneViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    @IBAction func continueButtonPressed(_ sender: UIButton) {
+        let onboardingTwo = OnboardingTwoViewController(nibName: "OnboardingTwo", bundle: nil)
+        onboardingTwo.modalPresentationStyle = .fullScreen
+        
+        let transition = CATransition()
+            transition.duration = 0.35
+            transition.type = .push
+            transition.subtype = .fromRight  // 👈 changes direction to right-to-left or left-to-right
+            view.window?.layer.add(transition, forKey: kCATransition)
 
+        present(onboardingTwo, animated: true)
+    }
+    
     /*
     // MARK: - Navigation
 

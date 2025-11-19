@@ -20,11 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
 
             // Loading storyboard file
-//            let storyboard = UIStoryboard(name: "LogIn", bundle: nil)
-//            let initialVC = storyboard.instantiateInitialViewController()!
-        
-        
-        let vc = GasPreparationViewController(nibName: "GasPreparation", bundle: nil)
+        let vc = LogInViewController(nibName: "LogIn", bundle: nil)
 
             window.rootViewController = vc
             self.window = window
