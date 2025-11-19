@@ -51,9 +51,9 @@ class LogInViewController: UIViewController {
         self.email = email
         self.password = password
         print("\(email), \(password)")
-        let homeVC = HomeScreenViewController(nibName: "HomeScreen", bundle: nil)
-        homeVC.modalPresentationStyle = .fullScreen
-        self.present(homeVC, animated: true)
+        let tabBarVC = TabBarViewController()
+        tabBarVC.modalPresentationStyle = .fullScreen
+        present(tabBarVC, animated: true)
         
     }
     

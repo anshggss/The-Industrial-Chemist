@@ -6,10 +6,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Tab Bar Controller-->
+        <!--Tab Bar View Controller-->
         <scene sceneID="32g-Qr-i5N">
             <objects>
-                <tabBarController id="WfH-di-4my" sceneMemberID="viewController">
+                <tabBarController id="WfH-di-4my" customClass="TabBarViewController" customModule="The_Industrial_Chemist" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="nvW-Ex-r0V">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
