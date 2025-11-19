@@ -99,6 +99,11 @@ class HomeScreenViewController: UIViewController, FSCalendarDataSource, FSCalend
         return eventDates.contains(dateString) ? 1 : 0
     }
     
+    
+    @IBAction func experimentButtonPressed(_ sender: UIButton) {
+        // go to learn page
+    }
+    
     // MARK: - Experiment Button
 
 
