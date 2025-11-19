@@ -1,5 +1,5 @@
 //
-//  ModuleViewController.swift
+//  TabBarViewController.swift
 //  The Industrial Chemist
 //
 //  Created by admin25 on 19/11/25.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ModuleViewController: UIViewController {
+class TabBarViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
