@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0F94D98C2EC1C01F004CD94C /* README.MD in Sources */ = {isa = PBXBuildFile; fileRef = 0F94D94E2EC1C01F004CD94C /* README.MD */; };
-		4313CB8C2EC3183000A11D28 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 4313CB8B2EC3183000A11D28 /* FSCalendar */; };
+		0FB7D5E92ECD9A0400361C2C /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 0FB7D5E82ECD9A0400361C2C /* FSCalendar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,7 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4313CB8C2EC3183000A11D28 /* FSCalendar in Frameworks */,
+				0FB7D5E92ECD9A0400361C2C /* FSCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,7 +86,7 @@
 			);
 			name = "The Industrial Chemist";
 			packageProductDependencies = (
-				4313CB8B2EC3183000A11D28 /* FSCalendar */,
+				0FB7D5E82ECD9A0400361C2C /* FSCalendar */,
 			);
 			productName = "The Industrial Chemist";
 			productReference = 366FB7872EBAEF5500BF1653 /* The Industrial Chemist.app */;
@@ -117,7 +117,7 @@
 			mainGroup = 366FB77E2EBAEF5500BF1653;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				4313CB8A2EC3183000A11D28 /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				0FB7D5E72ECD9A0400361C2C /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 366FB7882EBAEF5500BF1653 /* Products */;
@@ -354,7 +354,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4313CB8A2EC3183000A11D28 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+		0FB7D5E72ECD9A0400361C2C /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/WenchaoD/FSCalendar";
 			requirement = {
@@ -365,9 +365,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		4313CB8B2EC3183000A11D28 /* FSCalendar */ = {
+		0FB7D5E82ECD9A0400361C2C /* FSCalendar */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4313CB8A2EC3183000A11D28 /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			package = 0FB7D5E72ECD9A0400361C2C /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */
