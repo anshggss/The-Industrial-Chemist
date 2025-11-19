@@ -109,35 +109,36 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="re9-eh-p6V">
                             <rect key="frame" x="0.0" y="0.0" width="371" height="119"/>
                             <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain">
-                                <attributedString key="attributedTitle">
-                                    <fragment content="Start Experiment">
-                                        <attributes>
-                                            <color key="NSColor" red="0.98624443931834116" green="1" blue="0.98323709857041641" alpha="0.84705883264541626" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <font key="NSFont" size="20" name="Helvetica"/>
-                                            <font key="NSOriginalFont" size="12" name="Helvetica"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                            </buttonConfiguration>
+                            <buttonConfiguration key="configuration" style="plain"/>
+                            <connections>
+                                <action selector="experimentButtonPressed:" destination="-1" eventType="touchUpInside" id="GUb-Gb-9GV"/>
+                            </connections>
                         </button>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="startExpermentIcon" translatesAutoresizingMaskIntoConstraints="NO" id="LAH-HW-sQM">
-                            <rect key="frame" x="164" y="8" width="43" height="35"/>
+                            <rect key="frame" x="160.66666666666666" y="8" width="50" height="50"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="35" id="9C6-p7-9Sl"/>
-                                <constraint firstAttribute="width" constant="43" id="zJN-Z9-xWx"/>
+                                <constraint firstAttribute="height" constant="50" id="9C6-p7-9Sl"/>
+                                <constraint firstAttribute="width" constant="50" id="zJN-Z9-xWx"/>
                             </constraints>
                         </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start Experiment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YAc-Vz-R0k">
+                            <rect key="frame" x="121.66666666666666" y="66" width="128" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <viewLayoutGuide key="safeArea" id="wb4-ms-4iG"/>
                     <color key="backgroundColor" red="0.2205810547" green="0.13427732880000001" blue="0.3181152344" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
-                        <constraint firstItem="LAH-HW-sQM" firstAttribute="top" secondItem="wb4-ms-4iG" secondAttribute="top" constant="8" id="VqM-nU-OJN"/>
+                        <constraint firstItem="YAc-Vz-R0k" firstAttribute="top" secondItem="LAH-HW-sQM" secondAttribute="bottom" constant="8" symbolic="YES" id="0nm-lq-9gd"/>
+                        <constraint firstItem="LAH-HW-sQM" firstAttribute="top" secondItem="wb4-ms-4iG" secondAttribute="top" constant="8" id="KVd-oV-Iid"/>
+                        <constraint firstItem="YAc-Vz-R0k" firstAttribute="centerX" secondItem="c13-W1-DkC" secondAttribute="centerX" id="axg-Zs-iXv"/>
                         <constraint firstItem="re9-eh-p6V" firstAttribute="top" secondItem="wb4-ms-4iG" secondAttribute="top" id="dgz-lZ-2wN"/>
-                        <constraint firstItem="wb4-ms-4iG" firstAttribute="trailing" secondItem="LAH-HW-sQM" secondAttribute="trailing" constant="164" id="j3f-FP-fCw"/>
                         <constraint firstItem="wb4-ms-4iG" firstAttribute="bottom" secondItem="re9-eh-p6V" secondAttribute="bottom" id="lAI-t9-5kY"/>
                         <constraint firstItem="wb4-ms-4iG" firstAttribute="trailing" secondItem="re9-eh-p6V" secondAttribute="trailing" id="lEN-4D-8GG"/>
-                        <constraint firstItem="LAH-HW-sQM" firstAttribute="leading" secondItem="wb4-ms-4iG" secondAttribute="leading" constant="164" id="oHN-k4-njr"/>
+                        <constraint firstItem="LAH-HW-sQM" firstAttribute="centerX" secondItem="c13-W1-DkC" secondAttribute="centerX" id="mef-7L-JA3"/>
+                        <constraint firstItem="wb4-ms-4iG" firstAttribute="bottom" secondItem="YAc-Vz-R0k" secondAttribute="bottom" constant="32" id="tIk-B9-H5i"/>
                         <constraint firstItem="re9-eh-p6V" firstAttribute="leading" secondItem="wb4-ms-4iG" secondAttribute="leading" id="tu6-jY-Rjm"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
