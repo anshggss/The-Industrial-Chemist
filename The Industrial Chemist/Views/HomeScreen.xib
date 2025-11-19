@@ -64,14 +64,14 @@
                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Level 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hEZ-rg-cTb">
-                    <rect key="frame" x="16" y="279" width="65" height="24"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level 2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hEZ-rg-cTb">
+                    <rect key="frame" x="16" y="283" width="65" height="24"/>
                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WAf-f1-MKt" customClass="FSCalendar">
-                    <rect key="frame" x="11" y="386" width="371" height="251"/>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WAf-f1-MKt" customClass="FSCalendar">
+                    <rect key="frame" x="11" y="378" width="371" height="251"/>
                     <color key="backgroundColor" red="0.18049953839999999" green="0.10911951809999999" blue="0.26158203130000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="titlePlaceholderColor">
@@ -103,21 +103,39 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="psy-Gv-o3M">
-                    <rect key="frame" x="16" y="645" width="361" height="117"/>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="filled" title="Start Experiment" buttonSize="large">
-                        <color key="baseBackgroundColor" red="0.18049953839999999" green="0.10911951809999999" blue="0.26158203130000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                    </buttonConfiguration>
-                </button>
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c13-W1-DkC">
+                    <rect key="frame" x="11" y="649" width="371" height="135"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="startExpermentIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Ekt-kH-8bn">
+                            <rect key="frame" x="153" y="8" width="65" height="58"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Start Experiment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ne5-dk-7tx">
+                            <rect key="frame" x="118" y="65" width="135" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <viewLayoutGuide key="safeArea" id="wb4-ms-4iG"/>
+                    <color key="backgroundColor" red="0.2205810547" green="0.13427732880000001" blue="0.3181152344" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="24"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="0.818359375" green="0.755859375" blue="0.8911132812" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <color key="tintColor" systemColor="labelColor"/>
             <constraints>
-                <constraint firstItem="psy-Gv-o3M" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="1dl-0C-1M5"/>
+                <constraint firstItem="c13-W1-DkC" firstAttribute="top" secondItem="WAf-f1-MKt" secondAttribute="bottom" constant="10" id="8Uh-uI-Zu4"/>
+                <constraint firstItem="c13-W1-DkC" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="11" id="8jf-Wh-jPx"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="WAf-f1-MKt" secondAttribute="trailing" constant="11" id="8s6-xA-7Ci"/>
                 <constraint firstItem="QaM-Jl-9UW" firstAttribute="leading" secondItem="Cwm-eh-HO2" secondAttribute="trailing" id="AI8-5K-Beu"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="c13-W1-DkC" secondAttribute="bottom" constant="18" id="AuD-y6-pzl"/>
                 <constraint firstItem="jW3-C1-YOq" firstAttribute="centerX" secondItem="jEF-z2-9vz" secondAttribute="centerX" id="D0J-dW-uZd"/>
                 <constraint firstItem="mjn-Cs-xmz" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="EXI-jS-mkW"/>
                 <constraint firstItem="Cwm-eh-HO2" firstAttribute="centerX" secondItem="jW3-C1-YOq" secondAttribute="centerX" id="Foq-hJ-kph"/>
@@ -127,7 +145,6 @@
                 <constraint firstItem="jW3-C1-YOq" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="11" id="Kbe-AI-F8g"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="8ai-OP-JwQ" secondAttribute="trailing" constant="22" id="P2C-Rw-WJT"/>
                 <constraint firstItem="Cwm-eh-HO2" firstAttribute="top" secondItem="QaM-Jl-9UW" secondAttribute="top" id="PAR-cv-ekS"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="psy-Gv-o3M" secondAttribute="trailing" constant="16" id="Qq8-zL-knI"/>
                 <constraint firstItem="jEF-z2-9vz" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="TMw-Af-myt"/>
                 <constraint firstItem="jW3-C1-YOq" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="265" id="TOx-Op-iBM"/>
                 <constraint firstItem="Cwm-eh-HO2" firstAttribute="top" secondItem="mjn-Cs-xmz" secondAttribute="bottom" constant="24" id="Xia-UM-i0q"/>
@@ -137,9 +154,9 @@
                 <constraint firstItem="8ai-OP-JwQ" firstAttribute="top" secondItem="Cwm-eh-HO2" secondAttribute="bottom" constant="32" id="aaW-N9-X8G"/>
                 <constraint firstItem="Cwm-eh-HO2" firstAttribute="centerX" secondItem="jEF-z2-9vz" secondAttribute="centerX" id="dmY-lJ-S63"/>
                 <constraint firstItem="WAf-f1-MKt" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="11" id="jGe-ti-ZMt"/>
-                <constraint firstItem="psy-Gv-o3M" firstAttribute="top" secondItem="WAf-f1-MKt" secondAttribute="bottom" constant="20" id="jkb-ee-r6u"/>
-                <constraint firstItem="WAf-f1-MKt" firstAttribute="top" secondItem="jEF-z2-9vz" secondAttribute="bottom" constant="21" id="p18-P8-emp"/>
+                <constraint firstItem="WAf-f1-MKt" firstAttribute="top" secondItem="jEF-z2-9vz" secondAttribute="bottom" constant="13" id="p18-P8-emp"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="WAf-f1-MKt" secondAttribute="bottom" constant="147" id="qmo-Kx-NV0"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="c13-W1-DkC" secondAttribute="trailing" constant="11" id="r5t-It-aVS"/>
                 <constraint firstItem="hEZ-rg-cTb" firstAttribute="top" secondItem="LfP-Kf-bEe" secondAttribute="bottom" constant="32" id="vln-DC-k3B"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="mjn-Cs-xmz" secondAttribute="trailing" constant="155" id="w3e-20-iOn"/>
             </constraints>
@@ -150,6 +167,7 @@
         <image name="1" width="60" height="74"/>
         <image name="2" width="78" height="77"/>
         <image name="3" width="60" height="74"/>
+        <image name="startExpermentIcon" width="75" height="54"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
