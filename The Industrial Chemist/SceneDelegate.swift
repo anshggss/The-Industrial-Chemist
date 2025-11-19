@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // Loading storyboard file
 //            let storyboard = UIStoryboard(name: "LogIn", bundle: nil)
 //            let initialVC = storyboard.instantiateInitialViewController()!
-        let vc = TestViewController(nibName: "Test", bundle: nil)
+        let vc = OnboardingOneViewController(nibName: "OnboardingOne", bundle: nil)
 
             window.rootViewController = vc
             self.window = window
