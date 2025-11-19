@@ -41,3 +41,5 @@ This file tracks the progress made by each team member, date-wise.
 - **DS:** Created and worked on *Home Screen*
 
 ---
+### **Day 11**
+- **AA:** Created and worked on  *LeaderboardWeekly*, *LeaderboardAllTime* pages and the *Onboarding 3* page
