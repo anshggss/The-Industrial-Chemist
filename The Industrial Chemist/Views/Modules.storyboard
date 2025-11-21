@@ -151,6 +151,10 @@
                             <constraint firstItem="eTO-iV-FuA" firstAttribute="top" secondItem="tQO-AN-tKs" secondAttribute="bottom" constant="30" id="ye3-O2-Brz"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="acidBasePrepButtonPressed" destination="5sV-zd-NR9" id="0DL-oe-oQ1"/>
+                        <outlet property="gasPrepButtonPressed" destination="eTO-iV-FuA" id="9wT-U5-iBJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

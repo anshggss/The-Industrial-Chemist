@@ -10,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LeaderboardAllTimeViewController" customModule="The_Industrial_Chemist" customModuleProvider="target">
             <connections>
-                <outlet property="leaderboardSegmentControl" destination="unF-8A-f3r" id="nhN-PN-dtH"/>
+                <outlet property="leaderboardSegmentControl" destination="unF-8A-f3r" id="u1w-ie-dDP"/>
                 <outlet property="view" destination="OGB-jk-6IY" id="9cj-RH-2fA"/>
             </connections>
         </placeholder>
@@ -36,7 +36,7 @@
                                 <segment title="All Time"/>
                             </segments>
                             <connections>
-                                <action selector="segmentedControlChanged:" destination="-1" eventType="valueChanged" id="RvI-G6-nqL"/>
+                                <action selector="segmentedControlChanged:" destination="-1" eventType="valueChanged" id="nhF-pM-fF4"/>
                             </connections>
                         </segmentedControl>
                     </subviews>

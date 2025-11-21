@@ -32,9 +32,7 @@ class LeaderboardAllTimeViewController: UIViewController {
     func navigateToWeeklyLeaderboard() {
         print("Change page")
     }
-    
 
-    
     /*
     // MARK: - Navigation
 

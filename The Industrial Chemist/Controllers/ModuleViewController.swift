@@ -8,6 +8,11 @@
 import UIKit
 
 class ModuleViewController: UIViewController {
+    
+    @IBOutlet weak var gasPrepButtonPressed: UIButton!
+    
+    @IBOutlet weak var acidBasePrepButtonPressed: UIButton!
+    
     @IBAction func gasPrepButtonPressed(_ sender: UIButton) {
         let vc = GasPreparationViewController(nibName: "GasPreparation", bundle: nil)
         self.navigationController?.pushViewController(vc, animated: true)
