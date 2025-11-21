@@ -8,6 +8,16 @@
 import UIKit
 
 class ModuleViewController: UIViewController {
+    @IBAction func gasPrepButtonPressed(_ sender: UIButton) {
+        let vc = GasPreparationViewController(nibName: "GasPreparation", bundle: nil)
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @IBAction func acidBaseButtonPressed(_ sender: UIButton) {
+        let vc = AcidBasePreparationViewController(nibName: "AcidBasePreparation", bundle: nil)
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

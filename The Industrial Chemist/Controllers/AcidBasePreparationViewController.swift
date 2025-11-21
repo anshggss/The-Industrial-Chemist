@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MetallurgyViewController: UIViewController {
+class AcidBasePreparationViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -22,6 +22,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="tBI-Ij-8tt"/>
                     </constraints>
+                    <color key="barTintColor" red="0.79215681550000006" green="0.69411766529999996" blue="0.87843137979999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="afd-dF-gaP"/>
