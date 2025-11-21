@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -23,13 +23,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="393" height="250"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Leaderboard" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zDQ-OI-pDf">
-                            <rect key="frame" x="30" y="140.33333333333334" width="333" height="33.666666666666657"/>
+                            <rect key="frame" x="30" y="100" width="333" height="33.666666666666657"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="unF-8A-f3r">
-                            <rect key="frame" x="60" y="189" width="273" height="32"/>
+                        <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="unF-8A-f3r">
+                            <rect key="frame" x="60" y="169" width="273" height="32"/>
                             <color key="backgroundColor" red="0.79215681550000006" green="0.69411766529999996" blue="0.87843137979999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <segments>
                                 <segment title="Weekly"/>
@@ -46,13 +46,14 @@
                         <constraint firstItem="unF-8A-f3r" firstAttribute="leading" secondItem="nQ1-Gs-MzT" secondAttribute="leading" constant="60" id="epZ-yb-Z8I"/>
                         <constraint firstAttribute="height" constant="250" id="iBJ-pg-42e"/>
                         <constraint firstAttribute="trailing" secondItem="zDQ-OI-pDf" secondAttribute="trailing" constant="30" id="qRg-EC-HIN"/>
-                        <constraint firstItem="unF-8A-f3r" firstAttribute="top" secondItem="zDQ-OI-pDf" secondAttribute="bottom" constant="15" id="sIw-xX-R9R"/>
+                        <constraint firstItem="unF-8A-f3r" firstAttribute="top" secondItem="zDQ-OI-pDf" secondAttribute="bottom" constant="20" id="sIw-xX-R9R"/>
                         <constraint firstAttribute="trailing" secondItem="unF-8A-f3r" secondAttribute="trailing" constant="60" id="tBF-OY-M2z"/>
+                        <constraint firstItem="zDQ-OI-pDf" firstAttribute="top" secondItem="nQ1-Gs-MzT" secondAttribute="top" constant="100" id="vCP-rj-bDq"/>
                         <constraint firstItem="zDQ-OI-pDf" firstAttribute="leading" secondItem="nQ1-Gs-MzT" secondAttribute="leading" constant="30" id="yzr-Ro-3Uy"/>
                     </constraints>
                 </view>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="mSh-kV-eHF">
-                    <rect key="frame" x="30" y="280" width="333" height="487"/>
+                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="mSh-kV-eHF">
+                    <rect key="frame" x="30" y="270" width="333" height="487"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Ox-jW-cZf">
                             <rect key="frame" x="0.0" y="0.0" width="333" height="70"/>
@@ -333,7 +334,6 @@
             <viewLayoutGuide key="safeArea" id="14c-IL-hfT"/>
             <color key="backgroundColor" red="0.79215681550000006" green="0.69411766529999996" blue="0.87843137979999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
-                <constraint firstItem="14c-IL-hfT" firstAttribute="bottom" secondItem="mSh-kV-eHF" secondAttribute="bottom" constant="17" id="BFm-e0-GUM"/>
                 <constraint firstItem="mSh-kV-eHF" firstAttribute="leading" secondItem="14c-IL-hfT" secondAttribute="leading" constant="30" id="Bro-PJ-X5x"/>
                 <constraint firstItem="mSh-kV-eHF" firstAttribute="top" secondItem="nQ1-Gs-MzT" secondAttribute="bottom" constant="30" id="TCh-Da-ngC"/>
                 <constraint firstItem="nQ1-Gs-MzT" firstAttribute="top" secondItem="OGB-jk-6IY" secondAttribute="top" id="WLs-Rb-JRh"/>
