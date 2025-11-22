@@ -23,12 +23,10 @@ class TestViewController: UIViewController {
                 )
                 
                 // Create ARView in non-AR mode
-                arView = ARView(frame: boxFrame, cameraMode: .nonAR, automaticallyConfigureSession: false)
-                arView.layer.cornerRadius = 20
+//                arView = ARView(frame: boxFrame, cameraMode: .nonAR, automaticallyConfigureSession: false)
+                arView.layer.cornerRadius = 15
                 arView.clipsToBounds = true
                 arView.backgroundColor = .systemBackground
-                
-                view.addSubview(arView)
                 
                 loadModel()
         
@@ -38,7 +36,7 @@ class TestViewController: UIViewController {
     func loadModel() {
             do {
                 // Load model entity
-                let entity = try Entity.load(named: "computer")
+                let entity = try Entity.load(named: "model")
                 entity.setScale([0.1, 0.1, 0.1], relativeTo: nil)
                 entity.position = [0, 0, 0]
                 
