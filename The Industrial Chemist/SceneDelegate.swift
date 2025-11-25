@@ -23,12 +23,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let vc = OnboardingOneViewController(nibName: "OnboardingOne", bundle: nil)
 //
 //            window.rootViewController = vc
-//        let vc = OnboardingPageViewController(
-//            transitionStyle: .scroll,
-//            navigationOrientation: .horizontal,
-//            options: nil
-//        )
-        let vc = TestViewController(nibName: "Test", bundle: nil)
+        let vc = OnboardingPageViewController(
+            transitionStyle: .scroll,
+            navigationOrientation: .horizontal,
+            options: nil
+        )
+//        let vc = TestViewController(nibName: "Test", bundle: nil)
         window.rootViewController = vc
             self.window = window
             window.makeKeyAndVisible()

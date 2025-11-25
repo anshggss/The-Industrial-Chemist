@@ -14,7 +14,13 @@ class GasPreparationViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-
+    
+    
+    @IBAction func continueButtonPressed(_ sender: UIButton) {
+        let setUp = SetUpViewController(nibName: "SetUp", bundle: nil)
+        self.navigationController?.pushViewController(setUp, animated: true)
+    }
+    
 
     /*
     // MARK: - Navigation

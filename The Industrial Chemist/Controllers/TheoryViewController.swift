@@ -15,7 +15,11 @@ class TheoryViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-
+    @IBAction func nextPressed(_ sender: UIButton) {
+        let buildVC = BuildViewController(nibName: "Build", bundle: nil)
+        self.navigationController?.pushViewController(buildVC, animated: true)
+    }
+    
     /*
     // MARK: - Navigation
 

@@ -15,7 +15,11 @@ class BuildViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-
+    @IBAction func proceedPressed(_ sender: UIButton) {
+        let testVC = TestViewController(nibName: "Test", bundle: nil)
+        self.navigationController?.pushViewController(testVC, animated: true)
+    }
+    
     /*
     // MARK: - Navigation
 
