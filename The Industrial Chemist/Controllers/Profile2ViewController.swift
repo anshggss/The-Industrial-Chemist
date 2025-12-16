@@ -8,6 +8,15 @@
 import UIKit
 
 class Profile2ViewController: UIViewController {
+    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var avatarImageView: UIImageView!
+    @IBOutlet weak var streakLabel: UILabel!
+    @IBOutlet weak var xpLabel: UILabel!
+    @IBOutlet weak var rubyLabel: UILabel!
+    @IBOutlet weak var topFinishLabel: UILabel!
+
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
