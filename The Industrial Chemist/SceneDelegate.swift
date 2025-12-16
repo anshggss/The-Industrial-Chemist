@@ -13,7 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
 
         // ✅ Load XIB correctly
-        let vc = StreakViewController(nibName: "Streak", bundle: nil)
+        let vc = HomeScreen2ViewController(nibName: "HomeScreen2", bundle: nil)
 
         window?.rootViewController = vc
         window?.makeKeyAndVisible()
