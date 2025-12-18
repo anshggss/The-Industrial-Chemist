@@ -72,7 +72,7 @@
                     <textInputTraits key="textInputTraits"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5hl-7l-w4j">
-                    <rect key="frame" x="34" y="574.33333333333337" width="325" height="30.666666666666629"/>
+                    <rect key="frame" x="34" y="574.33333333333337" width="325" height="31"/>
                     <color key="tintColor" red="0.2863769531" green="0.19213865699999999" blue="0.4118652344" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal">
@@ -80,7 +80,7 @@
                             <fragment content="Forgot Password">
                                 <attributes>
                                     <color key="NSColor" red="0.2863769531" green="0.19213865699999999" blue="0.4118652344" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    <font key="NSFont" size="16" name="UrbanistRoman-Light"/>
+                                    <font key="NSFont" metaFont="system" size="16"/>
                                 </attributes>
                             </fragment>
                         </attributedString>
@@ -90,7 +90,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u2p-Is-w4M">
-                    <rect key="frame" x="34" y="635" width="325" height="40.333333333333371"/>
+                    <rect key="frame" x="34" y="635.33333333333337" width="325" height="40.333333333333371"/>
                     <color key="backgroundColor" red="0.2863769531" green="0.19213865699999999" blue="0.4118652344" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <state key="normal" title="Button"/>
@@ -105,7 +105,7 @@
                     </connections>
                 </button>
                 <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="rbQ-TQ-RLD">
-                    <rect key="frame" x="161.66666666666666" y="695.33333333333337" width="70" height="30"/>
+                    <rect key="frame" x="161.66666666666666" y="695.66666666666663" width="70" height="30"/>
                     <subviews>
                         <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vp7-ak-ibm">
                             <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
@@ -143,20 +143,20 @@
                     </subviews>
                 </stackView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="OR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CbG-gA-y4q">
-                    <rect key="frame" x="184.66666666666669" y="740.33333333333337" width="23.666666666666657" height="21.666666666666629"/>
+                    <rect key="frame" x="184.66666666666669" y="740.66666666666663" width="23.666666666666657" height="21.666666666666629"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.3601074219" green="0.2683105469" blue="0.4870605469" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Akx-ku-5gk">
-                    <rect key="frame" x="34" y="782" width="325" height="28"/>
+                    <rect key="frame" x="34" y="782.33333333333337" width="325" height="28.333333333333371"/>
                     <color key="tintColor" red="0.5205078125" green="0.3981933594" blue="0.6552734375" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain">
                         <attributedString key="attributedTitle">
                             <fragment content="Create an account">
                                 <attributes>
-                                    <font key="NSFont" size="12" name="UrbanistRoman-Medium"/>
+                                    <font key="NSFont" metaFont="cellTitle"/>
                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                     <integer key="NSUnderline" value="1"/>
                                 </attributes>
@@ -168,13 +168,13 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="_______________" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cP4-xk-80F">
-                    <rect key="frame" x="34" y="735.33333333333337" width="134" height="20.333333333333371"/>
+                    <rect key="frame" x="34" y="735.66666666666663" width="134" height="20.333333333333371"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.5205078125" green="0.3981933594" blue="0.6552734375" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="_______________" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddc-zQ-XLG">
-                    <rect key="frame" x="225" y="735.33333333333337" width="134" height="20.333333333333371"/>
+                    <rect key="frame" x="225" y="735.66666666666663" width="134" height="20.333333333333371"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.5205078125" green="0.3981933594" blue="0.6552734375" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <nil key="highlightedColor"/>

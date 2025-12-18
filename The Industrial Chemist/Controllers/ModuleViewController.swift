@@ -2,18 +2,42 @@
 //  ModuleViewController.swift
 //  The Industrial Chemist
 //
-//  Created by user@7 on 06/11/25.
+//  Created by admin25 on 19/11/25.
 //
 
 import UIKit
 
-class ModuleViewController: UIView {
+class ModuleViewController: UIViewController {
+    
+    @IBOutlet weak var gasPrepButtonPressed: UIButton!
+    
+    @IBOutlet weak var acidBasePrepButtonPressed: UIButton!
+    
+    @IBAction func gasPrepButtonPressed(_ sender: UIButton) {
+        let vc = GasPreparationViewController(nibName: "GasPreparation", bundle: nil)
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @IBAction func acidBaseButtonPressed(_ sender: UIButton) {
+        let vc = AcidBasePreparationViewController(nibName: "AcidBasePreparation", bundle: nil)
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+    }
+    
 
     /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
     }
     */
 

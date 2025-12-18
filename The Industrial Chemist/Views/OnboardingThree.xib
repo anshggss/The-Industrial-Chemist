@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OnboardingThreeViewController" customModule="The_Industrial_Chemist" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding 3" translatesAutoresizingMaskIntoConstraints="NO" id="4B3-Ow-5KL">
+                    <rect key="frame" x="21.666666666666657" y="101" width="350" height="490"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="490" id="jQh-dk-7ZD"/>
+                        <constraint firstAttribute="width" constant="350" id="ksV-mj-l3V"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unlock levels, earn badges, and compete with friends as you master chemistry." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4yH-UT-7wb">
+                    <rect key="frame" x="46.666666666666657" y="591" width="300" height="61"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="300" id="oSA-Ph-8fL"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qM4-jh-Q3b">
+                    <rect key="frame" x="24" y="752" width="345" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="3kJ-xe-N0D"/>
+                        <constraint firstAttribute="width" constant="345" id="XNG-2B-2zR"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="filled" title="Continue">
+                        <color key="baseBackgroundColor" red="0.1764705926" green="0.086274504660000001" blue="0.2588235438" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    </buttonConfiguration>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="continueButtonPressed:" destination="-1" eventType="touchUpInside" id="pza-7k-q6E"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gamify Your Learning" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1k-DP-aC6">
+                    <rect key="frame" x="27.333333333333343" y="533.33333333333337" width="338.33333333333326" height="40.666666666666629"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="34"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" red="0.90196078431372551" green="0.81568627450980391" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <constraints>
+                <constraint firstItem="4yH-UT-7wb" firstAttribute="top" secondItem="4B3-Ow-5KL" secondAttribute="bottom" id="CBq-if-6Dn"/>
+                <constraint firstItem="b1k-DP-aC6" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Ihy-uw-nih"/>
+                <constraint firstAttribute="bottom" secondItem="qM4-jh-Q3b" secondAttribute="bottom" constant="50" id="IjB-W9-NQ5"/>
+                <constraint firstItem="qM4-jh-Q3b" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="ehg-zx-WIP"/>
+                <constraint firstItem="4yH-UT-7wb" firstAttribute="top" secondItem="b1k-DP-aC6" secondAttribute="bottom" constant="17" id="fIf-d4-aQn"/>
+                <constraint firstItem="4yH-UT-7wb" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="go5-UP-ruH"/>
+                <constraint firstItem="qM4-jh-Q3b" firstAttribute="top" secondItem="4yH-UT-7wb" secondAttribute="bottom" constant="100" id="nAQ-gO-wD4"/>
+                <constraint firstItem="4B3-Ow-5KL" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="wI1-0n-3Gf"/>
+            </constraints>
+            <point key="canvasLocation" x="138.1679389312977" y="153.52112676056339"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="onboarding 3" width="370" height="495"/>
+    </resources>
+</document>

@@ -15,6 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // ✅ Load XIB correctly
         let vc = HomeScreen2ViewController(nibName: "HomeScreen2", bundle: nil)
 
+
         window?.rootViewController = vc
         window?.makeKeyAndVisible()
     }
