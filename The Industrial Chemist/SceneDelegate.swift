@@ -1,9 +1,11 @@
+
 //
 //  SceneDelegate.swift
 //  The Industrial Chemist
 //
 //  Created by admin25 on 05/11/25.
 //
+
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -19,8 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
 
         // ✅ Load XIB correctly
-        let vc = Leaderboard2ViewController(nibName: "Leaderboard2", bundle: nil)
-
+        let vc = HomeScreen2ViewController(nibName: "HomeScreen2", bundle: nil)
         window?.rootViewController = vc
         window?.makeKeyAndVisible()
     }
