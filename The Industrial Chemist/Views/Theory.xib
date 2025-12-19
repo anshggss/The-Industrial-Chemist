@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -58,7 +58,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fph-1G-FDa">
-                    <rect key="frame" x="20" y="224.99999999999997" width="353" height="319.33333333333326"/>
+                    <rect key="frame" x="20" y="225.00000000000003" width="353" height="312.66666666666674"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="flask.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="vGO-Bh-Xad">
                             <rect key="frame" x="20" y="20.333333333333332" width="45" height="44.333333333333343"/>
@@ -132,7 +132,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hf0-E8-Cdt">
-                            <rect key="frame" x="19.999999999999993" y="268.33333333333331" width="110.33333333333331" height="41"/>
+                            <rect key="frame" x="19.999999999999993" y="268.33333333333331" width="110.33333333333331" height="34.333333333333314"/>
                             <color key="backgroundColor" red="0.14117647058823529" green="0.090196078431372548" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <state key="normal" title="Button"/>
@@ -144,9 +144,9 @@
                             </userDefinedRuntimeAttributes>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SB4-me-a10">
-                            <rect key="frame" x="245.33333333333329" y="268.33333333333331" width="87.666666666666657" height="41"/>
-                            <color key="backgroundColor" red="0.70196078431372544" green="0.37647058823529411" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <rect key="frame" x="245.33333333333329" y="268.33333333333331" width="87.666666666666657" height="34.333333333333314"/>
+                            <color key="backgroundColor" red="0.79215686269999996" green="0.69411764710000001" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <color key="tintColor" systemColor="viewFlipsideBackgroundColor"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Proceed"/>
                             <userDefinedRuntimeAttributes>
@@ -187,7 +187,7 @@
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="MP3-sO-rIK"/>
-            <color key="backgroundColor" red="0.2666666667" green="0.058823529409999999" blue="0.4823529412" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color key="backgroundColor" red="0.10196078431372549" green="0.0039215686274509803" blue="0.16078431372549018" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
                 <constraint firstItem="zFv-A1-Xu1" firstAttribute="top" secondItem="yiS-Eu-CGz" secondAttribute="top" id="21b-uG-irN"/>
                 <constraint firstItem="Fph-1G-FDa" firstAttribute="top" secondItem="hA7-tm-j8J" secondAttribute="bottom" constant="32" id="4JO-Cn-LGf"/>
@@ -213,5 +213,8 @@
     </objects>
     <resources>
         <image name="flask.fill" catalog="system" width="125" height="128"/>
+        <systemColor name="viewFlipsideBackgroundColor">
+            <color red="0.12156862745098039" green="0.12941176470588237" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>

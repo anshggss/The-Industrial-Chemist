@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24412" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24405"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -86,7 +86,7 @@
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LOf-ln-bDd">
                             <rect key="frame" x="15" y="331.66666666666663" width="323" height="35"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <color key="backgroundColor" red="0.79215686269999996" green="0.69411764710000001" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <color key="tintColor" red="0.9609375" green="0.9252929688" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <size key="titleShadowOffset" width="1" height="1"/>
                             <state key="normal" title="Button"/>
@@ -94,7 +94,7 @@
                                 <attributedString key="attributedTitle">
                                     <fragment content="Next">
                                         <attributes>
-                                            <color key="NSColor" red="0.3015136719" green="0.1442871094" blue="0.4760742188" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            <color key="NSColor" red="0.10196078431372549" green="0.0039215686274509803" blue="0.16078431372549018" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <font key="NSFont" size="18" name="HelveticaNeue"/>
                                             <font key="NSOriginalFont" size="12" name="Helvetica"/>
                                         </attributes>
@@ -162,7 +162,7 @@
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="BDW-c5-Opn"/>
-            <color key="backgroundColor" red="0.2666666667" green="0.058823529409999999" blue="0.4823529412" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color key="backgroundColor" red="0.10196078431372549" green="0.0039215686274509803" blue="0.16078431372549018" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
                 <constraint firstItem="zYg-oG-1il" firstAttribute="leading" secondItem="B9S-IP-lhp" secondAttribute="trailing" constant="5" id="4bw-ed-KoE"/>
                 <constraint firstItem="RY2-fi-VE8" firstAttribute="leading" secondItem="Qvo-Ax-FRK" secondAttribute="leading" id="7zS-Sa-v1K"/>
