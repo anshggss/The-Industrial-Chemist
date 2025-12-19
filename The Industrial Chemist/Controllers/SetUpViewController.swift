@@ -18,6 +18,7 @@ class SetUpViewController: UIViewController {
     @IBAction func proceedPressed(_ sender: UIButton) {
         let theoryVC = TheoryViewController(nibName: "Theory", bundle: nil)
         self.navigationController?.pushViewController(theoryVC, animated: true)
+        
     }
     
     /*

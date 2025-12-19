@@ -19,6 +19,7 @@ class GasPreparationViewController: UIViewController {
     @IBAction func continueButtonPressed(_ sender: UIButton) {
         let setUp = SetUpViewController(nibName: "SetUp", bundle: nil)
         self.navigationController?.pushViewController(setUp, animated: true)
+        print("presed")
     }
     
 
