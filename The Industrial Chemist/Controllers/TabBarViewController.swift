@@ -13,13 +13,13 @@ class TabBarViewController: UITabBarController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        let homeVC = HomeScreenViewController(nibName: "HomeScreen", bundle: nil)
+        let homeVC = HomeScreen2ViewController(nibName: "HomeScreen2", bundle: nil)
 //        let learnVC = ModuleViewController(nibName: "Modules", bundle: nil)
         let modulesStoryboard = UIStoryboard(name: "Modules", bundle: nil)
         let learnVC = modulesStoryboard.instantiateInitialViewController()!
 
-        let leaderBoardVC = LeaderboardAllTimeViewController(nibName: "LeaderboardAllTime", bundle: nil)
-        let profileVC = ProfileViewController(nibName: "Profile", bundle: nil)
+        let leaderBoardVC = Leaderboard2ViewController(nibName: "Leaderboard2", bundle: nil)
+        let profileVC = Profile2ViewController(nibName: "Profile2", bundle: nil)
         
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
         learnVC.tabBarItem = UITabBarItem(title: "Learn", image: UIImage(systemName: "book"), selectedImage: UIImage(systemName: "book.fill"))
