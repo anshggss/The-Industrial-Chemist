@@ -31,7 +31,7 @@
                 </view>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hlo-QJ-Y8N">
                     <rect key="frame" x="141" y="205.33333333333331" width="131" height="128"/>
-                    <color key="backgroundColor" red="0.2901961207" green="0.035294115539999997" blue="0.50588238240000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <color key="backgroundColor" red="0.10196078431372549" green="0.0039215686274509803" blue="0.16078431372549018" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="131" id="muF-ee-Tt2"/>
