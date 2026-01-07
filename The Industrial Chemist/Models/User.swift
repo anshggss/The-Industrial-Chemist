@@ -5,9 +5,10 @@
 //  Created by admin25 on 07/11/25.
 //
 
-struct User {
-    var name: String
-    var email: String
-    var password: String
-    var phone: String
+struct Experiment {
+    var Setup: [String]
+    var Build: [String]
+    var Theory: String
+    var Test: String
+    var Results: String
 }

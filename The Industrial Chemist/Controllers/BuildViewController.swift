@@ -65,6 +65,6 @@ class BuildViewController: UIViewController {
 
     @IBAction func proceedPressed(_ sender: UIButton) {
         let testVC = TestViewController(nibName: "Test", bundle: nil)
-        navigationController?.pushViewController(testVC, animated: true)
+        navigationController?.pushViewController(testVC, animated: false)
     }
 }
