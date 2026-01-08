@@ -17,7 +17,7 @@ class TheoryViewController: UIViewController {
 
     @IBAction func nextPressed(_ sender: UIButton) {
         let buildVC = BuildViewController(nibName: "Build", bundle: nil)
-        self.navigationController?.pushViewController(buildVC, animated: true)
+        self.navigationController?.pushViewController(buildVC, animated: false)
     }
     
     /*

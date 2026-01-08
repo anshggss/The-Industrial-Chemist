@@ -66,7 +66,11 @@ class TestViewController: UIViewController {
             }
         }
 
-
+    @IBAction func nextButtonPressed(_ sender: UIButton) {
+        let resultsVC = ResultsViewController(nibName: "Results", bundle: nil)
+        self.navigationController?.pushViewController(resultsVC, animated: false)
+    }
+    
     /*
     // MARK: - Navigation
 
