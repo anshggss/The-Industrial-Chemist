@@ -1,29 +1,23 @@
-//
-//  GasPrepViewController.swift
-//  The Industrial Chemist
-//
-//  Created by user@7 on 04/01/26.
-//
-
 import UIKit
 
 class GasPrepViewController: UIViewController {
 
+    @IBOutlet weak var prepView: UIView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        setupTap()
     }
 
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func setupTap() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(buttonPressed))
+        prepView.isUserInteractionEnabled = true
+        prepView.addGestureRecognizer(tap)
     }
-    */
 
+    @objc func buttonPressed() {
+        let setUp = SetUpViewController(nibName: "SetUp", bundle: nil)
+        self.navigationController?.pushViewController(setUp, animated: true)
+        print("pressed")
+    }
 }

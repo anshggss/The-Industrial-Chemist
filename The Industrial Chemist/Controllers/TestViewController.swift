@@ -11,8 +11,39 @@ import RealityKit
 class TestViewController: UIViewController {
 
     @IBOutlet var arView: ARView!
+    let ammoniaExperiment = Experiment(
+        
+        Setup: [
+            // Label: Setup Your Workspace
+            "Ensure the workspace is clean, well-ventilated, and safe before starting. Wear protective gear like gloves and safety goggles, and check all equipment, as ammonia preparation involves high pressure and temperature.",
+            
+            // Label: Real World Analogy
+            "The process is similar to using a pressure cooker. Increased pressure and controlled heat allow nitrogen and hydrogen to react efficiently in the presence of a catalyst to form ammonia."
+        ],
+        
+        Build: [
+            // Components used in industrial preparation
+            "The process uses components such as high-pressure reactors, compressors to raise gas pressure, heat exchangers for temperature control, and distillation columns to separate the formed ammonia."
+        ],
+        
+        Theory:
+            // Label: Haber Bosch Reaction
+            "The Haber–Bosch process synthesizes ammonia by reacting nitrogen and hydrogen at high pressure and moderate temperature using an iron-based catalyst to speed up the reaction.",
+        
+        Test:
+            // Haber Bosch equation
+            "N₂ + 3H₂ ⇌ 2NH₃",
+        
+        Results:
+            // Learning Summary → Key Takeaways
+            "This experiment demonstrates how pressure, temperature, and catalysts are applied in industrial chemistry to produce ammonia, a key compound used in fertilizers and agriculture."
+    )
+
+    @IBOutlet weak var equationLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        equationLabel.text = ammoniaExperiment.Test
         
         let boxSize: CGFloat = 300
                 let boxFrame = CGRect(

@@ -6,7 +6,6 @@ class BuildViewController: UIViewController {
 
     private let headerView = UIView()
     private let headerLabel = UILabel()
-
     private let contentStack = UIStackView()
 
     override func viewDidLoad() {
@@ -17,7 +16,11 @@ class BuildViewController: UIViewController {
 
     private func setupUI() {
 
-        // Stack View
+        // Rounded corners for output container
+        containerView.layer.cornerRadius = 20
+        containerView.clipsToBounds = true
+
+        // Stack View setup
         contentStack.axis = .vertical
         contentStack.translatesAutoresizingMaskIntoConstraints = false
 
@@ -55,11 +58,11 @@ class BuildViewController: UIViewController {
 
     private func embedComponentsVC() {
         let componentsVC = ComponentsTableViewController()
+
         addChild(componentsVC)
-
         contentStack.addArrangedSubview(componentsVC.view)
-        componentsVC.view.translatesAutoresizingMaskIntoConstraints = false
 
+        componentsVC.view.translatesAutoresizingMaskIntoConstraints = false
         componentsVC.didMove(toParent: self)
     }
 
