@@ -21,18 +21,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Create window
         let window = UIWindow(windowScene: windowScene)
 
+
+  
+        // Load XIB-based ViewController
+//        let vc = SetUpViewController(nibName: "SetUp", bundle: nil)
+        let vc = OnboardingPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+//        let vc = TestViewController(nibName: "Test", bundle: nil)
         // Choose initial ViewController
-        let vc = OnboardingPageViewController(
-            transitionStyle: .scroll,
-            navigationOrientation: .horizontal,
-            options: nil
-        )
+        
 
         // Alternative options (uncomment if needed)
         // let vc = SetUpViewController(nibName: "SetUp", bundle: nil)
         // let vc = TestViewController(nibName: "Test", bundle: nil)
         // let vc = ModuleViewController(nibName: "Modules", bundle: nil)
-
         window.rootViewController = vc
         self.window = window
         window.makeKeyAndVisible()
