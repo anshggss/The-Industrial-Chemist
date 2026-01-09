@@ -1,33 +1,70 @@
-//
-//  BuildViewController.swift
-//  The Industrial Chemist
-//
-//  Created by user@7 on 10/11/25.
-//
-
 import UIKit
 
 class BuildViewController: UIViewController {
 
+    @IBOutlet weak var containerView: UIView!
+
+    private let headerView = UIView()
+    private let headerLabel = UILabel()
+
+    private let contentStack = UIStackView()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
+        embedComponentsVC()
+    }
 
-        // Do any additional setup after loading the view.
+    private func setupUI() {
+
+        // Stack View
+        contentStack.axis = .vertical
+        contentStack.translatesAutoresizingMaskIntoConstraints = false
+
+        containerView.addSubview(contentStack)
+
+        NSLayoutConstraint.activate([
+            contentStack.topAnchor.constraint(equalTo: containerView.topAnchor),
+            contentStack.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            contentStack.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            contentStack.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
+
+        setupHeader()
+    }
+
+    private func setupHeader() {
+        headerView.backgroundColor = UIColor.systemPurple.withAlphaComponent(0.8)
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+
+        headerLabel.text = "COMPONENTS & PROCESSES"
+        headerLabel.font = .boldSystemFont(ofSize: 18)
+        headerLabel.textColor = .white
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        headerView.addSubview(headerLabel)
+        contentStack.addArrangedSubview(headerView)
+
+        NSLayoutConstraint.activate([
+            headerView.heightAnchor.constraint(equalToConstant: 90),
+
+            headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+            headerLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
+        ])
+    }
+
+    private func embedComponentsVC() {
+        let componentsVC = ComponentsTableViewController()
+        addChild(componentsVC)
+
+        contentStack.addArrangedSubview(componentsVC.view)
+        componentsVC.view.translatesAutoresizingMaskIntoConstraints = false
+
+        componentsVC.didMove(toParent: self)
     }
 
     @IBAction func proceedPressed(_ sender: UIButton) {
         let testVC = TestViewController(nibName: "Test", bundle: nil)
-        self.navigationController?.pushViewController(testVC, animated: true)
+        navigationController?.pushViewController(testVC, animated: false)
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

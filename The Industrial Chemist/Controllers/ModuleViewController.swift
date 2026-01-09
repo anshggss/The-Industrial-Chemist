@@ -14,7 +14,7 @@ class ModuleViewController: UIViewController {
     @IBOutlet weak var acidBasePrepButtonPressed: UIButton!
     
     @IBAction func gasPrepButtonPressed(_ sender: UIButton) {
-        let vc = GasPreparationViewController(nibName: "GasPreparation", bundle: nil)
+        let vc = GasPrepViewController(nibName: "GasPrep", bundle: nil)
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
