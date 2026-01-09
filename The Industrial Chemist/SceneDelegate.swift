@@ -14,7 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
 
         // ✅ Load XIB ViewController
-        let vc = HomeScreen2ViewController(nibName: "HomeScreen2", bundle: nil)
+        let vc = Profile2ViewController(nibName: "Profile2", bundle: nil)
         window.rootViewController = vc
 
         // ✅ Assign & display
