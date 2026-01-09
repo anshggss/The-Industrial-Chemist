@@ -139,6 +139,21 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5sC-f0-W3w">
+                    <rect key="frame" x="20" y="618" width="353" height="41"/>
+                    <color key="backgroundColor" red="0.41176470590000003" green="0.2470588235" blue="0.58431372550000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Home"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="20"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="homeButtonPressed:" destination="-1" eventType="touchUpInside" id="0XL-gC-SZQ"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="0KR-2g-ARY"/>
             <color key="backgroundColor" red="0.1019607843" green="0.0039215686269999999" blue="0.16078431369999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -152,6 +167,7 @@
                 <constraint firstItem="0KR-2g-ARY" firstAttribute="trailing" secondItem="6pg-gb-38s" secondAttribute="trailing" constant="20" id="JN0-Jm-kEb"/>
                 <constraint firstItem="vjo-Nu-UNb" firstAttribute="top" secondItem="b0Q-FX-g0i" secondAttribute="bottom" constant="10" id="JdN-mb-giL"/>
                 <constraint firstAttribute="trailing" secondItem="cuD-fJ-EPb" secondAttribute="trailing" constant="20" id="KDQ-VM-hU7"/>
+                <constraint firstItem="5sC-f0-W3w" firstAttribute="top" secondItem="vjo-Nu-UNb" secondAttribute="bottom" constant="20" id="MnO-tH-jEw"/>
                 <constraint firstItem="uid-cV-z8L" firstAttribute="top" secondItem="O0M-N7-AHg" secondAttribute="top" id="NjW-K5-lmF"/>
                 <constraint firstItem="6pg-gb-38s" firstAttribute="leading" secondItem="0KR-2g-ARY" secondAttribute="leading" constant="20" id="QP0-PM-3mc"/>
                 <constraint firstItem="uid-cV-z8L" firstAttribute="leading" secondItem="8K4-Ed-gW8" secondAttribute="trailing" constant="5" id="SAn-Ze-Eoc"/>
@@ -166,6 +182,8 @@
                 <constraint firstItem="b0Q-FX-g0i" firstAttribute="leading" secondItem="0KR-2g-ARY" secondAttribute="leading" constant="20" id="nDb-uX-qD4"/>
                 <constraint firstItem="YsS-AF-O4j" firstAttribute="top" secondItem="cuD-fJ-EPb" secondAttribute="top" id="nT0-sc-3Jr"/>
                 <constraint firstItem="0KR-2g-ARY" firstAttribute="trailing" secondItem="vjo-Nu-UNb" secondAttribute="trailing" constant="20" id="qh3-EU-sw8"/>
+                <constraint firstItem="5sC-f0-W3w" firstAttribute="trailing" secondItem="vjo-Nu-UNb" secondAttribute="trailing" id="vmz-2B-emh"/>
+                <constraint firstItem="5sC-f0-W3w" firstAttribute="leading" secondItem="vjo-Nu-UNb" secondAttribute="leading" id="vtO-hd-Dgb"/>
             </constraints>
             <point key="canvasLocation" x="-686.25954198473278" y="24.647887323943664"/>
         </view>
