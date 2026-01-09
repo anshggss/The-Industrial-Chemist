@@ -2,13 +2,14 @@
 //  User.swift
 //  The Industrial Chemist
 //
-//  Created by admin25 on 07/11/25.
+//  Created by admin25 on 08/01/26.
 //
 
-struct Experiment {
-    var Setup: [String]
-    var Build: [String]
-    var Theory: String
-    var Test: String
-    var Results: String
+// User(name: "", email: "", password: "", phone: "")
+
+struct User {
+    var name: String
+    var email: String
+    var password: String
+    var phone: String
 }
