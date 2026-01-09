@@ -58,6 +58,13 @@ class ResultsViewController: UIViewController {
         playLoopingVideo()
     }
 
+    @IBAction func homeButtonPressed(_ sender: UIButton) {
+        // Transition to home screen (tab bar)
+        let tabBarVC = TabBarViewController()
+        tabBarVC.modalPresentationStyle = .fullScreen
+        present(tabBarVC, animated: false)
+    }
+
     
     override func viewIsAppearing(_ animated: Bool) {
         
