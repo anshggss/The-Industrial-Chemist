@@ -10,6 +10,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TheoryViewController" customModule="The_Industrial_Chemist" customModuleProvider="target">
             <connections>
                 <outlet property="theoryLabel" destination="qHv-EB-5oM" id="XWa-GU-aRK"/>
+                <outlet property="titleLabel" destination="iE7-22-WS9" id="Vjn-fN-07N"/>
                 <outlet property="view" destination="x2q-ps-hvB" id="MbK-79-Y9G"/>
             </connections>
         </placeholder>

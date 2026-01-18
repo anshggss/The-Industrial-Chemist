@@ -1,36 +1,36 @@
+////
+////  GasPreparationViewController.swift
+////  The Industrial Chemist
+////
+////  Created by admin25 on 10/11/25.
+////
 //
-//  GasPreparationViewController.swift
-//  The Industrial Chemist
+//import UIKit
 //
-//  Created by admin25 on 10/11/25.
+//class GasPreparationViewController: UIViewController {
 //
-
-import UIKit
-
-class GasPreparationViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-    
-    
-    @IBAction func continueButtonPressed(_ sender: UIButton) {
-        let setUp = SetUpViewController(nibName: "SetUp", bundle: nil)
-        self.navigationController?.pushViewController(setUp, animated: true)
-        print("presed")
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-}
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//
+//        // Do any additional setup after loading the view.
+//    }
+//    
+//    
+//    @IBAction func continueButtonPressed(_ sender: UIButton) {
+//        let setUp = SetUpViewController(nibName: "SetUp", bundle: nil)
+//        self.navigationController?.pushViewController(setUp, animated: true)
+//        print("presed")
+//    }
+//    
+//
+//    /*
+//    // MARK: - Navigation
+//
+//    // In a storyboard-based application, you will often want to do a little preparation before navigation
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        // Get the new view controller using segue.destination.
+//        // Pass the selected object to the new view controller.
+//    }
+//    */
+//
+//}

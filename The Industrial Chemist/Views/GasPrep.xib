@@ -9,6 +9,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GasPrepViewController" customModule="The_Industrial_Chemist" customModuleProvider="target">
             <connections>
+                <outlet property="haberView" destination="eK1-57-Jb4" id="1ah-cM-J1J"/>
+                <outlet property="ostwaldView" destination="GSW-ap-ARj" id="RJE-fl-cix"/>
                 <outlet property="prepView" destination="mPJ-Ux-TIm" id="Z3H-jP-jA2"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -164,17 +166,6 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eK1-57-Jb4">
                                     <rect key="frame" x="15" y="300.33333333333331" width="363" height="80"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="38u-Xd-BbK">
-                                            <rect key="frame" x="0.0" y="0.0" width="363" height="80"/>
-                                            <color key="backgroundColor" red="0.89411764709999997" green="0.78823529410000004" blue="0.99607843139999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <state key="normal" title="Button"/>
-                                            <buttonConfiguration key="configuration" style="plain"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                    <integer key="value" value="20"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </button>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="testtubeexp" translatesAutoresizingMaskIntoConstraints="NO" id="XUP-eb-zGv">
                                             <rect key="frame" x="15" y="15" width="40" height="40"/>
                                             <constraints>
@@ -232,15 +223,11 @@
                                         <constraint firstItem="7Vp-43-dpk" firstAttribute="leading" secondItem="XUP-eb-zGv" secondAttribute="trailing" constant="20" id="AIK-yZ-DoC"/>
                                         <constraint firstAttribute="height" constant="80" id="Bzw-ay-Ol6"/>
                                         <constraint firstItem="en0-a4-bRr" firstAttribute="leading" secondItem="XUP-eb-zGv" secondAttribute="trailing" constant="20" id="HTw-tv-Bxa"/>
-                                        <constraint firstAttribute="trailing" secondItem="38u-Xd-BbK" secondAttribute="trailing" id="Khy-CG-HFj"/>
                                         <constraint firstItem="Wk5-Cs-kQi" firstAttribute="top" secondItem="eK1-57-Jb4" secondAttribute="top" constant="20" id="Nci-Nr-fXi"/>
-                                        <constraint firstItem="38u-Xd-BbK" firstAttribute="leading" secondItem="eK1-57-Jb4" secondAttribute="leading" id="PgR-jw-8le"/>
-                                        <constraint firstAttribute="bottom" secondItem="38u-Xd-BbK" secondAttribute="bottom" id="R7z-oU-fuc"/>
                                         <constraint firstAttribute="trailing" secondItem="Wk5-Cs-kQi" secondAttribute="trailing" constant="15" id="fZe-sa-Lm8"/>
                                         <constraint firstItem="XUP-eb-zGv" firstAttribute="top" secondItem="eK1-57-Jb4" secondAttribute="top" constant="15" id="gdr-hx-ecD"/>
                                         <constraint firstItem="XUP-eb-zGv" firstAttribute="leading" secondItem="eK1-57-Jb4" secondAttribute="leading" constant="15" id="iOp-oQ-iHE"/>
                                         <constraint firstItem="en0-a4-bRr" firstAttribute="top" secondItem="eK1-57-Jb4" secondAttribute="top" constant="15" id="sp0-bg-4cE"/>
-                                        <constraint firstItem="38u-Xd-BbK" firstAttribute="top" secondItem="eK1-57-Jb4" secondAttribute="top" id="sve-0C-C7a"/>
                                     </constraints>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -323,17 +310,6 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GSW-ap-ARj">
                                     <rect key="frame" x="15" y="490.33333333333337" width="363" height="80"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZMD-kW-mwH">
-                                            <rect key="frame" x="0.0" y="0.0" width="363" height="80"/>
-                                            <color key="backgroundColor" red="0.89411764709999997" green="0.78823529410000004" blue="0.99607843139999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            <state key="normal" title="Button"/>
-                                            <buttonConfiguration key="configuration" style="plain"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                    <integer key="value" value="20"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </button>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="testtubeexp" translatesAutoresizingMaskIntoConstraints="NO" id="UQ1-23-H0t">
                                             <rect key="frame" x="15" y="15" width="40" height="40"/>
                                             <constraints>
@@ -390,15 +366,11 @@
                                         <constraint firstItem="SMB-bG-Vxl" firstAttribute="leading" secondItem="UQ1-23-H0t" secondAttribute="trailing" constant="20" id="0gY-02-pzf"/>
                                         <constraint firstItem="7Dg-5n-qb7" firstAttribute="leading" secondItem="UQ1-23-H0t" secondAttribute="trailing" constant="20" id="146-J2-Gjd"/>
                                         <constraint firstAttribute="height" constant="80" id="Bev-wQ-UJ1"/>
-                                        <constraint firstAttribute="bottom" secondItem="ZMD-kW-mwH" secondAttribute="bottom" id="Fd9-Yf-3z8"/>
                                         <constraint firstItem="7Dg-5n-qb7" firstAttribute="top" secondItem="SMB-bG-Vxl" secondAttribute="bottom" constant="10" id="Fnx-G9-cZd"/>
-                                        <constraint firstItem="ZMD-kW-mwH" firstAttribute="leading" secondItem="GSW-ap-ARj" secondAttribute="leading" id="JTx-rK-EKa"/>
                                         <constraint firstItem="ald-lo-I5f" firstAttribute="top" secondItem="GSW-ap-ARj" secondAttribute="top" constant="20" id="PVL-AM-wt2"/>
                                         <constraint firstItem="UQ1-23-H0t" firstAttribute="top" secondItem="GSW-ap-ARj" secondAttribute="top" constant="15" id="ajb-Zj-YDV"/>
                                         <constraint firstAttribute="trailing" secondItem="ald-lo-I5f" secondAttribute="trailing" constant="15" id="h6X-z7-OeI"/>
                                         <constraint firstItem="SMB-bG-Vxl" firstAttribute="top" secondItem="GSW-ap-ARj" secondAttribute="top" constant="15" id="hSh-U4-RE1"/>
-                                        <constraint firstItem="ZMD-kW-mwH" firstAttribute="top" secondItem="GSW-ap-ARj" secondAttribute="top" id="krZ-0m-4PZ"/>
-                                        <constraint firstAttribute="trailing" secondItem="ZMD-kW-mwH" secondAttribute="trailing" id="oJ5-2t-Qiw"/>
                                         <constraint firstItem="UQ1-23-H0t" firstAttribute="leading" secondItem="GSW-ap-ARj" secondAttribute="leading" constant="15" id="xtc-F0-8Ji"/>
                                     </constraints>
                                     <userDefinedRuntimeAttributes>
