@@ -46,7 +46,7 @@ class GasPrepViewController: UIViewController {
             "Ensure the industrial setup is clean, corrosion-resistant, and well-ventilated. Since the process involves toxic nitrogen oxides at high temperature, operators must wear protective gear and ensure proper gas handling systems are active.",
             
             // Label: Real World Analogy
-            "The process is similar to controlled combustion in a car engine, where fuel reacts with oxygen at high temperature to produce useful energy. Here, ammonia is oxidized in a controlled manner to produce nitric acid."
+            "The process is similar to controlled combustion in a car engine, where fuel reacts with oxygen at high temperature to produce useful energy."
         ],
         
         Build: [
@@ -68,7 +68,7 @@ class GasPrepViewController: UIViewController {
         
         Results:
             // Learning Summary → Key Takeaways
-            "This experiment explains how ammonia is converted into nitric acid on an industrial scale, emphasizing the role of catalysts, temperature control, and gas absorption in producing an essential chemical used in fertilizers and explosives.",
+            "This experiment explains how ammonia is converted into nitric acid on an industrial scale, emphasizing the role of catalysts, temperature control, and gas absorption.",
         model: "ostwald"
     )
 
