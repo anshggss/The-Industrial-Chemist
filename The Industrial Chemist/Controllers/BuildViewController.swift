@@ -3,7 +3,18 @@ import UIKit
 class BuildViewController: UIViewController {
 
     @IBOutlet weak var containerView: UIView!
-
+    
+    let experiment: Experiment
+    
+    init(experiment: Experiment) {
+        self.experiment = experiment
+        super.init(nibName: "Build", bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private let headerView = UIView()
     private let headerLabel = UILabel()
     private let contentStack = UIStackView()
@@ -67,7 +78,7 @@ class BuildViewController: UIViewController {
     }
 
     @IBAction func proceedPressed(_ sender: UIButton) {
-        let testVC = TestViewController(nibName: "Test", bundle: nil)
+        let testVC = TestViewController(experiment: experiment)
         navigationController?.pushViewController(testVC, animated: false)
     }
 }

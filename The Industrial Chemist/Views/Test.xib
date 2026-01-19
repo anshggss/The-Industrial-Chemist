@@ -10,7 +10,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TestViewController" customModule="The_Industrial_Chemist" customModuleProvider="target">
             <connections>
                 <outlet property="arView" destination="eg0-hM-1fg" id="m35-fZ-NXt"/>
-                <outlet property="equationLabel" destination="CSC-vz-AVn" id="mKn-wQ-cE1"/>
+                <outlet property="equationLabel" destination="CSC-vz-AVn" id="FeZ-4G-mO8"/>
+                <outlet property="equationTitleLabel" destination="JEM-IQ-Lal" id="T9Z-wr-inc"/>
+                <outlet property="smallLabel" destination="LOF-CO-hee" id="dJB-Ax-fsn"/>
+                <outlet property="titleLabel" destination="VmO-Q4-CnV" id="fiS-C9-loA"/>
                 <outlet property="view" destination="1sh-gM-CQq" id="XJf-9t-HPm"/>
             </connections>
         </placeholder>
@@ -144,8 +147,8 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6cD-mQ-Lot">
                             <rect key="frame" x="15" y="34.333333333333371" width="323" height="115"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSC-vz-AVn">
-                                    <rect key="frame" x="140.66666666666666" y="47" width="42" height="21"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CSC-vz-AVn">
+                                    <rect key="frame" x="141" y="47.333333333333371" width="41.333333333333343" height="20.333333333333329"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.42745098040000001" green="0.44705882349999998" blue="0.49803921569999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <nil key="highlightedColor"/>
