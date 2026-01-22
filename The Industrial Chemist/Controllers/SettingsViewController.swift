@@ -31,13 +31,13 @@ class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
-        setupTableView()
-        addNavigationBar()
-
+        configureView()
+        configureTableView()
     }
 
-    private func setupUI() {
+    // MARK: - View Configuration
+
+    private func configureView() {
         view.backgroundColor = UIColor(red: 24/255, green: 4/255, blue: 46/255, alpha: 1)
 
         title = "Settings"
@@ -47,12 +47,13 @@ class SettingsViewController: UIViewController {
         ]
     }
 
-    private func setupTableView() {
+    private func configureTableView() {
         tableView.backgroundColor = .clear
         tableView.separatorColor = UIColor.white.withAlphaComponent(0.15)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.tableFooterView = actionFooter()
 
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -63,33 +64,9 @@ class SettingsViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-
-        tableView.contentInsetAdjustmentBehavior = .never
-
-        tableView.tableFooterView = actionFooter()
     }
-    
-    private func addNavigationBar() {
-        let navBar = UINavigationBar()
-        navBar.translatesAutoresizingMaskIntoConstraints = false
-        navBar.barTintColor = UIColor(red: 24/255, green: 4/255, blue: 46/255, alpha: 1)
-        navBar.titleTextAttributes = [
-            .foregroundColor: UIColor.white
-        ]
 
-        let navItem = UINavigationItem(title: "Settings")
-        navBar.setItems([navItem], animated: false)
-
-        view.addSubview(navBar)
-
-        NSLayoutConstraint.activate([
-            navBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            navBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-
-        tableView.topAnchor.constraint(equalTo: navBar.bottomAnchor).isActive = true
-    }
+    // MARK: - Footer
 
     private func actionFooter() -> UIView {
         let container = UIView()
@@ -131,12 +108,11 @@ class SettingsViewController: UIViewController {
     }
 }
 
-// MARK: - UITableView Delegate & DataSource
+// MARK: - Table Delegate & Data Source
+
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
 
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
-    }
+    func numberOfSections(in tableView: UITableView) -> Int { 4 }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
@@ -148,7 +124,8 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView,
+                   titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0: return "ACCOUNT"
         case 1: return "SUBSCRIPTION"
@@ -160,9 +137,8 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    willDisplayHeaderView view: UIView,
                    forSection section: Int) {
-        if let header = view as? UITableViewHeaderFooterView {
-            header.textLabel?.textColor = UIColor.gray
-        }
+        (view as? UITableViewHeaderFooterView)?
+            .textLabel?.textColor = .gray
     }
 
     func tableView(_ tableView: UITableView,
@@ -184,23 +160,54 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.textLabel?.text = text
         cell.backgroundColor = .clear
         cell.selectionStyle = .none
-
-        if isLegal {
-            cell.textLabel?.textColor = .systemBlue
-            cell.accessoryType = .none
-        } else {
-            cell.textLabel?.textColor = .white
-            cell.accessoryType = .disclosureIndicator
-        }
+        cell.textLabel?.textColor = isLegal ? .systemBlue : .white
+        cell.accessoryType = isLegal ? .none : .disclosureIndicator
 
         return cell
     }
+
+    // MARK: - Modal Routing (Account Section)
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        // ACCOUNT → Preferences
-        if indexPath.section == 0 && indexPath.row == 0 {
-            let vc = PreferencesViewController()
-            navigationController?.pushViewController(vc, animated: true)
+        guard indexPath.section == 0 else { return }
+
+        let vc: UIViewController?
+
+        switch indexPath.row {
+
+        case 0:
+            vc = PreferencesViewController(nibName: "Preferences", bundle: nil)
+
+        case 1:
+            vc = ProfileSettingsViewController(nibName: "ProfileSettings", bundle: nil)
+
+        case 2:
+            vc = NotificationsViewController(nibName: "Notifications", bundle: nil)
+
+        case 3:
+            // COURSES — intentionally no action (no VC exists yet)
+            vc = nil
+
+        case 4:
+            vc = CFSViewController(nibName: "CFS", bundle: nil)
+
+        case 5:
+            vc = SocialSettingsViewController(nibName: "SocialSettings", bundle: nil)
+
+        case 6:
+            vc = PrivacyViewController(nibName: "Privacy", bundle: nil)
+
+        default:
+            vc = nil
         }
+
+        guard let controller = vc else { return }
+
+        controller.modalPresentationStyle = .automatic
+        controller.modalTransitionStyle = .coverVertical
+
+        present(controller, animated: true)
     }
+
 }

@@ -48,7 +48,7 @@ class BuildViewController: UIViewController {
     }
 
     private func setupHeader() {
-        headerView.backgroundColor = UIColor.systemPurple.withAlphaComponent(0.8)
+        headerView.backgroundColor = UIColor(red: 85, green: 37, blue: 135, alpha: 0)
         headerView.translatesAutoresizingMaskIntoConstraints = false
 
         headerLabel.text = "COMPONENTS & PROCESSES"

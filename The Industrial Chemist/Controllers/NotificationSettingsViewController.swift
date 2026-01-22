@@ -16,11 +16,13 @@ class NotificationSettingsViewController: UIViewController,
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
-        setupTableView()
+        configureView()
+        configureTableView()
     }
 
-    private func setupUI() {
+    // MARK: - View Configuration
+
+    private func configureView() {
         view.backgroundColor = UIColor(red: 24/255, green: 4/255, blue: 46/255, alpha: 1)
 
         title = "Notifications"
@@ -30,7 +32,7 @@ class NotificationSettingsViewController: UIViewController,
         ]
     }
 
-    private func setupTableView() {
+    private func configureTableView() {
         tableView.backgroundColor = .clear
         tableView.separatorColor = UIColor.white.withAlphaComponent(0.15)
         tableView.delegate = self
@@ -41,27 +43,30 @@ class NotificationSettingsViewController: UIViewController,
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
 
-    // MARK: - UITableViewDataSource (REQUIRED)
+    // MARK: - UITableViewDataSource
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        1
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        items.count
     }
 
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell",
+                                                 for: indexPath)
+
         let item = items[indexPath.row]
 
         let titleAttributes: [NSAttributedString.Key: Any] = [
