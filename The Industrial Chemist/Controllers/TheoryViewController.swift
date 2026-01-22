@@ -12,6 +12,8 @@ class TheoryViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var theoryLabel: UILabel!
     
+    var isAtHome: Bool = false
+    
     let experiment: Experiment
     
     init(experiment: Experiment) {
@@ -35,6 +37,7 @@ class TheoryViewController: UIViewController {
 
     @IBAction func nextPressed(_ sender: UIButton) {
         let buildVC = BuildViewController(experiment: experiment)
+        buildVC.isAtHome = isAtHome
         self.navigationController?.pushViewController(buildVC, animated: false)
     }
     

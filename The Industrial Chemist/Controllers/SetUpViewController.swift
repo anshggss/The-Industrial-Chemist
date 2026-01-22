@@ -13,6 +13,8 @@ class SetUpViewController: UIViewController {
     
     @IBOutlet weak var setUpLabel: UILabel!
     
+    var isAtHome: Bool = false
+    
     let experiment: Experiment
     
     init(experiment: Experiment, nib: String) {
@@ -33,6 +35,7 @@ class SetUpViewController: UIViewController {
 
     @IBAction func proceedPressed(_ sender: UIButton) {
         let theoryVC = TheoryViewController(experiment: experiment)
+        theoryVC.isAtHome = isAtHome
         self.navigationController?.pushViewController(theoryVC, animated: false)
         
     }

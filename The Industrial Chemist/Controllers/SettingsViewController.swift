@@ -33,6 +33,8 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupTableView()
+        addNavigationBar()
+
     }
 
     private func setupUI() {
@@ -56,13 +58,37 @@ class SettingsViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
 
+        tableView.contentInsetAdjustmentBehavior = .never
+
         tableView.tableFooterView = actionFooter()
+    }
+    
+    private func addNavigationBar() {
+        let navBar = UINavigationBar()
+        navBar.translatesAutoresizingMaskIntoConstraints = false
+        navBar.barTintColor = UIColor(red: 24/255, green: 4/255, blue: 46/255, alpha: 1)
+        navBar.titleTextAttributes = [
+            .foregroundColor: UIColor.white
+        ]
+
+        let navItem = UINavigationItem(title: "Settings")
+        navBar.setItems([navItem], animated: false)
+
+        view.addSubview(navBar)
+
+        NSLayoutConstraint.activate([
+            navBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+
+        tableView.topAnchor.constraint(equalTo: navBar.bottomAnchor).isActive = true
     }
 
     private func actionFooter() -> UIView {

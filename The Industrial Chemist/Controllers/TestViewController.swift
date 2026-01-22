@@ -15,6 +15,8 @@ class TestViewController: UIViewController {
     @IBOutlet weak var equationLabel: UILabel!
     @IBOutlet var arView: ARView!
     
+    var isAtHome: Bool = false
+    
     @IBOutlet weak var equationTitleLabel: UILabel!
     
     let experiment: Experiment
@@ -92,6 +94,7 @@ class TestViewController: UIViewController {
 
     @IBAction func nextButtonPressed(_ sender: UIButton) {
         let resultsVC = ResultsViewController(experiment: experiment)
+        resultsVC.isAtHome = isAtHome
         self.navigationController?.pushViewController(resultsVC, animated: false)
     }
     

@@ -13,10 +13,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
 
-        // ✅ Load from XIB
-        let vc = SettingsViewController(nibName: "Settings", bundle: nil)
+        // Check onboarding status
+        let hasSeenOnboarding = UserDefaults.standard.bool(forKey: "seenOnboarding")
 
-        window.rootViewController = vc
+        let rootViewController: UIViewController
+
+//        if hasSeenOnboarding {
+//            // Go directly to Login
+//            rootViewController = LogInViewController(
+//                nibName: "LogIn",
+//                bundle: nil
+//            )
+//        } else {
+            // Show onboarding flow
+            rootViewController = OnboardingPageViewController(
+                transitionStyle: .scroll,
+                navigationOrientation: .horizontal,
+                options: nil
+            )
+//        }
+
+        window.rootViewController = rootViewController
         self.window = window
         window.makeKeyAndVisible()
     }

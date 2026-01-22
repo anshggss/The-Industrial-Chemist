@@ -11,6 +11,9 @@ class HomeScreen2ViewController: UIViewController {
 
     @IBOutlet weak var continueLearning: UIView!
 
+    @IBOutlet weak var chlorinePrepButton: UIButton!
+    @IBOutlet weak var hydrogenPrepButton: UIButton!
+    @IBOutlet weak var oxygenPrepButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTapGesture()
@@ -38,7 +41,7 @@ class HomeScreen2ViewController: UIViewController {
         
         Test:
             // Haber Bosch equation
-            "The Haber–Bosch reaction is represented as: N₂ + 3H₂ ⇌ 2NH₃, showing the reversible nature of the process and the role of equilibrium in ammonia production.",
+            "N₂ + 3H₂ ⇌ 2NH₃",
         
         Results:
             // Learning Summary → Key Takeaways
@@ -56,11 +59,39 @@ class HomeScreen2ViewController: UIViewController {
         continueLearning.isUserInteractionEnabled = true
         continueLearning.addGestureRecognizer(tapGesture)
     }
+    
+    private func configurePrepButtons() {
+        let buttons = [
+            chlorinePrepButton,
+            hydrogenPrepButton,
+            oxygenPrepButton
+        ]
+
+        let image = UIImage(named: "filler")
+
+        buttons.forEach { button in
+            guard let button = button else { return }
+
+            var config = UIButton.Configuration.plain()
+            config.image = image
+            config.imagePlacement = .top
+            config.imagePadding = 12
+            config.title = "Coming Soon"
+            config.baseForegroundColor = .white
+
+            button.configuration = config
+            button.isUserInteractionEnabled = false
+            button.alpha = 0.7
+        }
+    }
+
 
     // MARK: - Navigation Action
     @objc private func continueLearningTapped() {
         // Create the destination view controller from XIB
         let setUpVC = SetUpViewController(experiment: experiment, nib: "SetUp")
+        
+        setUpVC.isAtHome.toggle()
 
         // Create a UINavigationController with setUpVC as the root
         let navController = UINavigationController(rootViewController: setUpVC)

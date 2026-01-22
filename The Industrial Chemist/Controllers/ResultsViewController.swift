@@ -1,39 +1,36 @@
-//
-//  ResultsViewController.swift
-//  The Industrial Chemist
-//
-//  Created by admin25 on 10/11/25.
-//
-
 import UIKit
 import AVFoundation
 
 class ResultsViewController: UIViewController {
 
     @IBOutlet weak var videoView: UIView!
-    
     @IBOutlet weak var takeawaysLabel: UILabel!
     
+    @IBOutlet weak var homeButton: UIButton!
+    var isAtHome: Bool = false
+
     let experiment: Experiment
-    
+
+    private var player: AVPlayer?
+    private var playerLayer: AVPlayerLayer?
+
     init(experiment: Experiment) {
         self.experiment = experiment
         super.init(nibName: "Results", bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-
-    
-    private var player: AVPlayer?
-    private var playerLayer: AVPlayerLayer?
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if !isAtHome {
+            // remove Home button
+            homeButton.isHidden = true
+        }
 
-        // Round the video container
         videoView.layer.cornerRadius = 20
         videoView.clipsToBounds = true
 
@@ -41,39 +38,41 @@ class ResultsViewController: UIViewController {
         playLoopingVideo()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        playerLayer?.frame = videoView.bounds
+    }
+
     @IBAction func homeButtonPressed(_ sender: UIButton) {
-        // Transition to home screen (tab bar)
         let tabBarVC = TabBarViewController()
         tabBarVC.modalPresentationStyle = .fullScreen
         present(tabBarVC, animated: false)
     }
 
-    
-    override func viewIsAppearing(_ animated: Bool) {
-        
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        playerLayer?.frame = videoView.bounds
-    }
-
     private func playLoopingVideo() {
-        guard let videoURL = Bundle.main.url(forResource: "video", withExtension: "mp4") else {
+
+        let videoName: String
+
+        if experiment.title == "Ammonia Process" {
+            videoName = "ammonia"
+        } else {
+            videoName = "ostwald"
+        }
+
+        guard let videoURL = Bundle.main.url(forResource: videoName, withExtension: "mp4") else {
             print("Video file not found")
             return
         }
 
         player = AVPlayer(url: videoURL)
-        player?.isMuted = true   // Optional: mute video
+        player?.isMuted = true
 
         playerLayer = AVPlayerLayer(player: player)
+        playerLayer?.videoGravity = .resizeAspect
         playerLayer?.frame = videoView.bounds
-        playerLayer?.videoGravity = .resizeAspect   // Fits inside view
 
-        if let playerLayer = playerLayer {
-            videoView.layer.addSublayer(playerLayer)
+        if let layer = playerLayer {
+            videoView.layer.addSublayer(layer)
         }
 
         NotificationCenter.default.addObserver(
@@ -87,7 +86,7 @@ class ResultsViewController: UIViewController {
     }
 
     @objc private func loopVideo() {
-        player?.seek(to: .zero, toleranceBefore: .zero, toleranceAfter: .zero)
+        player?.seek(to: .zero)
         player?.play()
     }
 

@@ -25,6 +25,15 @@ class Profile2ViewController: UIViewController {
     }
 
 
+    @IBAction func settingsPressed(_ sender: UIButton) {
+        let vc = SettingsViewController(nibName: "Settings", bundle: nil)
+        
+        vc.modalPresentationStyle = .automatic
+        vc.modalTransitionStyle = .coverVertical
+        
+        self.present(vc, animated: true, completion: nil)
+    }
+
     /*
     // MARK: - Navigation
 

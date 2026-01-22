@@ -5,7 +5,7 @@ class BuildViewController: UIViewController {
     @IBOutlet weak var containerView: UIView!
     
     let experiment: Experiment
-    
+    var isAtHome: Bool = false
     init(experiment: Experiment) {
         self.experiment = experiment
         super.init(nibName: "Build", bundle: nil)
@@ -79,6 +79,7 @@ class BuildViewController: UIViewController {
 
     @IBAction func proceedPressed(_ sender: UIButton) {
         let testVC = TestViewController(experiment: experiment)
+        testVC.isAtHome = isAtHome
         navigationController?.pushViewController(testVC, animated: false)
     }
 }

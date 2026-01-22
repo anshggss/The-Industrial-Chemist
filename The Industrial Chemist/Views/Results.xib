@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ResultsViewController" customModule="The_Industrial_Chemist" customModuleProvider="target">
             <connections>
+                <outlet property="homeButton" destination="McR-86-jzT" id="Wlo-eT-cPo"/>
                 <outlet property="takeawaysLabel" destination="q26-Hf-mVe" id="qId-cq-jHb"/>
                 <outlet property="videoView" destination="b36-dm-3QE" id="zUL-X5-mJi"/>
                 <outlet property="view" destination="7gk-N7-RLm" id="kiN-6L-IBu"/>
