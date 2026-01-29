@@ -2,17 +2,15 @@ import UIKit
 
 class Login2ViewController: UIViewController {
 
-    // MARK: - Top Image Container
     private let topImageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(named: "login") // Asset name
+        iv.image = UIImage(named: "login")
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
 
-    // MARK: - Login Card
     private let cardView: UIView = {
         let v = UIView()
         v.backgroundColor = UIColor(red: 48/255, green: 16/255, blue: 72/255, alpha: 1)
@@ -22,23 +20,19 @@ class Login2ViewController: UIViewController {
         return v
     }()
 
-    // MARK: - Title
     private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Log In"
-        label.font = .systemFont(ofSize: 28, weight: .bold)
-        label.textColor = .white
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+        let l = UILabel()
+        l.text = "Log In"
+        l.font = .systemFont(ofSize: 28, weight: .bold)
+        l.textColor = .white
+        l.translatesAutoresizingMaskIntoConstraints = false
+        return l
     }()
-
-    // MARK: - Email
     private let emailTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Email"
         tf.textColor = .white
-        tf.backgroundColor = UIColor.white.withAlphaComponent(0.12)
+        tf.backgroundColor = UIColor.white.withAlphaComponent(0.15)
         tf.layer.cornerRadius = 16
         tf.autocapitalizationType = .none
         tf.keyboardType = .emailAddress
@@ -46,86 +40,98 @@ class Login2ViewController: UIViewController {
         return tf
     }()
 
-    // MARK: - Password
     private let passwordTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Password"
         tf.textColor = .white
-        tf.backgroundColor = UIColor.white.withAlphaComponent(0.12)
+        tf.backgroundColor = UIColor.white.withAlphaComponent(0.15)
         tf.layer.cornerRadius = 16
         tf.isSecureTextEntry = true
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
     }()
 
-    // MARK: - Forgot
     private let forgotButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setTitle("Forgot Password", for: .normal)
-        btn.setTitleColor(.systemPink, for: .normal)
-        btn.titleLabel?.font = .systemFont(ofSize: 14)
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        return btn
+        let b = UIButton(type: .system)
+        b.setTitle("Forgot Password", for: .normal)
+        b.setTitleColor(.white, for: .normal)
+        b.titleLabel?.font = .systemFont(ofSize: 14)
+        b.translatesAutoresizingMaskIntoConstraints = false
+        return b
     }()
 
-    // MARK: - Sign In
     private let signInButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setTitle("Sign In", for: .normal)
-        btn.backgroundColor = UIColor(red: 214/255, green: 176/255, blue: 255/255, alpha: 1)
-        btn.setTitleColor(.black, for: .normal)
-        btn.layer.cornerRadius = 22
-        btn.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        return btn
+        let b = UIButton(type: .system)
+        b.setTitle("Sign In", for: .normal)
+        b.backgroundColor = UIColor(red: 214/255, green: 176/255, blue: 255/255, alpha: 1)
+        b.setTitleColor(.black, for: .normal)
+        b.layer.cornerRadius = 24
+        b.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        b.translatesAutoresizingMaskIntoConstraints = false
+        return b
     }()
 
-    // MARK: - Social
-    private let appleButton = Login2ViewController.circleButton(systemName: "applelogo")
-    private let googleButton = Login2ViewController.circleButton(systemName: "g.circle.fill")
+    private let appleButton = Login2ViewController.circleButton(image: "applelogo")
+    private let googleButton = Login2ViewController.circleButton(image: "g.circle.fill")
+
+    // MARK: - Divider
+    private let leftLine = Login2ViewController.dividerLine()
+    private let rightLine = Login2ViewController.dividerLine()
+
+    private let orLabel: UILabel = {
+        let l = UILabel()
+        l.text = "OR"
+        l.textColor = .white
+        l.font = .systemFont(ofSize: 14)
+        l.translatesAutoresizingMaskIntoConstraints = false
+        return l
+    }()
 
     private let createAccountLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Create an account"
-        label.textColor = .systemPink
-        label.font = .systemFont(ofSize: 15)
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+        let l = UILabel()
+        l.text = "Create an account"
+        l.textColor = .white
+        l.font = .systemFont(ofSize: 15)
+        l.translatesAutoresizingMaskIntoConstraints = false
+        return l
     }()
 
-    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         setupUI()
         setupIcons()
+        setupPlaceholderColor()
     }
 
-    // MARK: - UI Setup
     private func setupUI() {
 
         view.addSubview(topImageView)
         view.addSubview(cardView)
 
-        cardView.addSubview(titleLabel)
-        cardView.addSubview(emailTextField)
-        cardView.addSubview(passwordTextField)
-        cardView.addSubview(forgotButton)
-        cardView.addSubview(signInButton)
-        cardView.addSubview(appleButton)
-        cardView.addSubview(googleButton)
-        cardView.addSubview(createAccountLabel)
+        [
+            titleLabel,
+            emailTextField,
+            passwordTextField,
+            forgotButton,
+            signInButton,
+            appleButton,
+            googleButton,
+            leftLine,
+            orLabel,
+            rightLine,
+            createAccountLabel
+        ].forEach { cardView.addSubview($0) }
 
         NSLayoutConstraint.activate([
 
-            // Top Image
+            // Top image
             topImageView.topAnchor.constraint(equalTo: view.topAnchor),
             topImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             topImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             topImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.45),
 
-            // Card View
+            // Card
             cardView.topAnchor.constraint(equalTo: topImageView.bottomAnchor, constant: -32),
             cardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -139,13 +145,13 @@ class Login2ViewController: UIViewController {
             emailTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
             emailTextField.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
             emailTextField.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
-            emailTextField.heightAnchor.constraint(equalToConstant: 48),
+            emailTextField.heightAnchor.constraint(equalToConstant: 50),
 
             // Password
             passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 16),
             passwordTextField.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
             passwordTextField.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 48),
+            passwordTextField.heightAnchor.constraint(equalToConstant: 50),
 
             // Forgot
             forgotButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 8),
@@ -155,26 +161,39 @@ class Login2ViewController: UIViewController {
             signInButton.topAnchor.constraint(equalTo: forgotButton.bottomAnchor, constant: 20),
             signInButton.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
             signInButton.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
-            signInButton.heightAnchor.constraint(equalToConstant: 48),
+            signInButton.heightAnchor.constraint(equalToConstant: 50),
 
             // Social
-            appleButton.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 20),
-            appleButton.trailingAnchor.constraint(equalTo: cardView.centerXAnchor, constant: -10),
+            appleButton.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 24),
+            appleButton.trailingAnchor.constraint(equalTo: cardView.centerXAnchor, constant: -12),
             appleButton.widthAnchor.constraint(equalToConstant: 44),
             appleButton.heightAnchor.constraint(equalToConstant: 44),
 
-            googleButton.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 20),
-            googleButton.leadingAnchor.constraint(equalTo: cardView.centerXAnchor, constant: 10),
+            googleButton.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 24),
+            googleButton.leadingAnchor.constraint(equalTo: cardView.centerXAnchor, constant: 12),
             googleButton.widthAnchor.constraint(equalToConstant: 44),
             googleButton.heightAnchor.constraint(equalToConstant: 44),
 
+            // OR Divider
+            orLabel.topAnchor.constraint(equalTo: appleButton.bottomAnchor, constant: 20),
+            orLabel.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
+
+            leftLine.centerYAnchor.constraint(equalTo: orLabel.centerYAnchor),
+            leftLine.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 40),
+            leftLine.trailingAnchor.constraint(equalTo: orLabel.leadingAnchor, constant: -12),
+            leftLine.heightAnchor.constraint(equalToConstant: 1),
+
+            rightLine.centerYAnchor.constraint(equalTo: orLabel.centerYAnchor),
+            rightLine.leadingAnchor.constraint(equalTo: orLabel.trailingAnchor, constant: 12),
+            rightLine.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -40),
+            rightLine.heightAnchor.constraint(equalToConstant: 1),
+
             // Create Account
-            createAccountLabel.topAnchor.constraint(equalTo: appleButton.bottomAnchor, constant: 20),
+            createAccountLabel.topAnchor.constraint(equalTo: orLabel.bottomAnchor, constant: 16),
             createAccountLabel.centerXAnchor.constraint(equalTo: cardView.centerXAnchor)
         ])
     }
 
-    // MARK: - Icons
     private func setupIcons() {
         emailTextField.leftView = leftIcon("envelope")
         emailTextField.leftViewMode = .always
@@ -183,23 +202,38 @@ class Login2ViewController: UIViewController {
         passwordTextField.leftViewMode = .always
     }
 
-    private func leftIcon(_ systemName: String) -> UIView {
-        let container = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 24))
-        let icon = UIImageView(frame: CGRect(x: 12, y: 2, width: 20, height: 20))
-        icon.image = UIImage(systemName: systemName)
-        icon.tintColor = .systemPink
-        container.addSubview(icon)
-        return container
+    private func setupPlaceholderColor() {
+        let color = UIColor.white.withAlphaComponent(0.6)
+        emailTextField.attributedPlaceholder =
+            NSAttributedString(string: "Email", attributes: [.foregroundColor: color])
+        passwordTextField.attributedPlaceholder =
+            NSAttributedString(string: "Password", attributes: [.foregroundColor: color])
     }
 
-    private static func circleButton(systemName: String) -> UIButton {
-        let btn = UIButton(type: .system)
-        btn.backgroundColor = .white
-        btn.layer.cornerRadius = 22
-        btn.setImage(UIImage(systemName: systemName), for: .normal)
-        btn.tintColor = .black
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        return btn
+    private func leftIcon(_ system: String) -> UIView {
+        let v = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 50))
+        let img = UIImageView(frame: CGRect(x: 12, y: 15, width: 20, height: 20))
+        img.image = UIImage(systemName: system)
+        img.tintColor = .white
+        v.addSubview(img)
+        return v
+    }
+
+    private static func circleButton(image: String) -> UIButton {
+        let b = UIButton(type: .system)
+        b.backgroundColor = .white
+        b.layer.cornerRadius = 22
+        b.setImage(UIImage(systemName: image), for: .normal)
+        b.tintColor = .black
+        b.translatesAutoresizingMaskIntoConstraints = false
+        return b
+    }
+
+    private static func dividerLine() -> UIView {
+        let v = UIView()
+        v.backgroundColor = UIColor.white.withAlphaComponent(0.4)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
     }
 }
 
