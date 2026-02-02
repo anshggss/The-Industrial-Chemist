@@ -105,7 +105,7 @@ extension OnboardingPageViewController: OnboardingNavigationDelegate {
     func finishOnboarding() {
         UserDefaults.standard.set(true, forKey: "seenOnboarding")
 
-        let main = LogInViewController(nibName: "LogIn", bundle: nil)
+        let main = Login2ViewController()
 
         setRootViewController(main, animated: false)
     }

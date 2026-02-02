@@ -1,4 +1,4 @@
-/*import UIKit
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -13,19 +13,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
 
-        // Check onboarding status
+         
         let hasSeenOnboarding = UserDefaults.standard.bool(forKey: "seenOnboarding")
 
         let rootViewController: UIViewController
 
 //        if hasSeenOnboarding {
 //            // Go directly to Login
-//            rootViewController = LogInViewController(
-//                nibName: "LogIn",
-//                bundle: nil
-//            )
+//            rootViewController = Login2ViewController()
 //        } else {
-            // Show onboarding flow
+             
             rootViewController = OnboardingPageViewController(
                 transitionStyle: .scroll,
                 navigationOrientation: .horizontal,
@@ -38,28 +35,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
     }
 }
-*/
-import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
-    var window: UIWindow?
-
-    func scene(
-        _ scene: UIScene,
-        willConnectTo session: UISceneSession,
-        options connectionOptions: UIScene.ConnectionOptions
-    ) {
-
-        guard let windowScene = (scene as? UIWindowScene) else { return }
-
-        let window = UIWindow(windowScene: windowScene)
-
-        let loginVC = Login2ViewController()
-
-        window.rootViewController = loginVC
-        self.window = window
-        window.makeKeyAndVisible()
-    }
-}
+//import UIKit
+//
+//class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+//
+//    var window: UIWindow?
+//
+//    func scene(
+//        _ scene: UIScene,
+//        willConnectTo session: UISceneSession,
+//        options connectionOptions: UIScene.ConnectionOptions
+//    ) {
+//
+//        guard let windowScene = (scene as? UIWindowScene) else { return }
+//
+//        let window = UIWindow(windowScene: windowScene)
+//
+//        let loginVC = Login2ViewController()
+//
+//        window.rootViewController = loginVC
+//        self.window = window
+//        window.makeKeyAndVisible()
+//    }
+//}
 

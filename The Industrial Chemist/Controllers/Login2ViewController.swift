@@ -2,6 +2,8 @@ import UIKit
 
 class Login2ViewController: UIViewController {
 
+    // MARK: - UI Elements
+
     private let topImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = UIImage(named: "login")
@@ -28,9 +30,9 @@ class Login2ViewController: UIViewController {
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
+
     private let emailTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "Email"
         tf.textColor = .white
         tf.backgroundColor = UIColor.white.withAlphaComponent(0.15)
         tf.layer.cornerRadius = 16
@@ -42,7 +44,6 @@ class Login2ViewController: UIViewController {
 
     private let passwordTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "Password"
         tf.textColor = .white
         tf.backgroundColor = UIColor.white.withAlphaComponent(0.15)
         tf.layer.cornerRadius = 16
@@ -74,7 +75,6 @@ class Login2ViewController: UIViewController {
     private let appleButton = Login2ViewController.circleButton(image: "applelogo")
     private let googleButton = Login2ViewController.circleButton(image: "g.circle.fill")
 
-    // MARK: - Divider
     private let leftLine = Login2ViewController.dividerLine()
     private let rightLine = Login2ViewController.dividerLine()
 
@@ -96,13 +96,18 @@ class Login2ViewController: UIViewController {
         return l
     }()
 
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         setupUI()
         setupIcons()
         setupPlaceholderColor()
+        setupActions()
     }
+
+    // MARK: - Setup UI
 
     private func setupUI() {
 
@@ -110,60 +115,46 @@ class Login2ViewController: UIViewController {
         view.addSubview(cardView)
 
         [
-            titleLabel,
-            emailTextField,
-            passwordTextField,
-            forgotButton,
-            signInButton,
-            appleButton,
-            googleButton,
-            leftLine,
-            orLabel,
-            rightLine,
+            titleLabel, emailTextField, passwordTextField,
+            forgotButton, signInButton,
+            appleButton, googleButton,
+            leftLine, orLabel, rightLine,
             createAccountLabel
         ].forEach { cardView.addSubview($0) }
 
         NSLayoutConstraint.activate([
 
-            // Top image
             topImageView.topAnchor.constraint(equalTo: view.topAnchor),
             topImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             topImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             topImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.45),
 
-            // Card
             cardView.topAnchor.constraint(equalTo: topImageView.bottomAnchor, constant: -32),
             cardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
-            // Title
             titleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 40),
             titleLabel.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
 
-            // Email
             emailTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 30),
             emailTextField.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 20),
             emailTextField.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -20),
             emailTextField.heightAnchor.constraint(equalToConstant: 50),
 
-            // Password
             passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 16),
             passwordTextField.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
             passwordTextField.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
 
-            // Forgot
             forgotButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 8),
             forgotButton.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
 
-            // Sign In
             signInButton.topAnchor.constraint(equalTo: forgotButton.bottomAnchor, constant: 20),
             signInButton.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
             signInButton.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
             signInButton.heightAnchor.constraint(equalToConstant: 50),
 
-            // Social
             appleButton.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 24),
             appleButton.trailingAnchor.constraint(equalTo: cardView.centerXAnchor, constant: -12),
             appleButton.widthAnchor.constraint(equalToConstant: 44),
@@ -174,7 +165,6 @@ class Login2ViewController: UIViewController {
             googleButton.widthAnchor.constraint(equalToConstant: 44),
             googleButton.heightAnchor.constraint(equalToConstant: 44),
 
-            // OR Divider
             orLabel.topAnchor.constraint(equalTo: appleButton.bottomAnchor, constant: 20),
             orLabel.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
 
@@ -188,7 +178,6 @@ class Login2ViewController: UIViewController {
             rightLine.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -40),
             rightLine.heightAnchor.constraint(equalToConstant: 1),
 
-            // Create Account
             createAccountLabel.topAnchor.constraint(equalTo: orLabel.bottomAnchor, constant: 16),
             createAccountLabel.centerXAnchor.constraint(equalTo: cardView.centerXAnchor)
         ])
@@ -204,11 +193,66 @@ class Login2ViewController: UIViewController {
 
     private func setupPlaceholderColor() {
         let color = UIColor.white.withAlphaComponent(0.6)
-        emailTextField.attributedPlaceholder =
-            NSAttributedString(string: "Email", attributes: [.foregroundColor: color])
-        passwordTextField.attributedPlaceholder =
-            NSAttributedString(string: "Password", attributes: [.foregroundColor: color])
+        emailTextField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [.foregroundColor: color])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor: color])
     }
+
+    private func setupActions() {
+        signInButton.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
+        forgotButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(createAccountTapped))
+        createAccountLabel.isUserInteractionEnabled = true
+        createAccountLabel.addGestureRecognizer(tap)
+    }
+
+    // MARK: - Actions
+
+    @objc private func signInTapped() {
+        guard let email = emailTextField.text,
+              let password = passwordTextField.text,
+              !email.isEmpty,
+              !password.isEmpty else {
+            print("Email or Password empty")
+            return
+        }
+
+        print("Email: \(email), Password: \(password)")
+
+        let tabBarVC = TabBarViewController()
+        tabBarVC.modalPresentationStyle = .fullScreen
+        present(tabBarVC, animated: true)
+    }
+
+    @objc private func forgotPasswordTapped() {
+        let storyboard = UIStoryboard(name: "Forgot Password", bundle: nil)
+
+        guard let forgotVC = storyboard.instantiateViewController(
+            withIdentifier: "ForgotPasswordViewController"
+        ) as? ForgotPasswordViewController else {
+            print("⚠️ Could not find ForgotPasswordViewController")
+            return
+        }
+
+        forgotVC.modalPresentationStyle = .fullScreen
+        present(forgotVC, animated: true)
+    }
+
+    @objc private func createAccountTapped() {
+        let storyboard = UIStoryboard(name: "Sign-Up", bundle: nil)
+
+        guard let signUpVC = storyboard.instantiateViewController(
+            withIdentifier: "SignUpViewController"
+        ) as? SignUpViewController else {
+            print("⚠️ Could not find SignUpViewController")
+            return
+        }
+
+        signUpVC.modalPresentationStyle = .fullScreen
+        present(signUpVC, animated: true)
+    }
+
+    // MARK: - Helpers
 
     private func leftIcon(_ system: String) -> UIView {
         let v = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 50))
@@ -235,5 +279,9 @@ class Login2ViewController: UIViewController {
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }
-}
 
+    // Dismiss keyboard on tap outside
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+}
