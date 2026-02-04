@@ -1,4 +1,6 @@
 import UIKit
+import FirebaseAuth
+
 
 class SettingsViewController: UIViewController {
 
@@ -75,6 +77,10 @@ class SettingsViewController: UIViewController {
         let restoreButton = makeOutlinedButton(title: "RESTORE SUBSCRIPTION")
         let signOutButton = makeOutlinedButton(title: "SIGN OUT")
 
+        // ADD TARGETS
+        restoreButton.addTarget(self, action: #selector(handleRestorePurchase), for: .touchUpInside)
+        signOutButton.addTarget(self, action: #selector(handleSignOut), for: .touchUpInside)
+
         container.addSubview(restoreButton)
         container.addSubview(signOutButton)
 
@@ -106,6 +112,42 @@ class SettingsViewController: UIViewController {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         return button
     }
+    @objc private func handleSignOut() {
+        let alert = UIAlertController(title: "Sign Out",
+                                      message: "Are you sure you want to sign out?",
+                                      preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        alert.addAction(UIAlertAction(title: "Sign Out", style: .destructive) { _ in
+            do {
+                try Auth.auth().signOut()
+
+                // Go back to Login Screen
+                let loginVC = Login2ViewController() // change if using storyboard ID
+                loginVC.modalPresentationStyle = .fullScreen
+                self.present(loginVC, animated: true)
+
+            } catch {
+                self.showAlert(message: error.localizedDescription)
+            }
+        })
+
+        present(alert, animated: true)
+    }
+    @objc private func handleRestorePurchase() {
+        showAlert(message: "Restore purchases coming soon.")
+    }
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Error",
+                                      message: message,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+
+
+
 }
 
 // MARK: - Table Delegate & Data Source

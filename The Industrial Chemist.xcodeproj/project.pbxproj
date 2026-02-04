@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0F94D98C2EC1C01F004CD94C /* README.MD in Sources */ = {isa = PBXBuildFile; fileRef = 0F94D94E2EC1C01F004CD94C /* README.MD */; };
 		0FB7D5E92ECD9A0400361C2C /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 0FB7D5E82ECD9A0400361C2C /* FSCalendar */; };
+		36C20D8F2F3327730007C3B2 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 36C20D8E2F3327730007C3B2 /* FirebaseAuth */; };
+		36C20D912F3327730007C3B2 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 36C20D902F3327730007C3B2 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FB7D5E92ECD9A0400361C2C /* FSCalendar in Frameworks */,
+				36C20D8F2F3327730007C3B2 /* FirebaseAuth in Frameworks */,
+				36C20D912F3327730007C3B2 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +91,8 @@
 			name = "The Industrial Chemist";
 			packageProductDependencies = (
 				0FB7D5E82ECD9A0400361C2C /* FSCalendar */,
+				36C20D8E2F3327730007C3B2 /* FirebaseAuth */,
+				36C20D902F3327730007C3B2 /* FirebaseFirestore */,
 			);
 			productName = "The Industrial Chemist";
 			productReference = 366FB7872EBAEF5500BF1653 /* The Industrial Chemist.app */;
@@ -118,6 +124,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				0FB7D5E72ECD9A0400361C2C /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				36C20D8D2F3327730007C3B2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 366FB7882EBAEF5500BF1653 /* Products */;
@@ -362,6 +369,14 @@
 				minimumVersion = 2.8.4;
 			};
 		};
+		36C20D8D2F3327730007C3B2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.9.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -369,6 +384,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0FB7D5E72ECD9A0400361C2C /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
+		};
+		36C20D8E2F3327730007C3B2 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36C20D8D2F3327730007C3B2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		36C20D902F3327730007C3B2 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36C20D8D2F3327730007C3B2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

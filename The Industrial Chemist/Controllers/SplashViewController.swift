@@ -1,3 +1,11 @@
+//
+//  SplashViewController.swift
+//  The Industrial Chemist
+//
+//  Created by admin25 on 04/02/26.
+//
+
+
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore

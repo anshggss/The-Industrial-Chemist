@@ -36,7 +36,7 @@ class ChangePasswordViewController: UIViewController {
         
         
         
-        let logIn = LogInViewController(nibName: "LogIn", bundle: nil)
+        let logIn = Login2ViewController()
         logIn.modalPresentationStyle = .fullScreen
         self.present(logIn, animated: false, completion: nil)
     }

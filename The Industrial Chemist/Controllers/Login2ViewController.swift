@@ -1,6 +1,11 @@
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class Login2ViewController: UIViewController {
+
+    // MARK: - Loading View
+    private var loadingView: UIView?
 
     // MARK: - UI Elements
 
@@ -74,7 +79,6 @@ class Login2ViewController: UIViewController {
 
     private let appleButton = Login2ViewController.circleButton(image: "applelogo")
     private let googleButton = Login2ViewController.circleButton(image: "g.circle.fill")
-
     private let leftLine = Login2ViewController.dividerLine()
     private let rightLine = Login2ViewController.dividerLine()
 
@@ -107,8 +111,178 @@ class Login2ViewController: UIViewController {
         setupActions()
     }
 
-    // MARK: - Setup UI
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
+        // Check if a Firebase session exists
+        if let user = Auth.auth().currentUser {
+            // 1. Show loading so the user knows something is happening
+            showLoading()
+            
+            // 2. Fetch the Firestore data to populate UserManager
+            fetchUserData(uid: user.uid)
+        }
+    }
+
+    // MARK: - Loading Functions
+
+    private func showLoading() {
+        let bgView = UIView(frame: view.bounds)
+        bgView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.center = bgView.center
+        spinner.startAnimating()
+
+        bgView.addSubview(spinner)
+        view.addSubview(bgView)
+
+        loadingView = bgView
+        view.isUserInteractionEnabled = false
+    }
+
+    private func hideLoading() {
+        loadingView?.removeFromSuperview()
+        view.isUserInteractionEnabled = true
+    }
+    
+    private func fetchUserData(uid: String) {
+        let db = Firestore.firestore()
+
+        db.collection("users").document(uid).getDocument { [weak self] snapshot, error in
+            guard let self = self else { return }
+            self.hideLoading()
+
+            if let error = error {
+                self.showAlert(message: error.localizedDescription)
+                return
+            }
+
+            guard let data = snapshot?.data() else {
+                self.showAlert(message: "User data not found")
+                return
+            }
+
+            let user = AppUser(
+                uid: uid,
+                name: data["name"] as? String ?? "",
+                email: data["email"] as? String ?? "",
+                phone: data["phone"] as? String ?? "",
+                experience: data["experience"] as? Int ?? 0
+            )
+
+            UserManager.shared.currentUser = user
+
+            let tabBarVC = TabBarViewController()
+            tabBarVC.modalPresentationStyle = .fullScreen
+            self.present(tabBarVC, animated: true)
+        }
+    }
+
+    // MARK: - Actions
+
+    @objc private func signInTapped() {
+        guard let email = emailTextField.text,
+              let password = passwordTextField.text,
+              !email.isEmpty,
+              !password.isEmpty else {
+            showAlert(message: "Please enter email and password")
+            return
+        }
+
+        showLoading()
+
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
+            guard let self = self else { return }
+
+            if let error = error {
+                self.hideLoading()
+                self.showAlert(message: error.localizedDescription)
+                return
+            }
+
+            guard let uid = result?.user.uid else {
+                self.hideLoading()
+                return
+            }
+
+            // ✅ Fetch Firestore user data (this will hide loading & navigate)
+            self.fetchUserData(uid: uid)
+        }
+    }
+
+    @objc private func forgotPasswordTapped() {
+        let storyboard = UIStoryboard(name: "Forgot Password", bundle: nil)
+        guard let forgotVC = storyboard.instantiateViewController(withIdentifier: "ForgotPasswordViewController") as? ForgotPasswordViewController else { return }
+        forgotVC.modalPresentationStyle = .fullScreen
+        present(forgotVC, animated: true)
+    }
+
+    @objc private func createAccountTapped() {
+        let storyboard = UIStoryboard(name: "Sign-Up", bundle: nil)
+        guard let signUpVC = storyboard.instantiateViewController(withIdentifier: "SignUpViewController") as? SignUpViewController else { return }
+        signUpVC.modalPresentationStyle = .fullScreen
+        present(signUpVC, animated: true)
+    }
+
+    // MARK: - UI Setup (same as before)
+
+    private func setupIcons() {
+        emailTextField.leftView = leftIcon("envelope")
+        emailTextField.leftViewMode = .always
+        passwordTextField.leftView = leftIcon("lock")
+        passwordTextField.leftViewMode = .always
+    }
+
+    private func setupPlaceholderColor() {
+        let color = UIColor.white.withAlphaComponent(0.6)
+        emailTextField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [.foregroundColor: color])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor: color])
+    }
+
+    private func setupActions() {
+        signInButton.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
+        forgotButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(createAccountTapped))
+        createAccountLabel.isUserInteractionEnabled = true
+        createAccountLabel.addGestureRecognizer(tap)
+    }
+
+    private func leftIcon(_ system: String) -> UIView {
+        let v = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 50))
+        let img = UIImageView(frame: CGRect(x: 12, y: 15, width: 20, height: 20))
+        img.image = UIImage(systemName: system)
+        img.tintColor = .white
+        v.addSubview(img)
+        return v
+    }
+
+    private static func circleButton(image: String) -> UIButton {
+        let b = UIButton(type: .system)
+        b.backgroundColor = .white
+        b.layer.cornerRadius = 22
+        b.setImage(UIImage(systemName: image), for: .normal)
+        b.tintColor = .black
+        b.translatesAutoresizingMaskIntoConstraints = false
+        return b
+    }
+
+    private static func dividerLine() -> UIView {
+        let v = UIView()
+        v.backgroundColor = UIColor.white.withAlphaComponent(0.4)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+    }
+
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Login Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
     private func setupUI() {
 
         view.addSubview(topImageView)
@@ -183,105 +357,4 @@ class Login2ViewController: UIViewController {
         ])
     }
 
-    private func setupIcons() {
-        emailTextField.leftView = leftIcon("envelope")
-        emailTextField.leftViewMode = .always
-
-        passwordTextField.leftView = leftIcon("lock")
-        passwordTextField.leftViewMode = .always
-    }
-
-    private func setupPlaceholderColor() {
-        let color = UIColor.white.withAlphaComponent(0.6)
-        emailTextField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [.foregroundColor: color])
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [.foregroundColor: color])
-    }
-
-    private func setupActions() {
-        signInButton.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
-        forgotButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
-
-        let tap = UITapGestureRecognizer(target: self, action: #selector(createAccountTapped))
-        createAccountLabel.isUserInteractionEnabled = true
-        createAccountLabel.addGestureRecognizer(tap)
-    }
-
-    // MARK: - Actions
-
-    @objc private func signInTapped() {
-        guard let email = emailTextField.text,
-              let password = passwordTextField.text,
-              !email.isEmpty,
-              !password.isEmpty else {
-            print("Email or Password empty")
-            return
-        }
-
-        print("Email: \(email), Password: \(password)")
-
-        let tabBarVC = TabBarViewController()
-        tabBarVC.modalPresentationStyle = .fullScreen
-        present(tabBarVC, animated: true)
-    }
-
-    @objc private func forgotPasswordTapped() {
-        let storyboard = UIStoryboard(name: "Forgot Password", bundle: nil)
-
-        guard let forgotVC = storyboard.instantiateViewController(
-            withIdentifier: "ForgotPasswordViewController"
-        ) as? ForgotPasswordViewController else {
-            print("⚠️ Could not find ForgotPasswordViewController")
-            return
-        }
-
-        forgotVC.modalPresentationStyle = .fullScreen
-        present(forgotVC, animated: true)
-    }
-
-    @objc private func createAccountTapped() {
-        let storyboard = UIStoryboard(name: "Sign-Up", bundle: nil)
-
-        guard let signUpVC = storyboard.instantiateViewController(
-            withIdentifier: "SignUpViewController"
-        ) as? SignUpViewController else {
-            print("⚠️ Could not find SignUpViewController")
-            return
-        }
-
-        signUpVC.modalPresentationStyle = .fullScreen
-        present(signUpVC, animated: true)
-    }
-
-    // MARK: - Helpers
-
-    private func leftIcon(_ system: String) -> UIView {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 50))
-        let img = UIImageView(frame: CGRect(x: 12, y: 15, width: 20, height: 20))
-        img.image = UIImage(systemName: system)
-        img.tintColor = .white
-        v.addSubview(img)
-        return v
-    }
-
-    private static func circleButton(image: String) -> UIButton {
-        let b = UIButton(type: .system)
-        b.backgroundColor = .white
-        b.layer.cornerRadius = 22
-        b.setImage(UIImage(systemName: image), for: .normal)
-        b.tintColor = .black
-        b.translatesAutoresizingMaskIntoConstraints = false
-        return b
-    }
-
-    private static func dividerLine() -> UIView {
-        let v = UIView()
-        v.backgroundColor = UIColor.white.withAlphaComponent(0.4)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }
-
-    // Dismiss keyboard on tap outside
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        view.endEditing(true)
-    }
 }

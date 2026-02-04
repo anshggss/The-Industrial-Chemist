@@ -7,12 +7,20 @@ class OnboardingPageViewController: UIPageViewController {
         return [
             OnboardingOneViewController(nibName: "OnboardingOne", bundle: nil),
             OnboardingTwoViewController(nibName: "OnboardingTwo", bundle: nil),
-            OnboardingThreeViewController(nibName: "OnboardingThree", bundle: nil), // last page,
+            OnboardingThreeViewController(nibName: "OnboardingThree", bundle: nil),
             OnboardingFourViewController(nibName: "OnboardingFour", bundle: nil)
         ]
     }()
 
     private let pageControl = UIPageControl()
+
+    private let skipButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Skip", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,12 +37,13 @@ class OnboardingPageViewController: UIPageViewController {
         }
 
         setupPageControl()
+        setupSkipButton()
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        // Hide ONLY the system UIPageControl (the three dots)
+        // Hide ONLY the system UIPageControl (default dots)
         for subview in view.subviews {
             if NSStringFromClass(type(of: subview)) == "UIPageControl" {
                 subview.isHidden = true
@@ -42,7 +51,7 @@ class OnboardingPageViewController: UIPageViewController {
         }
     }
 
-
+    // MARK: - Page Control Setup
     private func setupPageControl() {
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = 0
@@ -54,6 +63,22 @@ class OnboardingPageViewController: UIPageViewController {
             pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+    }
+
+    // MARK: - Skip Button Setup
+    private func setupSkipButton() {
+        view.addSubview(skipButton)
+
+        NSLayoutConstraint.activate([
+            skipButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            skipButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
+
+        skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
+    }
+
+    @objc private func skipTapped() {
+        finishOnboarding()
     }
 }
 
@@ -82,7 +107,11 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource, UIPageVi
         guard completed,
               let current = viewControllers?.first,
               let idx = pages.firstIndex(where: { $0 === current }) else { return }
+
         pageControl.currentPage = idx
+
+        // Hide skip button on last page (optional UX improvement)
+        skipButton.isHidden = (idx == pages.count - 1)
     }
 }
 
@@ -90,7 +119,6 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource, UIPageVi
 // MARK: - OnboardingNavigationDelegate
 extension OnboardingPageViewController: OnboardingNavigationDelegate {
 
-    // FIXED: use `pages`, not `orderedPages`
     func goToNextPage() {
         guard let currentVC = viewControllers?.first,
               let currentIndex = pages.firstIndex(where: { $0 === currentVC }) else { return }
@@ -100,13 +128,14 @@ extension OnboardingPageViewController: OnboardingNavigationDelegate {
 
         setViewControllers([pages[nextIndex]], direction: .forward, animated: true)
         pageControl.currentPage = nextIndex
+
+        skipButton.isHidden = (nextIndex == pages.count - 1)
     }
 
     func finishOnboarding() {
         UserDefaults.standard.set(true, forKey: "seenOnboarding")
 
         let main = Login2ViewController()
-
         setRootViewController(main, animated: false)
     }
 

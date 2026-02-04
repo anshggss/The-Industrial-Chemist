@@ -11,6 +11,7 @@
             <connections>
                 <outlet property="chlorinePrepButton" destination="uJB-k1-SAl" id="U8a-MH-cwr"/>
                 <outlet property="continueLearning" destination="vMY-dH-M7J" id="RZH-sT-s7O"/>
+                <outlet property="helloUserLabel" destination="Gbj-GK-9TZ" id="gqd-6p-loe"/>
                 <outlet property="hydrogenPrepButton" destination="g6z-it-hfl" id="rie-0K-kgS"/>
                 <outlet property="oxygenPrepButton" destination="IJH-73-ala" id="LLX-N9-WRd"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

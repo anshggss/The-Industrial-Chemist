@@ -11,13 +11,24 @@ class HomeScreen2ViewController: UIViewController {
 
     @IBOutlet weak var continueLearning: UIView!
 
+    @IBOutlet weak var helloUserLabel: UILabel!
+    
     @IBOutlet weak var chlorinePrepButton: UIButton!
     @IBOutlet weak var hydrogenPrepButton: UIButton!
     @IBOutlet weak var oxygenPrepButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTapGesture()
+        
+
     }
+    override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+
+            if let user = UserManager.shared.currentUser {
+                helloUserLabel.text = "Hello, \(user.name)!"
+            }
+        }
     
     let experiment = Experiment(
         title: "Ammonia Process",

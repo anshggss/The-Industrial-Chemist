@@ -20,7 +20,10 @@ class Profile2ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if let user = UserManager.shared.currentUser {
+            usernameLabel.text = "\(user.name)"
+        }
+        
         // Do any additional setup after loading the view.
     }
 
