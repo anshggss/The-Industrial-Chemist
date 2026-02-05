@@ -63,7 +63,7 @@ class TabBarViewController: UITabBarController {
     // MARK: - View Controllers
     private func setupViewControllers() {
 
-        let homeVC = HomeScreen2ViewController(nibName: "HomeScreen2", bundle: nil)
+        let homeVC = HomeScreenNativeViewController(nibName: "HomeScreenNative", bundle: nil)
 
         let modulesStoryboard = UIStoryboard(name: "Modules", bundle: nil)
         let learnVC = modulesStoryboard.instantiateInitialViewController()!

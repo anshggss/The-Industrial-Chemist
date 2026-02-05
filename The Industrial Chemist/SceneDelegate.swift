@@ -15,12 +15,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // 2. Initialize the window
         let window = UIWindow(windowScene: windowScene)
+//        let homeVC = HomeScreenNativeViewController(nibName: "HomeScreenNative", bundle: nil)
         
         // 3. Set the initial root to SplashViewController.
         // This prevents the "Login Screen Flicker" because the Splash screen
         // will stay visible until the logic decides where to go next.
-        window.rootViewController = SplashViewController()
         
+        
+//        let navController = UINavigationController(rootViewController: homeVC)
+//        navController.navigationBar.prefersLargeTitles = true
+        window.rootViewController = /*navController*/ SplashViewController()
         self.window = window
         window.makeKeyAndVisible()
     }
