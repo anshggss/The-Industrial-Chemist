@@ -1,13 +1,13 @@
 //
-//  LeaderboardWeeklyViewController.swift
+//  HomeScreenNativeViewController.swift
 //  The Industrial Chemist
 //
-//  Created by admin25 on 10/11/25.
+//  Created by admin25 on 04/02/26.
 //
 
 import UIKit
 
-class LeaderboardWeeklyViewController: UIViewController {
+class HomeScreenNativeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
