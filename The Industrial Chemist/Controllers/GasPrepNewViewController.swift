@@ -174,11 +174,12 @@ class GasPrepNewViewController: UIViewController, UITableViewDelegate, UITableVi
 
     // MARK: - Table Data
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 2 }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 4 }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 80 }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        indexPath.row == 0 ? openHaber() : openOstwald()
+        if indexPath.row == 0 { openHaber() }
+        else if indexPath.row == 1 {openOstwald()}
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -188,8 +189,12 @@ class GasPrepNewViewController: UIViewController, UITableViewDelegate, UITableVi
 
         if indexPath.row == 0 {
             cell.configure(title: "Haber Bosch Process", time: "20 mins", status: "In Progress")
-        } else {
+        } else if indexPath.row == 1 {
             cell.configure(title: "Ostwald Process", time: "25 mins", status: "Locked")
+        } else if indexPath.row == 2 {
+            cell.configure(title: "Nitric Acid Preparation", time: "20 mins", status: "Locked")
+        } else {
+            cell.configure(title: "Nitric Acid Preparation", time: "20 mins", status: "Locked")
         }
 
         return cell

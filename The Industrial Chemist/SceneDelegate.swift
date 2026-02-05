@@ -25,7 +25,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let navController = UINavigationController(rootViewController: homeVC)
 //        navController.navigationBar.prefersLargeTitles = true
         window.rootViewController = /*navController*/ SplashViewController()
-        print("Created Splash View Controller")
         self.window = window
         window.makeKeyAndVisible()
     }

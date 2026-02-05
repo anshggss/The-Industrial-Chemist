@@ -2,30 +2,50 @@ import UIKit
 
 class ComponentsTableViewController: UITableViewController {
 
-    private let data: [(title: String, subtitle: String)] = [
-        ("Reactors", "High-pressure chemical reactions"),
-        ("Distillation columns", "Precise mixture separation"),
-        ("Heat exchangers", "Critical temperature control"),
-        ("Mixers & agitators", "Blending raw materials")
+    private let data: [(title: String, subtitle: String, status: ComponentStatus)] = [
+        ("Reactors", "High-pressure chemical reactions", .completed),
+        ("Distillation columns", "Precise mixture separation", .active),
+        ("Heat exchangers", "Critical temperature control", .pending),
+        ("Mixers & agitators", "Blending raw materials", .pending)
     ]
-
+    
+    enum ComponentStatus {
+        case active
+        case completed
+        case pending
+    }
+    
+    private let experiment: Experiment?
     private var tableHeightConstraint: NSLayoutConstraint?
+
+    // MARK: - Init
+    
+    init(experiment: Experiment? = nil) {
+        self.experiment = experiment
+        super.init(style: .plain)
+    }
+    
+    required init?(coder: NSCoder) {
+        self.experiment = nil
+        super.init(coder: coder)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.register(ComponentCell.self, forCellReuseIdentifier: "Cell")
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 44
+        tableView.estimatedRowHeight = 60
         tableView.isScrollEnabled = false
         tableView.tableFooterView = UIView()
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
 
         tableView.contentInset = .zero
         if #available(iOS 11.0, *) {
             tableView.contentInsetAdjustmentBehavior = .never
         }
 
-        // 🔹 constrain TABLE VIEW, not VC view
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: 1)
         tableHeightConstraint?.priority = .required
@@ -41,19 +61,12 @@ class ComponentsTableViewController: UITableViewController {
         data.count
     }
 
-    override func tableView(
-        _ tableView: UITableView,
-        cellForRowAt indexPath: IndexPath
-    ) -> UITableViewCell {
-
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ComponentCell
         let item = data[indexPath.row]
-
-        cell.textLabel?.text = item.title
-        cell.detailTextLabel?.text = item.subtitle
-        cell.detailTextLabel?.numberOfLines = 0
-        cell.accessoryType = .detailButton
-
+        
+        cell.configure(title: item.title, subtitle: item.subtitle, status: item.status)
+        
         return cell
     }
 }

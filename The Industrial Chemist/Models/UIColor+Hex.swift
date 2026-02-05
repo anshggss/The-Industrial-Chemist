@@ -9,7 +9,7 @@
 
     extension UIColor {
         convenience init(hex: String) {
-            var hex = hex.replacingOccurrences(of: "#", with: "")
+            let hex = hex.replacingOccurrences(of: "#", with: "")
             var rgb: UInt64 = 0
             Scanner(string: hex).scanHexInt64(&rgb)
 

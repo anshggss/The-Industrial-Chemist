@@ -88,7 +88,7 @@ class TestViewController: UIViewController {
                 arView.renderOptions.insert(.disableDepthOfField)
                 
             } catch {
-                print("❌ Failed to load model: \(error)")
+                print("Failed to load model: \(error)")
             }
         }
 
