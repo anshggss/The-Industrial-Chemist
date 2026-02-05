@@ -45,7 +45,7 @@ class ModuleViewController: UIViewController {
     // MARK: - Navigation
 
     @objc private func gasPrepViewTapped() {
-        let vc = GasPrepNewViewController(nibName: "GasPrepNew", bundle: nil)
+        let vc = GasPrepViewController(nibName: "GasPrep", bundle: nil)
         navigationController?.pushViewController(vc, animated: true)
     }
 
