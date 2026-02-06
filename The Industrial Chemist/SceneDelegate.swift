@@ -1,5 +1,6 @@
 import UIKit
 import FirebaseAuth
+import GoogleSignIn  // ADD THIS
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -27,6 +28,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = /*navController*/ SplashViewController()
         self.window = window
         window.makeKeyAndVisible()
+    }
+    
+    // ADD THIS METHOD - Required for Google Sign-In to work!
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let url = URLContexts.first?.url else { return }
+        GIDSignIn.sharedInstance.handle(url)
     }
 
     /// Call this method from anywhere (Login, Logout, Onboarding) to swap the root view controller smoothly.

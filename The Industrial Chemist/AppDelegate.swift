@@ -1,5 +1,6 @@
 import UIKit
 import FirebaseCore
+import GoogleSignIn  // ADD THIS
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -10,6 +11,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Configures FireBase for application
         FirebaseApp.configure()
         return true
+    }
+    
+    // ADD THIS METHOD - Handles Google Sign-In callback
+    func application(_ app: UIApplication,
+                     open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        return GIDSignIn.sharedInstance.handle(url)
     }
 
     // MARK: UISceneSession Lifecycle

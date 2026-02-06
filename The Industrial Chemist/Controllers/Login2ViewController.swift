@@ -1,6 +1,8 @@
 import UIKit
 import FirebaseAuth
+import FirebaseCore
 import FirebaseFirestore
+import GoogleSignIn
 
 class Login2ViewController: UIViewController {
 
@@ -77,10 +79,41 @@ class Login2ViewController: UIViewController {
         return b
     }()
 
-    private let appleButton = Login2ViewController.circleButton(image: "applelogo")
-    private let googleButton = Login2ViewController.circleButton(image: "g.circle.fill")
-    private let leftLine = Login2ViewController.dividerLine()
-    private let rightLine = Login2ViewController.dividerLine()
+    // Apple button - back in!
+    private let appleButton: UIButton = {
+        let b = UIButton(type: .system)
+        b.backgroundColor = .white
+        b.layer.cornerRadius = 22
+        b.setImage(UIImage(systemName: "applelogo"), for: .normal)
+        b.tintColor = .black
+        b.translatesAutoresizingMaskIntoConstraints = false
+        return b
+    }()
+    
+    // Google button
+    private let googleButton: UIButton = {
+        let b = UIButton(type: .system)
+        b.backgroundColor = .white
+        b.layer.cornerRadius = 22
+        b.setImage(UIImage(systemName: "g.circle.fill"), for: .normal)
+        b.tintColor = .black
+        b.translatesAutoresizingMaskIntoConstraints = false
+        return b
+    }()
+    
+    private let leftLine: UIView = {
+        let v = UIView()
+        v.backgroundColor = UIColor.white.withAlphaComponent(0.4)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    private let rightLine: UIView = {
+        let v = UIView()
+        v.backgroundColor = UIColor.white.withAlphaComponent(0.4)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
 
     private let orLabel: UILabel = {
         let l = UILabel()
@@ -114,12 +147,8 @@ class Login2ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        // Check if a Firebase session exists
         if let user = Auth.auth().currentUser {
-            // 1. Show loading so the user knows something is happening
             showLoading()
-            
-            // 2. Fetch the Firestore data to populate UserManager
             fetchUserData(uid: user.uid)
         }
     }
@@ -172,11 +201,76 @@ class Login2ViewController: UIViewController {
             )
 
             UserManager.shared.currentUser = user
-
-            let tabBarVC = TabBarViewController()
-            tabBarVC.modalPresentationStyle = .fullScreen
-            self.present(tabBarVC, animated: true)
+            self.navigateToHome()
         }
+    }
+    
+    // MARK: - Create or Fetch User for Social Login
+    
+    private func handleSocialLogin(uid: String, email: String?, name: String?) {
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(uid)
+        
+        userRef.getDocument { [weak self] snapshot, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                self.hideLoading()
+                self.showAlert(message: error.localizedDescription)
+                return
+            }
+            
+            if let data = snapshot?.data(), snapshot?.exists == true {
+                // User exists
+                let user = AppUser(
+                    uid: uid,
+                    name: data["name"] as? String ?? "",
+                    email: data["email"] as? String ?? "",
+                    phone: data["phone"] as? String ?? "",
+                    experience: data["experience"] as? Int ?? 0
+                )
+                
+                UserManager.shared.currentUser = user
+                self.hideLoading()
+                self.navigateToHome()
+            } else {
+                // New user
+                let userData: [String: Any] = [
+                    "uid": uid,
+                    "name": name ?? "",
+                    "email": email ?? "",
+                    "phone": "",
+                    "experience": 0,
+                    "createdAt": FieldValue.serverTimestamp()
+                ]
+                
+                userRef.setData(userData) { error in
+                    self.hideLoading()
+                    
+                    if let error = error {
+                        self.showAlert(message: error.localizedDescription)
+                        return
+                    }
+                    
+                    let user = AppUser(
+                        uid: uid,
+                        name: name ?? "",
+                        email: email ?? "",
+                        phone: "",
+                        experience: 0
+                    )
+                    
+                    UserManager.shared.currentUser = user
+                    self.navigateToHome()
+                }
+            }
+        }
+    }
+    
+    private func navigateToHome() {
+        let tabBarVC = TabBarViewController()
+        tabBarVC.modalPresentationStyle = .fullScreen
+        present(tabBarVC, animated: true)
     }
 
     // MARK: - Actions
@@ -206,9 +300,75 @@ class Login2ViewController: UIViewController {
                 return
             }
 
-            // ✅ Fetch Firestore user data (this will hide loading & navigate)
             self.fetchUserData(uid: uid)
         }
+    }
+    
+    // MARK: - Google Sign In
+    
+    @objc private func googleSignInTapped() {
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            showAlert(message: "Firebase configuration error")
+            return
+        }
+        
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+        
+        showLoading()
+        
+        GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] result, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                self.hideLoading()
+                self.showAlert(message: error.localizedDescription)
+                return
+            }
+            
+            guard let user = result?.user,
+                  let idToken = user.idToken?.tokenString else {
+                self.hideLoading()
+                self.showAlert(message: "Failed to get Google credentials")
+                return
+            }
+            
+            let credential = GoogleAuthProvider.credential(
+                withIDToken: idToken,
+                accessToken: user.accessToken.tokenString
+            )
+            
+            Auth.auth().signIn(with: credential) { authResult, error in
+                if let error = error {
+                    self.hideLoading()
+                    self.showAlert(message: error.localizedDescription)
+                    return
+                }
+                
+                guard let firebaseUser = authResult?.user else {
+                    self.hideLoading()
+                    return
+                }
+                
+                self.handleSocialLogin(
+                    uid: firebaseUser.uid,
+                    email: firebaseUser.email,
+                    name: firebaseUser.displayName
+                )
+            }
+        }
+    }
+    
+    // MARK: - Apple Sign In (Coming Soon)
+    
+    @objc private func appleSignInTapped() {
+        let alert = UIAlertController(
+            title: "Coming Soon",
+            message: "Sign in with Apple will be available in a future update.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 
     @objc private func forgotPasswordTapped() {
@@ -219,13 +379,19 @@ class Login2ViewController: UIViewController {
     }
 
     @objc private func createAccountTapped() {
-        let storyboard = UIStoryboard(name: "Sign-Up", bundle: nil)
-        guard let signUpVC = storyboard.instantiateViewController(withIdentifier: "SignUpViewController") as? SignUpViewController else { return }
-        signUpVC.modalPresentationStyle = .fullScreen
+        let signUpVC = SignUpViewController()
+        signUpVC.modalPresentationStyle = .pageSheet  // Modal presentation
+        
+        // Optional: Customize the sheet size (iOS 15+)
+        if let sheet = signUpVC.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = true
+        }
+        
         present(signUpVC, animated: true)
     }
 
-    // MARK: - UI Setup (same as before)
+    // MARK: - UI Setup
 
     private func setupIcons() {
         emailTextField.leftView = leftIcon("envelope")
@@ -243,6 +409,11 @@ class Login2ViewController: UIViewController {
     private func setupActions() {
         signInButton.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
         forgotButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
+        
+        // Social login buttons
+        googleButton.addTarget(self, action: #selector(googleSignInTapped), for: .touchUpInside)
+        appleButton.addTarget(self, action: #selector(appleSignInTapped), for: .touchUpInside)
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(createAccountTapped))
         createAccountLabel.isUserInteractionEnabled = true
         createAccountLabel.addGestureRecognizer(tap)
@@ -257,23 +428,6 @@ class Login2ViewController: UIViewController {
         return v
     }
 
-    private static func circleButton(image: String) -> UIButton {
-        let b = UIButton(type: .system)
-        b.backgroundColor = .white
-        b.layer.cornerRadius = 22
-        b.setImage(UIImage(systemName: image), for: .normal)
-        b.tintColor = .black
-        b.translatesAutoresizingMaskIntoConstraints = false
-        return b
-    }
-
-    private static func dividerLine() -> UIView {
-        let v = UIView()
-        v.backgroundColor = UIColor.white.withAlphaComponent(0.4)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }
-
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
@@ -283,21 +437,25 @@ class Login2ViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
+    
     private func setupUI() {
-
         view.addSubview(topImageView)
         view.addSubview(cardView)
 
-        [
-            titleLabel, emailTextField, passwordTextField,
-            forgotButton, signInButton,
-            appleButton, googleButton,
-            leftLine, orLabel, rightLine,
-            createAccountLabel
-        ].forEach { cardView.addSubview($0) }
+        // Add subviews individually
+        cardView.addSubview(titleLabel)
+        cardView.addSubview(emailTextField)
+        cardView.addSubview(passwordTextField)
+        cardView.addSubview(forgotButton)
+        cardView.addSubview(signInButton)
+        cardView.addSubview(appleButton)
+        cardView.addSubview(googleButton)
+        cardView.addSubview(leftLine)
+        cardView.addSubview(orLabel)
+        cardView.addSubview(rightLine)
+        cardView.addSubview(createAccountLabel)
 
         NSLayoutConstraint.activate([
-
             topImageView.topAnchor.constraint(equalTo: view.topAnchor),
             topImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             topImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -329,11 +487,13 @@ class Login2ViewController: UIViewController {
             signInButton.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
             signInButton.heightAnchor.constraint(equalToConstant: 50),
 
+            // Apple button - left of center
             appleButton.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 24),
             appleButton.trailingAnchor.constraint(equalTo: cardView.centerXAnchor, constant: -12),
             appleButton.widthAnchor.constraint(equalToConstant: 44),
             appleButton.heightAnchor.constraint(equalToConstant: 44),
 
+            // Google button - right of center
             googleButton.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 24),
             googleButton.leadingAnchor.constraint(equalTo: cardView.centerXAnchor, constant: 12),
             googleButton.widthAnchor.constraint(equalToConstant: 44),
@@ -356,5 +516,4 @@ class Login2ViewController: UIViewController {
             createAccountLabel.centerXAnchor.constraint(equalTo: cardView.centerXAnchor)
         ])
     }
-
 }
