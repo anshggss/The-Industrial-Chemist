@@ -15,24 +15,6 @@ class SignUpViewController: UIViewController {
     private var loadingView: UIView?
 
     // MARK: - UI Elements
-
-    private let topImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.image = UIImage(named: "login")
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        return iv
-    }()
-
-    private let cardView: UIView = {
-        let v = UIView()
-        v.backgroundColor = UIColor(red: 48/255, green: 16/255, blue: 72/255, alpha: 1)
-        v.layer.cornerRadius = 32
-        v.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
     
     private let scrollView: UIScrollView = {
         let sv = UIScrollView()
@@ -45,6 +27,14 @@ class SignUpViewController: UIViewController {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
+    }()
+    
+    private let closeButton: UIButton = {
+        let b = UIButton(type: .system)
+        b.setImage(UIImage(systemName: "xmark"), for: .normal)
+        b.tintColor = .white
+        b.translatesAutoresizingMaskIntoConstraints = false
+        return b
     }()
 
     private let titleLabel: UILabel = {
@@ -127,20 +117,11 @@ class SignUpViewController: UIViewController {
         return b
     }()
 
-    private let loginLabel: UILabel = {
-        let l = UILabel()
-        l.text = "Already have an account? Log In"
-        l.textColor = .white
-        l.font = .systemFont(ofSize: 15)
-        l.translatesAutoresizingMaskIntoConstraints = false
-        return l
-    }()
-
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
+        view.backgroundColor = UIColor(red: 48/255, green: 16/255, blue: 72/255, alpha: 1)
         setupUI()
         setupIcons()
         setupPlaceholderColor()
@@ -193,6 +174,10 @@ class SignUpViewController: UIViewController {
     }
 
     // MARK: - Actions
+    
+    @objc private func closeTapped() {
+        dismiss(animated: true)
+    }
 
     @objc private func signUpTapped() {
         guard let name = nameTextField.text, !name.isEmpty,
@@ -264,10 +249,6 @@ class SignUpViewController: UIViewController {
         }
     }
 
-    @objc private func loginTapped() {
-        dismiss(animated: true)
-    }
-
     // MARK: - UI Setup
 
     private func setupIcons() {
@@ -297,11 +278,8 @@ class SignUpViewController: UIViewController {
     }
 
     private func setupActions() {
+        closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(signUpTapped), for: .touchUpInside)
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(loginTapped))
-        loginLabel.isUserInteractionEnabled = true
-        loginLabel.addGestureRecognizer(tap)
     }
 
     private func leftIcon(_ system: String) -> UIView {
@@ -324,12 +302,10 @@ class SignUpViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.addSubview(topImageView)
-        view.addSubview(cardView)
-        
-        cardView.addSubview(scrollView)
+        view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         
+        contentView.addSubview(closeButton)
         contentView.addSubview(titleLabel)
         contentView.addSubview(subtitleLabel)
         contentView.addSubview(nameTextField)
@@ -338,26 +314,13 @@ class SignUpViewController: UIViewController {
         contentView.addSubview(passwordTextField)
         contentView.addSubview(confirmPasswordTextField)
         contentView.addSubview(signUpButton)
-        contentView.addSubview(loginLabel)
 
         NSLayoutConstraint.activate([
-            // Top Image
-            topImageView.topAnchor.constraint(equalTo: view.topAnchor),
-            topImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            topImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            topImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.30),
-
-            // Card View
-            cardView.topAnchor.constraint(equalTo: topImageView.bottomAnchor, constant: -32),
-            cardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
             // Scroll View
-            scrollView.topAnchor.constraint(equalTo: cardView.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             // Content View
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
@@ -365,9 +328,15 @@ class SignUpViewController: UIViewController {
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            // Close Button
+            closeButton.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 16),
+            closeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            closeButton.widthAnchor.constraint(equalToConstant: 30),
+            closeButton.heightAnchor.constraint(equalToConstant: 30),
 
             // Title
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
+            titleLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 60),
             titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             
             // Subtitle
@@ -375,45 +344,41 @@ class SignUpViewController: UIViewController {
             subtitleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
 
             // Name TextField
-            nameTextField.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 24),
+            nameTextField.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 30),
             nameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             nameTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
             nameTextField.heightAnchor.constraint(equalToConstant: 50),
             
             // Phone TextField
-            phoneTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 14),
+            phoneTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 16),
             phoneTextField.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
             phoneTextField.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
             phoneTextField.heightAnchor.constraint(equalToConstant: 50),
 
             // Email TextField
-            emailTextField.topAnchor.constraint(equalTo: phoneTextField.bottomAnchor, constant: 14),
+            emailTextField.topAnchor.constraint(equalTo: phoneTextField.bottomAnchor, constant: 16),
             emailTextField.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
             emailTextField.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
             emailTextField.heightAnchor.constraint(equalToConstant: 50),
 
             // Password TextField
-            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 14),
+            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 16),
             passwordTextField.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
             passwordTextField.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
             passwordTextField.heightAnchor.constraint(equalToConstant: 50),
             
             // Confirm Password TextField
-            confirmPasswordTextField.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 14),
+            confirmPasswordTextField.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16),
             confirmPasswordTextField.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
             confirmPasswordTextField.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
             confirmPasswordTextField.heightAnchor.constraint(equalToConstant: 50),
 
             // Sign Up Button
-            signUpButton.topAnchor.constraint(equalTo: confirmPasswordTextField.bottomAnchor, constant: 24),
+            signUpButton.topAnchor.constraint(equalTo: confirmPasswordTextField.bottomAnchor, constant: 30),
             signUpButton.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
             signUpButton.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
             signUpButton.heightAnchor.constraint(equalToConstant: 50),
-
-            // Login Label
-            loginLabel.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 20),
-            loginLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            loginLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30)
+            signUpButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40)
         ])
     }
 }
