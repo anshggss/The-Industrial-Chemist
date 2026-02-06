@@ -87,7 +87,7 @@ struct StreakCalendarView: View {
                 .foregroundColor(textColor(for: day))
                 .zIndex(1)
 
-            // ❄️ Freeze icon
+            //  Freeze icon
             if freezeDays.contains(day) {
                 Image(systemName: "snowflake")
                     .font(.system(size: 10, weight: .bold))
@@ -95,7 +95,7 @@ struct StreakCalendarView: View {
                     .offset(x: 12, y: -12)
             }
 
-            // 🔥 Flame only for TODAY in CURRENT MONTH
+            //  Flame only for TODAY in CURRENT MONTH
             if isCurrentMonth && day == today {
                 Image(systemName: "flame.fill")
                     .font(.system(size: 14))

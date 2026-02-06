@@ -369,60 +369,7 @@ class Leaderboard2ViewController: UIViewController {
     }
 
     
-//    private func createStatView(icon: String, iconColor: UIColor, value: String, label: String) -> UIView {
-//        let container = UIView()
-//        container.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        let iconView = UIImageView()
-//        iconView.image = UIImage(systemName: icon)
-//        iconView.tintColor = iconColor
-//        iconView.contentMode = .scaleAspectFit
-//        iconView.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        let valueLabel = UILabel()
-//        valueLabel.text = value
-//        valueLabel.font = .systemFont(ofSize: 22, weight: .bold)
-//        valueLabel.textColor = AppColors.textPrimary
-//        valueLabel.textAlignment = .center
-//        valueLabel.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        let titleLabel = UILabel()
-//        titleLabel.text = label
-//        titleLabel.font = .systemFont(ofSize: 12, weight: .medium)
-//        titleLabel.textColor = AppColors.textPrimary.withAlphaComponent(0.6)
-//        titleLabel.textAlignment = .center
-//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        container.addSubview(iconView)
-//        container.addSubview(valueLabel)
-//        container.addSubview(titleLabel)
-//        
-//        NSLayoutConstraint.activate([
-//            iconView.topAnchor.constraint(equalTo: container.topAnchor, constant: 8),
-//            iconView.centerXAnchor.constraint(equalTo: container.centerXAnchor),
-//            iconView.widthAnchor.constraint(equalToConstant: 24),
-//            iconView.heightAnchor.constraint(equalToConstant: 24),
-//            
-//            valueLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: 6),
-//            valueLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor),
-//            valueLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 4),
-//            valueLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -4),
-//            
-//            titleLabel.topAnchor.constraint(equalTo: valueLabel.bottomAnchor, constant: 2),
-//            titleLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor),
-//            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 4),
-//            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -4)
-//        ])
-//        
-//        return container
-//    }
-    
-//    private func createDivider() -> UIView {
-//        let divider = UIView()
-//        divider.backgroundColor = AppColors.textPrimary.withAlphaComponent(0.15)
-//        divider.translatesAutoresizingMaskIntoConstraints = false
-//        return divider
-//    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -819,7 +766,7 @@ class LeaderboardCell: UITableViewCell {
         
         switch rank {
         case 1:
-            // 🥇 Gold - 1st Place
+            //  Gold - 1st Place
             let goldColor = UIColor(hex: "#FFD700")
             
             rankBadgeView.backgroundColor = goldColor
@@ -837,7 +784,7 @@ class LeaderboardCell: UITableViewCell {
             crownImageView.isHidden = false
             
         case 2:
-            // 🥈 Silver - 2nd Place
+            //  Silver - 2nd Place
             let silverColor = UIColor(hex: "#C0C0C0")
             
             rankBadgeView.backgroundColor = silverColor
@@ -854,7 +801,7 @@ class LeaderboardCell: UITableViewCell {
             crownImageView.isHidden = true
             
         case 3:
-            // 🥉 Bronze - 3rd Place
+            //  Bronze - 3rd Place
             let bronzeColor = UIColor(hex: "#CD7F32")
             
             rankBadgeView.backgroundColor = bronzeColor

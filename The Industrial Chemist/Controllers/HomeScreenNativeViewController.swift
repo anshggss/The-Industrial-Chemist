@@ -105,7 +105,7 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
     // MARK: Cells
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        // 🔥 Streak Card
+        //  Streak Card
         if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "StreakCell", for: indexPath) as! StreakTableViewCell
             cell.configure(days: 5)

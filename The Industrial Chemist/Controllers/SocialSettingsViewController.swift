@@ -58,7 +58,7 @@ class SocialSettingsViewController: UIViewController, UITableViewDelegate, UITab
 
         let toggle = UISwitch()
         toggle.onTintColor = .systemBlue
-        toggle.isOn = indexPath.row != 0   // Facebook OFF like screenshot
+        toggle.isOn = indexPath.row != 0   
         cell.accessoryView = toggle
 
         return cell

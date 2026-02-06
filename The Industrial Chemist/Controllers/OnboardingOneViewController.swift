@@ -9,8 +9,6 @@ class OnboardingOneViewController: UIViewController, OnboardingPage {
     }
 
     @IBAction func continueButtonPressed(_ sender: UIButton) {
-        print("Hello")
         delegate?.goToNextPage()
-        print("Hello")
     }
 }

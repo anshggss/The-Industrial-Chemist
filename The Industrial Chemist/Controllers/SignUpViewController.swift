@@ -231,7 +231,7 @@ class SignUpViewController: UIViewController {
                     return
                 }
 
-                print("✅ User created and data saved")
+                print(" User created and data saved")
                 
                 let user = AppUser(
                     uid: uid,
