@@ -41,6 +41,28 @@ class GasPrepNewViewController: UIViewController, UITableViewDelegate, UITableVi
         model: "ostwald"
     )
 
+    // MARK: - Experiment Item Model
+    
+    struct ExperimentItem {
+        let title: String
+        let time: String
+        let status: String
+        let experiment: Experiment?
+    }
+    
+    // MARK: - All Experiments Data
+    
+    private lazy var allExperiments: [ExperimentItem] = [
+        ExperimentItem(title: "Haber Bosch Process", time: "20 mins", status: "In Progress", experiment: ammoniaExperiment),
+        ExperimentItem(title: "Ostwald Process", time: "25 mins", status: "Locked", experiment: ostwaldExperiment),
+        ExperimentItem(title: "Nitric Acid Preparation", time: "20 mins", status: "Locked", experiment: nil),
+        ExperimentItem(title: "Sulfuric Acid Process", time: "20 mins", status: "Completed", experiment: nil)
+    ]
+    
+    // MARK: - Filtered Experiments
+    
+    private var filteredExperiments: [ExperimentItem] = []
+
     // MARK: - UI Elements
 
     private let welcomeLabel: UILabel = {
@@ -61,6 +83,18 @@ class GasPrepNewViewController: UIViewController, UITableViewDelegate, UITableVi
     }()
 
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    
+    // MARK: - Empty State Label
+    
+    private let emptyStateLabel: UILabel = {
+        let label = UILabel()
+        label.text = "No experiments found"
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        label.textColor = AppColors.textPrimary.withAlphaComponent(0.6)
+        label.textAlignment = .center
+        label.isHidden = true
+        return label
+    }()
 
     // MARK: - Lifecycle
 
@@ -75,6 +109,9 @@ class GasPrepNewViewController: UIViewController, UITableViewDelegate, UITableVi
         setupSegmentControl()
         setupTableView()
         layoutUI()
+        
+        // Initial filter
+        filterExperiments()
     }
 
     // MARK: - Continue Card
@@ -136,6 +173,43 @@ class GasPrepNewViewController: UIViewController, UITableViewDelegate, UITableVi
         segmentControl.selectedSegmentTintColor = AppColors.background
         segmentControl.setTitleTextAttributes([.foregroundColor: AppColors.textPrimary], for: .normal)
         segmentControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+        
+        // Add target for segment change
+        segmentControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
+    }
+    
+    // MARK: - Segment Control Action
+    
+    @objc private func segmentChanged(_ sender: UISegmentedControl) {
+        filterExperiments()
+    }
+    
+    // MARK: - Filter Logic
+    
+    // MARK: - Filter Logic
+
+    private func filterExperiments() {
+        switch segmentControl.selectedSegmentIndex {
+        case 0: // All
+            filteredExperiments = allExperiments
+        case 1: // Completed
+            filteredExperiments = allExperiments.filter({ item in
+                return item.status == "Completed"
+            })
+        case 2: // In Progress
+            filteredExperiments = allExperiments.filter({ item in
+                return item.status == "In Progress"
+            })
+        default:
+            filteredExperiments = allExperiments
+        }
+        
+        // Update empty state visibility
+        emptyStateLabel.isHidden = !filteredExperiments.isEmpty
+        tableView.isHidden = filteredExperiments.isEmpty
+        
+        // Reload table
+        tableView.reloadData()
     }
 
     // MARK: - Table
@@ -159,14 +233,21 @@ class GasPrepNewViewController: UIViewController, UITableViewDelegate, UITableVi
         mainStack.axis = .vertical
         mainStack.spacing = 20
         mainStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        emptyStateLabel.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(mainStack)
+        view.addSubview(emptyStateLabel)
 
         NSLayoutConstraint.activate([
             mainStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             mainStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            mainStack.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            mainStack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            // Empty state label centered in table view area
+            emptyStateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyStateLabel.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
         ])
 
         continueCard.heightAnchor.constraint(equalToConstant: 130).isActive = true
@@ -174,30 +255,48 @@ class GasPrepNewViewController: UIViewController, UITableViewDelegate, UITableVi
 
     // MARK: - Table Data
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 4 }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return filteredExperiments.count
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 80 }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 { openHaber() }
-        else if indexPath.row == 1 {openOstwald()}
+        let experimentItem = filteredExperiments[indexPath.row]
+        
+        // Only allow navigation for unlocked experiments
+        guard experimentItem.status != "Locked" else {
+            // Optionally show an alert that the experiment is locked
+            showLockedAlert()
+            return
+        }
+        
+        if let experiment = experimentItem.experiment {
+            let vc = SetUpViewController(experiment: experiment, nib: "SetUp")
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ExperimentCell
         cell.selectionStyle = .none
 
-        if indexPath.row == 0 {
-            cell.configure(title: "Haber Bosch Process", time: "20 mins", status: "In Progress")
-        } else if indexPath.row == 1 {
-            cell.configure(title: "Ostwald Process", time: "25 mins", status: "Locked")
-        } else if indexPath.row == 2 {
-            cell.configure(title: "Nitric Acid Preparation", time: "20 mins", status: "Locked")
-        } else {
-            cell.configure(title: "Nitric Acid Preparation", time: "20 mins", status: "Locked")
-        }
+        let experimentItem = filteredExperiments[indexPath.row]
+        cell.configure(title: experimentItem.title, time: experimentItem.time, status: experimentItem.status)
 
         return cell
+    }
+    
+    // MARK: - Locked Alert
+    
+    private func showLockedAlert() {
+        let alert = UIAlertController(
+            title: "Experiment Locked",
+            message: "Complete the previous experiments to unlock this one.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 
     // MARK: - Navigation
