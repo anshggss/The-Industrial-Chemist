@@ -12,6 +12,7 @@ class TheoryViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var theoryLabel: UILabel!
     
+    @IBOutlet weak var reactionLabel: UILabel!
     var isAtHome: Bool = false
     
     let experiment: Experiment
@@ -32,6 +33,17 @@ class TheoryViewController: UIViewController {
         
         titleLabel.text = experiment.title
         theoryLabel.text = experiment.Theory
+        
+    
+        
+        if experiment.title == "Ostwald Process" {
+            reactionLabel.text = "4NH3 + 8O2 -> 4HNO3 + 4H20"
+            reactionLabel.font = UIFont.boldSystemFont(ofSize: 14)
+            
+        } else {
+            reactionLabel.text = "N2 + 3H2 -> 2NH3"
+            reactionLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        }
         // Do any additional setup after loading the view.
     }
 
