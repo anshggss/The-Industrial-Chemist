@@ -70,7 +70,7 @@ class Leaderboard2ViewController: UIViewController {
     // MARK: - Dummy Data
     
     private let userStats = UserStats(
-        streak: 12,
+        streak: 5,
         totalXP: 2450,
         weeklyXP: 380,
         rank: 5,
