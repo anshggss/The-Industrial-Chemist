@@ -54,9 +54,9 @@ class GasPrepNewViewController: UIViewController, UITableViewDelegate, UITableVi
     
     private lazy var allExperiments: [ExperimentItem] = [
         ExperimentItem(title: "Haber Bosch Process", time: "20 mins", status: "In Progress", experiment: ammoniaExperiment),
-        ExperimentItem(title: "Ostwald Process", time: "25 mins", status: "Locked", experiment: ostwaldExperiment),
+        ExperimentItem(title: "Ostwald Process", time: "25 mins", status: "Completed", experiment: ostwaldExperiment),
         ExperimentItem(title: "Nitric Acid Preparation", time: "20 mins", status: "Locked", experiment: nil),
-        ExperimentItem(title: "Sulfuric Acid Process", time: "20 mins", status: "Completed", experiment: nil)
+        ExperimentItem(title: "Sulfuric Acid Process", time: "20 mins", status: "Locked", experiment: nil)
     ]
     
     // MARK: - Filtered Experiments
