@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    // ADD THIS METHOD - Handles Google Sign-In callback
+    // Handles Google Sign-In callback
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {

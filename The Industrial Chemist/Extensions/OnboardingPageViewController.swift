@@ -43,7 +43,7 @@ class OnboardingPageViewController: UIPageViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        // Hide ONLY the system UIPageControl (default dots)
+        // Hide the default dots
         for subview in view.subviews {
             if NSStringFromClass(type(of: subview)) == "UIPageControl" {
                 subview.isHidden = true

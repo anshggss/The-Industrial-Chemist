@@ -41,7 +41,7 @@ class TestViewController: UIViewController {
         
         
         let boxSize: CGFloat = 300
-                let boxFrame = CGRect(
+        _ = CGRect(
                     x: (view.bounds.width - boxSize) / 2,
                     y: (view.bounds.height - boxSize) / 2,
                     width: boxSize,
@@ -49,7 +49,6 @@ class TestViewController: UIViewController {
                 )
                 
                 // Create ARView in non-AR mode
-//                arView = ARView(frame: boxFrame, cameraMode: .nonAR, automaticallyConfigureSession: false)
                 arView.layer.cornerRadius = 15
                 arView.clipsToBounds = true
                 arView.backgroundColor = .systemBackground
@@ -59,6 +58,7 @@ class TestViewController: UIViewController {
         
     }
     
+    // Load the model
     func loadModel() {
             do {
                 // Load model entity
@@ -91,7 +91,8 @@ class TestViewController: UIViewController {
                 print("Failed to load model: \(error)")
             }
         }
-
+    
+    
     @IBAction func nextButtonPressed(_ sender: UIButton) {
         let resultsVC = ResultsViewController(experiment: experiment)
         resultsVC.isAtHome = isAtHome

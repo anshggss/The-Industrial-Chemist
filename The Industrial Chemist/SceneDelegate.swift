@@ -16,21 +16,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // 2. Initialize the window
         let window = UIWindow(windowScene: windowScene)
-//        let homeVC = HomeScreenNativeViewController(nibName: "HomeScreenNative", bundle: nil)
-        
-        // 3. Set the initial root to SplashViewController.
-        // This prevents the "Login Screen Flicker" because the Splash screen
-        // will stay visible until the logic decides where to go next.
-        
-        
-//        let navController = UINavigationController(rootViewController: homeVC)
-//        navController.navigationBar.prefersLargeTitles = true
-        window.rootViewController = /*navController*/ SplashViewController()
+
+        window.rootViewController = SplashViewController()
         self.window = window
         window.makeKeyAndVisible()
     }
     
-    // ADD THIS METHOD - Required for Google Sign-In to work!
+    // Required for Google Sign-In to work
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
         guard let url = URLContexts.first?.url else { return }
         GIDSignIn.sharedInstance.handle(url)

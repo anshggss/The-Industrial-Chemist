@@ -1,5 +1,5 @@
 import UIKit
-
+// Classroom for school
 class CFSViewController: UIViewController {
 
     private let stack = UIStackView()
