@@ -65,8 +65,7 @@ class TabBarViewController: UITabBarController {
 
         let homeVC = HomeScreenNativeViewController(nibName: "HomeScreenNative", bundle: nil)
 
-        let modulesStoryboard = UIStoryboard(name: "Modules", bundle: nil)
-        let learnVC = modulesStoryboard.instantiateInitialViewController()!
+        let learnVC = UINavigationController(rootViewController: ModuleViewController())
 
         let leaderBoardVC = Leaderboard2ViewController(nibName: "Leaderboard2", bundle: nil)
         let profileVC = Profile2ViewController(nibName: "Profile2", bundle: nil)
