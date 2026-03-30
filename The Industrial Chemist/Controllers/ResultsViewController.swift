@@ -34,7 +34,7 @@ class ResultsViewController: UIViewController {
         videoView.layer.cornerRadius = 20
         videoView.clipsToBounds = true
 
-        takeawaysLabel.text = experiment.Results
+        takeawaysLabel.text = experiment.results
         playLoopingVideo()
     }
 

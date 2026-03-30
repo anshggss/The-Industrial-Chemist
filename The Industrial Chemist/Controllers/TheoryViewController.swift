@@ -32,7 +32,7 @@ class TheoryViewController: UIViewController {
         
         
         titleLabel.text = experiment.title
-        theoryLabel.text = experiment.Theory
+        theoryLabel.text = experiment.theory
         
     
         

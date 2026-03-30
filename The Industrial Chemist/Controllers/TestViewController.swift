@@ -36,7 +36,7 @@ class TestViewController: UIViewController {
         super.viewDidLoad()
         titleLabel.text = experiment.title
         smallLabel.text = "Industrial Preparation | " + experiment.testExperiment
-        equationLabel.text = experiment.Test
+        equationLabel.text = experiment.test
         equationTitleLabel.text = experiment.title
         
         

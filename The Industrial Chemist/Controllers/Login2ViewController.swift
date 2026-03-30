@@ -4,7 +4,10 @@ import FirebaseCore
 import FirebaseFirestore
 import GoogleSignIn
 
-class Login2ViewController: UIViewController {
+final class Login2ViewController: UIViewController {
+
+    // MARK: - Firebase
+    private let db = Firestore.firestore()
 
     // MARK: - Loading View
     private var loadingView: UIView?
@@ -79,7 +82,6 @@ class Login2ViewController: UIViewController {
         return b
     }()
 
-    // Apple button - back in!
     private let appleButton: UIButton = {
         let b = UIButton(type: .system)
         b.backgroundColor = .white
@@ -89,8 +91,7 @@ class Login2ViewController: UIViewController {
         b.translatesAutoresizingMaskIntoConstraints = false
         return b
     }()
-    
-    // Google button
+
     private let googleButton: UIButton = {
         let b = UIButton(type: .system)
         b.backgroundColor = .white
@@ -100,14 +101,14 @@ class Login2ViewController: UIViewController {
         b.translatesAutoresizingMaskIntoConstraints = false
         return b
     }()
-    
+
     private let leftLine: UIView = {
         let v = UIView()
         v.backgroundColor = UIColor.white.withAlphaComponent(0.4)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
-    
+
     private let rightLine: UIView = {
         let v = UIView()
         v.backgroundColor = UIColor.white.withAlphaComponent(0.4)
@@ -147,130 +148,187 @@ class Login2ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        // Auto-login
         if let user = Auth.auth().currentUser {
-            showLoading()
-            fetchUserData(uid: user.uid)
+            finishLogin(uid: user.uid, email: user.email, name: user.displayName)
         }
     }
 
-    // MARK: - Loading Functions
+    // MARK: - Loading
 
     private func showLoading() {
-        let bgView = UIView(frame: view.bounds)
-        bgView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        DispatchQueue.main.async {
+            guard self.loadingView == nil else { return }
 
-        let spinner = UIActivityIndicatorView(style: .large)
-        spinner.center = bgView.center
-        spinner.startAnimating()
+            let bgView = UIView(frame: self.view.bounds)
+            bgView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
 
-        bgView.addSubview(spinner)
-        view.addSubview(bgView)
+            let spinner = UIActivityIndicatorView(style: .large)
+            spinner.center = bgView.center
+            spinner.startAnimating()
 
-        loadingView = bgView
-        view.isUserInteractionEnabled = false
+            bgView.addSubview(spinner)
+            self.view.addSubview(bgView)
+
+            self.loadingView = bgView
+            self.view.isUserInteractionEnabled = false
+        }
     }
 
     private func hideLoading() {
-        loadingView?.removeFromSuperview()
-        view.isUserInteractionEnabled = true
-    }
-    
-    private func fetchUserData(uid: String) {
-        let db = Firestore.firestore()
-
-        db.collection("users").document(uid).getDocument { [weak self] snapshot, error in
-            guard let self = self else { return }
-            self.hideLoading()
-
-            if let error = error {
-                self.showAlert(message: error.localizedDescription)
-                return
-            }
-
-            guard let data = snapshot?.data() else {
-                self.showAlert(message: "User data not found")
-                return
-            }
-
-            let user = AppUser(
-                uid: uid,
-                name: data["name"] as? String ?? "",
-                email: data["email"] as? String ?? "",
-                phone: data["phone"] as? String ?? "",
-                experience: data["experience"] as? Int ?? 0
-            )
-
-            UserManager.shared.currentUser = user
-            self.navigateToHome()
+        DispatchQueue.main.async {
+            self.loadingView?.removeFromSuperview()
+            self.loadingView = nil
+            self.view.isUserInteractionEnabled = true
         }
     }
-    
-    // MARK: - Create or Fetch User for Social Login
-    
-    private func handleSocialLogin(uid: String, email: String?, name: String?) {
-        let db = Firestore.firestore()
-        let userRef = db.collection("users").document(uid)
-        
-        userRef.getDocument { [weak self] snapshot, error in
-            guard let self = self else { return }
-            
-            if let error = error {
+
+    // MARK: - One login pipeline (email/google/auto-login all use this)
+
+    private func finishLogin(uid: String, email: String?, name: String?) {
+        showLoading()
+
+        ensureUserDocument(uid: uid, email: email, name: name) { [weak self] result in
+            guard let self else { return }
+
+            switch result {
+            case .failure(let error):
                 self.hideLoading()
                 self.showAlert(message: error.localizedDescription)
-                return
-            }
-            
-            if let data = snapshot?.data(), snapshot?.exists == true {
-                // User exists
-                let user = AppUser(
-                    uid: uid,
-                    name: data["name"] as? String ?? "",
-                    email: data["email"] as? String ?? "",
-                    phone: data["phone"] as? String ?? "",
-                    experience: data["experience"] as? Int ?? 0
-                )
-                
+
+            case .success(let user):
                 UserManager.shared.currentUser = user
-                self.hideLoading()
-                self.navigateToHome()
-            } else {
-                // New user
-                let userData: [String: Any] = [
-                    "uid": uid,
-                    "name": name ?? "",
-                    "email": email ?? "",
-                    "phone": "",
-                    "experience": 0,
-                    "createdAt": FieldValue.serverTimestamp()
-                ]
-                
-                userRef.setData(userData) { error in
+
+                self.seedProgressIfNeeded(uid: uid) { [weak self] in
+                    guard let self else { return }
                     self.hideLoading()
-                    
-                    if let error = error {
-                        self.showAlert(message: error.localizedDescription)
-                        return
-                    }
-                    
-                    let user = AppUser(
-                        uid: uid,
-                        name: name ?? "",
-                        email: email ?? "",
-                        phone: "",
-                        experience: 0
-                    )
-                    
-                    UserManager.shared.currentUser = user
                     self.navigateToHome()
                 }
             }
         }
     }
-    
+
+    // MARK: - Ensure /users/{uid} exists, then return AppUser
+
+    private func ensureUserDocument(
+        uid: String,
+        email: String?,
+        name: String?,
+        completion: @escaping (Result<AppUser, Error>) -> Void
+    ) {
+        let userRef = db.collection("users").document(uid)
+
+        userRef.getDocument { snapshot, error in
+            if let error {
+                completion(.failure(error))
+                return
+            }
+
+            // If exists, build AppUser from Firestore data
+            if let data = snapshot?.data(), snapshot?.exists == true {
+                let user = AppUser(
+                    uid: uid,
+                    name: data["name"] as? String ?? (name ?? ""),
+                    email: data["email"] as? String ?? (email ?? ""),
+                    phone: data["phone"] as? String ?? "",
+                    experience: data["experience"] as? Int ?? 0
+                )
+                completion(.success(user))
+                return
+            }
+
+            // Create minimal user doc if missing
+            let userData: [String: Any] = [
+                "uid": uid,
+                "name": name ?? "",
+                "email": email ?? "",
+                "phone": "",
+                "experience": 0,
+                "createdAt": FieldValue.serverTimestamp()
+            ]
+
+            userRef.setData(userData, merge: true) { error in
+                if let error {
+                    completion(.failure(error))
+                    return
+                }
+
+                let user = AppUser(
+                    uid: uid,
+                    name: name ?? "",
+                    email: email ?? "",
+                    phone: "",
+                    experience: 0
+                )
+                completion(.success(user))
+            }
+        }
+    }
+
+    // MARK: - Seed progress: if user has no progress docs, unlock the first experiment
+
+    private func seedProgressIfNeeded(uid: String, completion: @escaping () -> Void) {
+        let progressRef = db.collection("users").document(uid).collection("progress")
+
+        // If user already has progress, do nothing
+        progressRef.limit(to: 1).getDocuments { [weak self] snap, error in
+            guard let self else { completion(); return }
+
+            if let error {
+                print("Progress check error:", error)
+                completion()
+                return
+            }
+
+            if let snap, !snap.isEmpty {
+                completion()
+                return
+            }
+
+            // Unlock first experiment (lowest "order")
+            self.db.collection("experiments")
+                .order(by: "order")
+                .limit(to: 1)
+                .getDocuments { expSnap, error in
+                    if let error {
+                        print("Fetch first experiment error:", error)
+                        completion()
+                        return
+                    }
+
+                    guard let firstDoc = expSnap?.documents.first else {
+                        print("No experiments in Firestore. Create /experiments docs first.")
+                        completion()
+                        return
+                    }
+
+                    let firstExperimentId = firstDoc.documentID
+
+                    progressRef.document(firstExperimentId).setData([
+                        "status": "In Progress",
+                        "progress": 0.0,
+                        "updatedAt": FieldValue.serverTimestamp()
+                    ], merge: true) { error in
+                        if let error {
+                            print("Seed progress error:", error)
+                        }
+                        completion()
+                    }
+                }
+        }
+    }
+
+    // MARK: - Navigation
+
     private func navigateToHome() {
-        let tabBarVC = TabBarViewController()
-        tabBarVC.modalPresentationStyle = .fullScreen
-        present(tabBarVC, animated: true)
+        DispatchQueue.main.async {
+            // prevent double-present if called twice somehow
+            guard self.presentedViewController == nil else { return }
+
+            let tabBarVC = TabBarViewController()
+            tabBarVC.modalPresentationStyle = .fullScreen
+            self.present(tabBarVC, animated: true)
+        }
     }
 
     // MARK: - Actions
@@ -287,80 +345,76 @@ class Login2ViewController: UIViewController {
         showLoading()
 
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
-            guard let self = self else { return }
+            guard let self else { return }
 
-            if let error = error {
+            if let error {
                 self.hideLoading()
                 self.showAlert(message: error.localizedDescription)
                 return
             }
 
-            guard let uid = result?.user.uid else {
+            guard let user = result?.user else {
                 self.hideLoading()
+                self.showAlert(message: "Login failed. Please try again.")
                 return
             }
 
-            self.fetchUserData(uid: uid)
+            self.finishLogin(uid: user.uid, email: user.email, name: user.displayName)
         }
     }
-    
-    // MARK: - Google Sign In
-    
+
     @objc private func googleSignInTapped() {
         guard let clientID = FirebaseApp.app()?.options.clientID else {
             showAlert(message: "Firebase configuration error")
             return
         }
-        
+
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
-        
+
         showLoading()
-        
+
         GIDSignIn.sharedInstance.signIn(withPresenting: self) { [weak self] result, error in
-            guard let self = self else { return }
-            
-            if let error = error {
+            guard let self else { return }
+
+            if let error {
                 self.hideLoading()
                 self.showAlert(message: error.localizedDescription)
                 return
             }
-            
-            guard let user = result?.user,
-                  let idToken = user.idToken?.tokenString else {
+
+            guard let googleUser = result?.user,
+                  let idToken = googleUser.idToken?.tokenString else {
                 self.hideLoading()
                 self.showAlert(message: "Failed to get Google credentials")
                 return
             }
-            
+
             let credential = GoogleAuthProvider.credential(
                 withIDToken: idToken,
-                accessToken: user.accessToken.tokenString
+                accessToken: googleUser.accessToken.tokenString
             )
-            
-            Auth.auth().signIn(with: credential) { authResult, error in
-                if let error = error {
+
+            Auth.auth().signIn(with: credential) { [weak self] authResult, error in
+                guard let self else { return }
+
+                if let error {
                     self.hideLoading()
                     self.showAlert(message: error.localizedDescription)
                     return
                 }
-                
+
                 guard let firebaseUser = authResult?.user else {
                     self.hideLoading()
+                    self.showAlert(message: "Google login failed. Please try again.")
                     return
                 }
-                
-                self.handleSocialLogin(
-                    uid: firebaseUser.uid,
-                    email: firebaseUser.email,
-                    name: firebaseUser.displayName
-                )
+
+                self.finishLogin(uid: firebaseUser.uid, email: firebaseUser.email, name: firebaseUser.displayName)
             }
         }
     }
-    
-    // MARK: - Apple Sign In (Coming Soon)
-    
+
     @objc private func appleSignInTapped() {
         let alert = UIAlertController(
             title: "Coming Soon",
@@ -380,14 +434,13 @@ class Login2ViewController: UIViewController {
 
     @objc private func createAccountTapped() {
         let signUpVC = SignUpViewController()
-        signUpVC.modalPresentationStyle = .pageSheet  // Modal presentation
-        
-        // Optional: Customize the sheet size (iOS 15+)
+        signUpVC.modalPresentationStyle = .pageSheet
+
         if let sheet = signUpVC.sheetPresentationController {
             sheet.detents = [.large()]
             sheet.prefersGrabberVisible = true
         }
-        
+
         present(signUpVC, animated: true)
     }
 
@@ -409,11 +462,10 @@ class Login2ViewController: UIViewController {
     private func setupActions() {
         signInButton.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
         forgotButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
-        
-        // Social login buttons
+
         googleButton.addTarget(self, action: #selector(googleSignInTapped), for: .touchUpInside)
         appleButton.addTarget(self, action: #selector(appleSignInTapped), for: .touchUpInside)
-        
+
         let tap = UITapGestureRecognizer(target: self, action: #selector(createAccountTapped))
         createAccountLabel.isUserInteractionEnabled = true
         createAccountLabel.addGestureRecognizer(tap)
@@ -433,16 +485,17 @@ class Login2ViewController: UIViewController {
     }
 
     private func showAlert(message: String) {
-        let alert = UIAlertController(title: "Login Error", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Login Error", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alert, animated: true)
+        }
     }
-    
+
     private func setupUI() {
         view.addSubview(topImageView)
         view.addSubview(cardView)
 
-        // Add subviews individually
         cardView.addSubview(titleLabel)
         cardView.addSubview(emailTextField)
         cardView.addSubview(passwordTextField)
@@ -487,13 +540,11 @@ class Login2ViewController: UIViewController {
             signInButton.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
             signInButton.heightAnchor.constraint(equalToConstant: 50),
 
-            // Apple button - left of center
             appleButton.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 24),
             appleButton.trailingAnchor.constraint(equalTo: cardView.centerXAnchor, constant: -12),
             appleButton.widthAnchor.constraint(equalToConstant: 44),
             appleButton.heightAnchor.constraint(equalToConstant: 44),
 
-            // Google button - right of center
             googleButton.topAnchor.constraint(equalTo: signInButton.bottomAnchor, constant: 24),
             googleButton.leadingAnchor.constraint(equalTo: cardView.centerXAnchor, constant: 12),
             googleButton.widthAnchor.constraint(equalToConstant: 44),

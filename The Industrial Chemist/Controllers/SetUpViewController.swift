@@ -28,8 +28,8 @@ class SetUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpLabel.text = experiment.Setup[0]
-        analogyLabel.text = experiment.Setup[1]
+        setUpLabel.text = experiment.setup[0]
+        analogyLabel.text = experiment.setup[1]
         // Do any additional setup after loading the view.
     }
 
