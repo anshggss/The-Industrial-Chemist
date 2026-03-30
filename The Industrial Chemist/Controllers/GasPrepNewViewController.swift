@@ -124,7 +124,10 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
                             let time = data["time"] as? String ?? ""
 
                             let progressInfo = progressByExperimentId[expId]
-                            let status = progressInfo?.status ?? "Locked"
+                            var status = progressInfo?.status ?? "In Progress"
+                            if status == "Locked" {
+                                status = "In Progress"
+                            }
                             let progValue = progressInfo?.progress ?? 0.0
 
                             var experimentModel: Experiment? = nil

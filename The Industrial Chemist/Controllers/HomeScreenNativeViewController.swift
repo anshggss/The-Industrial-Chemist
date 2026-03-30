@@ -121,7 +121,10 @@ final class HomeScreenNativeViewController: UIViewController {
                             let title = data["title"] as? String ?? "Untitled"
 
                             let progressInfo = progressById[expId]
-                            let status = progressInfo?.status ?? "Locked"
+                            var status = progressInfo?.status ?? "In Progress"
+                            if status == "Locked" {
+                                status = "In Progress"
+                            }
                             let progress = progressInfo?.progress ?? 0.0
 
                             let iconName = "flame.fill"
