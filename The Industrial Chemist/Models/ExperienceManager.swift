@@ -136,7 +136,7 @@ class ExperienceManager {
 
     private func calculateLoginStreak(currentStreak: Int, lastLoginDate: Timestamp?) -> Int {
         guard let lastLogin = lastLoginDate?.dateValue() else {
-            // First login ever
+            // First login ever (no lastLoginDate set)
             return 1
         }
 
@@ -149,7 +149,8 @@ class ExperienceManager {
         switch daysDifference {
         case 0:
             // Same day - don't increment streak
-            return currentStreak
+            // BUT if streak is 0, this is their first login today (new user), so set to 1
+            return currentStreak == 0 ? 1 : currentStreak
         case 1:
             // Consecutive day - increment streak
             return currentStreak + 1

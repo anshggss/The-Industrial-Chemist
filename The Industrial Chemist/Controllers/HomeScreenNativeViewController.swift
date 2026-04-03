@@ -324,6 +324,12 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
             cell.configure(days: currentStreak)
             return cell
 
+        case .calendar:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CalendarWidgetCell.identifier, for: indexPath) as? CalendarWidgetCell else {
+                return UITableViewCell()
+            }
+            return cell
+
         case .continueLearning:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: LearningCardCell.identifier, for: indexPath) as? LearningCardCell else {
                 return UITableViewCell()
