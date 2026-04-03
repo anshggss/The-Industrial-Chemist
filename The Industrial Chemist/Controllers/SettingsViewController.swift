@@ -136,10 +136,10 @@ class SettingsViewController: UIViewController {
         present(alert, animated: true)
     }
     @objc private func handleRestorePurchase() {
-        showAlert(message: "Restore purchases coming soon.")
+        showAlert(title: "Notice", message: "Restore purchases coming soon.")
     }
-    private func showAlert(message: String) {
-        let alert = UIAlertController(title: "Error",
+    private func showAlert(title: String = "Error", message: String) {
+        let alert = UIAlertController(title: title,
                                       message: message,
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
@@ -212,44 +212,42 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        guard indexPath.section == 0 else { return }
-
         let vc: UIViewController?
 
-        switch indexPath.row {
-
+        switch indexPath.section {
         case 0:
-            vc = PreferencesViewController(nibName: "Preferences", bundle: nil)
-
-        case 1:
-            vc = ProfileSettingsViewController(nibName: "ProfileSettings", bundle: nil)
-
-        case 2:
-            vc = NotificationsViewController(nibName: "Notifications", bundle: nil)
-
-        case 3:
-            // COURSES — intentionally no action (no VC exists yet)
+            switch indexPath.row {
+            case 0: vc = PreferencesViewController(nibName: "Preferences", bundle: nil)
+            case 1: vc = ProfileSettingsViewController(nibName: "ProfileSettings", bundle: nil)
+            case 2: vc = NotificationsViewController(nibName: "Notifications", bundle: nil)
+            case 3: vc = nil // Courses
+            case 4: vc = CFSViewController(nibName: "CFS", bundle: nil)
+            case 5: vc = SocialSettingsViewController(nibName: "SocialSettings", bundle: nil)
+            case 6: vc = PrivacyViewController(nibName: "Privacy", bundle: nil)
+            default: vc = nil
+            }
+        case 1: // Subscription
             vc = nil
-
-        case 4:
-            vc = CFSViewController(nibName: "CFS", bundle: nil)
-
-        case 5:
-            vc = SocialSettingsViewController(nibName: "SocialSettings", bundle: nil)
-
-        case 6:
-            vc = PrivacyViewController(nibName: "Privacy", bundle: nil)
-
+        case 2: // Support
+            vc = nil
+        case 3: // Legal
+            if indexPath.row == 1 {
+                vc = PrivacyViewController(nibName: "Privacy", bundle: nil)
+            } else {
+                vc = nil
+            }
         default:
             vc = nil
         }
 
-        guard let controller = vc else { return }
-
-        controller.modalPresentationStyle = .automatic
-        controller.modalTransitionStyle = .coverVertical
-
-        present(controller, animated: true)
+        if let controller = vc {
+            controller.modalPresentationStyle = .automatic
+            controller.modalTransitionStyle = .coverVertical
+            present(controller, animated: true)
+        } else {
+            tableView.deselectRow(at: indexPath, animated: true)
+            showAlert(title: "Notice", message: "This feature is coming soon.")
+        }
     }
 
 }

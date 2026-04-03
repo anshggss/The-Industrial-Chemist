@@ -24,7 +24,7 @@ enum Division: String {
         switch self {
         case .bronze: return "shield.fill"
         case .silver: return "shield.lefthalf.filled"
-        case .gold: return "shield.checkered"
+        case .gold: return "star.circle.fill"
         case .platinum: return "star.shield.fill"
         case .diamond: return "diamond.fill"
         case .master: return "crown.fill"
@@ -252,20 +252,20 @@ class Leaderboard2ViewController: UIViewController {
             headerLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             headerLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             
-            // Stats Container
-            statsContainerView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 20),
-            statsContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            statsContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            statsContainerView.heightAnchor.constraint(equalToConstant: 120),
-            
             // Division Card
-            divisionCardView.topAnchor.constraint(equalTo: statsContainerView.bottomAnchor, constant: 16),
+            divisionCardView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 20),
             divisionCardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             divisionCardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             divisionCardView.heightAnchor.constraint(equalToConstant: 160),
             
+            // Stats Container
+            statsContainerView.topAnchor.constraint(equalTo: divisionCardView.bottomAnchor, constant: 16),
+            statsContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            statsContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            statsContainerView.heightAnchor.constraint(equalToConstant: 120),
+            
             // Weekly Leaderboard Label
-            weeklyLeaderboardLabel.topAnchor.constraint(equalTo: divisionCardView.bottomAnchor, constant: 24),
+            weeklyLeaderboardLabel.topAnchor.constraint(equalTo: statsContainerView.bottomAnchor, constant: 24),
             weeklyLeaderboardLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             
             // Time Remaining

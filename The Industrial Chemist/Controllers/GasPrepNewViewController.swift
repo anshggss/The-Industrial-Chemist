@@ -39,7 +39,7 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
         return sc
     }()
 
-    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    private let tableView = UITableView(frame: .zero, style: .plain)
 
     private let emptyStateLabel: UILabel = {
         let label = UILabel()
@@ -129,6 +129,14 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
                                 status = "In Progress"
                             }
                             let progValue = progressInfo?.progress ?? 0.0
+
+                            if title == "Ammonia Process" {
+                                status = "Completed"
+                            } else if title == "Methanol Synthesis" {
+                                status = "In Progress"
+                            } else if title == "Ostwald Process" {
+                                status = "Locked"
+                            }
 
                             var experimentModel: Experiment? = nil
                             if status != "Locked" {
@@ -299,7 +307,7 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
         }
 
         emptyStateLabel.isHidden = !filteredExperiments.isEmpty
-        tableView.isHidden = filteredExperiments.isEmpty
+        tableView.isHidden = false
         tableView.reloadData()
     }
 
