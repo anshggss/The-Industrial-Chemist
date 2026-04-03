@@ -199,6 +199,13 @@ final class Login2ViewController: UIViewController {
             case .success(let user):
                 UserManager.shared.currentUser = user
 
+                // Update login streak on successful login
+                ExperienceManager.shared.updateLoginStreak { success, newStreak in
+                    if success {
+                        print("✅ Login streak updated to: \(newStreak)")
+                    }
+                }
+
                 self.seedProgressIfNeeded(uid: uid) { [weak self] in
                     guard let self else { return }
                     self.hideLoading()
@@ -231,7 +238,10 @@ final class Login2ViewController: UIViewController {
                     name: data["name"] as? String ?? (name ?? ""),
                     email: data["email"] as? String ?? (email ?? ""),
                     phone: data["phone"] as? String ?? "",
-                    experience: data["experience"] as? Int ?? 0
+                    experience: data["experience"] as? Int ?? 0,
+                    weeklyXP: data["weeklyXP"] as? Int,
+                    currentStreak: data["currentStreak"] as? Int,
+                    division: data["division"] as? String
                 )
                 completion(.success(user))
                 return
@@ -244,6 +254,11 @@ final class Login2ViewController: UIViewController {
                 "email": email ?? "",
                 "phone": "",
                 "experience": 0,
+                "weeklyXP": 0,
+                "currentStreak": 0,
+                "lastActivityDate": FieldValue.serverTimestamp(),
+                "lastLoginDate": FieldValue.serverTimestamp(),
+                "division": "Bronze",
                 "createdAt": FieldValue.serverTimestamp()
             ]
 
@@ -258,7 +273,10 @@ final class Login2ViewController: UIViewController {
                     name: name ?? "",
                     email: email ?? "",
                     phone: "",
-                    experience: 0
+                    experience: 0,
+                    weeklyXP: 0,
+                    currentStreak: 0,
+                    division: "Bronze"
                 )
                 completion(.success(user))
             }

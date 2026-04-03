@@ -308,8 +308,8 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "StreakCell", for: indexPath) as? StreakTableViewCell else {
                 return UITableViewCell()
             }
-            // TODO: Replace with real streak logic if you track it in Firestore
-            cell.configure(days: 5)
+            let currentStreak = UserManager.shared.currentUser?.currentStreak ?? 0
+            cell.configure(days: currentStreak)
             return cell
 
         case .continueLearning:
