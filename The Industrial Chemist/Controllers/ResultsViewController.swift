@@ -128,7 +128,15 @@ class ResultsViewController: UIViewController {
                     "status": "Completed",
                     "progress": 1.0,
                     "updatedAt": FieldValue.serverTimestamp()
-                ], merge: true)
+                ], merge: true) { error in
+                    if let error = error {
+                        print("❌ Error marking experiment complete: \(error.localizedDescription)")
+                        return
+                    }
+
+                    // Unlock next experiment after completion
+                    self.unlockNextExperiment(currentExperimentId: experimentId, uid: uid)
+                }
 
                 // Award XP
                 ExperienceManager.shared.awardExperience(amount: ExperienceManager.XPReward.experimentCompleted.rawValue) { success, error in
@@ -155,6 +163,62 @@ class ResultsViewController: UIViewController {
         return title.lowercased()
             .replacingOccurrences(of: " ", with: "_")
             .replacingOccurrences(of: "-", with: "_")
+    }
+
+    private func unlockNextExperiment(currentExperimentId: String, uid: String) {
+        // Fetch all experiments ordered by "order" field
+        db.collection("experiments")
+            .order(by: "order")
+            .getDocuments { [weak self] snapshot, error in
+                guard let self = self else { return }
+
+                if let error = error {
+                    print("❌ Error fetching experiments: \(error.localizedDescription)")
+                    return
+                }
+
+                guard let documents = snapshot?.documents else { return }
+
+                // Find current experiment's order
+                var currentOrder: Int? = nil
+                for doc in documents {
+                    if doc.documentID == currentExperimentId {
+                        currentOrder = doc.data()["order"] as? Int
+                        break
+                    }
+                }
+
+                guard let currentOrder = currentOrder else {
+                    print("❌ Could not find current experiment order")
+                    return
+                }
+
+                // Find next experiment (next order number)
+                for doc in documents {
+                    let order = doc.data()["order"] as? Int ?? 0
+                    if order == currentOrder + 1 {
+                        let nextExperimentId = doc.documentID
+
+                        // Create progress document for next experiment
+                        self.db.collection("users").document(uid)
+                            .collection("progress").document(nextExperimentId)
+                            .setData([
+                                "status": "In Progress",
+                                "progress": 0.0,
+                                "updatedAt": FieldValue.serverTimestamp()
+                            ], merge: true) { error in
+                                if let error = error {
+                                    print("❌ Error unlocking next experiment: \(error.localizedDescription)")
+                                } else {
+                                    print("✅ Unlocked next experiment: \(nextExperimentId)")
+                                }
+                            }
+                        return
+                    }
+                }
+
+                print("ℹ️ No next experiment to unlock (last experiment completed)")
+            }
     }
 
     private func showXPEarnedNotification(amount: Int) {

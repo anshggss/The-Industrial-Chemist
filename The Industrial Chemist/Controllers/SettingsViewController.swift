@@ -136,7 +136,21 @@ class SettingsViewController: UIViewController {
         present(alert, animated: true)
     }
     @objc private func handleRestorePurchase() {
-        showAlert(title: "Notice", message: "Restore purchases coming soon.")
+        let button = tableView.tableFooterView?.subviews.first { $0 is UIButton && ($0 as? UIButton)?.titleLabel?.text?.contains("RESTORE") == true } as? UIButton
+        button?.isEnabled = false
+
+        SubscriptionManager.shared.restorePurchases { [weak self] success, error in
+            DispatchQueue.main.async {
+                button?.isEnabled = true
+
+                if success {
+                    self?.showAlert(title: "Success", message: "Purchases restored successfully!")
+                } else {
+                    let message = error?.localizedDescription ?? "No purchases found to restore."
+                    self?.showAlert(title: "Restore Failed", message: message)
+                }
+            }
+        }
     }
     private func showAlert(title: String = "Error", message: String) {
         let alert = UIAlertController(title: title,
@@ -144,6 +158,12 @@ class SettingsViewController: UIViewController {
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+    }
+
+    private func showSubscriptionScreen() {
+        let subscriptionVC = SubscriptionViewController()
+        subscriptionVC.modalPresentationStyle = .fullScreen
+        present(subscriptionVC, animated: true)
     }
 
 
@@ -227,7 +247,8 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             default: vc = nil
             }
         case 1: // Subscription
-            vc = nil
+            showSubscriptionScreen()
+            return
         case 2: // Support
             vc = nil
         case 3: // Legal

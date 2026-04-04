@@ -124,18 +124,14 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
                             let time = data["time"] as? String ?? ""
 
                             let progressInfo = progressByExperimentId[expId]
-                            var status = progressInfo?.status ?? "In Progress"
-                            if status == "Locked" {
-                                status = "In Progress"
-                            }
+                            // If no progress document exists, experiment is locked
+                            var status = progressInfo?.status ?? "Locked"
                             let progValue = progressInfo?.progress ?? 0.0
 
-                            if title == "Ammonia Process" {
-                                status = "Completed"
-                            } else if title == "Methanol Synthesis" {
+                            // Check if user has subscription - if yes, unlock all experiments
+                            let hasSubscription = UserManager.shared.currentUser?.hasSubscription ?? false
+                            if hasSubscription && status == "Locked" {
                                 status = "In Progress"
-                            } else if title == "Ostwald Process" {
-                                status = "Locked"
                             }
 
                             var experimentModel: Experiment? = nil
@@ -386,11 +382,20 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
     // MARK: - Locked Alert
     private func showLockedAlert() {
         let alert = UIAlertController(
-            title: "Experiment Locked",
-            message: "Complete the previous experiments to unlock this one.",
+            title: "Experiment Locked 🔒",
+            message: "Complete the previous experiments to unlock this one, or subscribe to unlock all experiments instantly!",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.addAction(UIAlertAction(title: "Subscribe", style: .default, handler: { _ in
+            self.showSubscriptionInfo()
+        }))
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
         present(alert, animated: true)
+    }
+
+    private func showSubscriptionInfo() {
+        let subscriptionVC = SubscriptionViewController()
+        subscriptionVC.modalPresentationStyle = .fullScreen
+        present(subscriptionVC, animated: true)
     }
 }

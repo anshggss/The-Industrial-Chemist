@@ -206,6 +206,13 @@ final class Login2ViewController: UIViewController {
                     }
                 }
 
+                // Check and update subscription status
+                SubscriptionManager.shared.checkSubscriptionStatus { isSubscribed in
+                    if isSubscribed {
+                        SubscriptionManager.shared.updateFirebaseSubscription(isSubscribed: true)
+                    }
+                }
+
                 self.seedProgressIfNeeded(uid: uid) { [weak self] in
                     guard let self else { return }
                     self.hideLoading()
@@ -241,7 +248,8 @@ final class Login2ViewController: UIViewController {
                     experience: data["experience"] as? Int ?? 0,
                     weeklyXP: data["weeklyXP"] as? Int,
                     currentStreak: data["currentStreak"] as? Int,
-                    division: data["division"] as? String
+                    division: data["division"] as? String,
+                    hasSubscription: data["hasSubscription"] as? Bool
                 )
                 completion(.success(user))
                 return
@@ -259,6 +267,7 @@ final class Login2ViewController: UIViewController {
                 "lastActivityDate": FieldValue.serverTimestamp(),
                 "lastLoginDate": FieldValue.serverTimestamp(),
                 "division": "Bronze",
+                "hasSubscription": false,
                 "createdAt": FieldValue.serverTimestamp()
             ]
 
@@ -276,7 +285,8 @@ final class Login2ViewController: UIViewController {
                     experience: 0,
                     weeklyXP: 0,
                     currentStreak: 0,
-                    division: "Bronze"
+                    division: "Bronze",
+                    hasSubscription: false
                 )
                 completion(.success(user))
             }

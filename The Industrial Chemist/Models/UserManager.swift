@@ -23,8 +23,9 @@ struct AppUser {
     var weeklyXP: Int?
     var currentStreak: Int?
     var division: String?
+    var hasSubscription: Bool?
 
-    init(uid: String, name: String, email: String, phone: String, experience: Int, weeklyXP: Int? = nil, currentStreak: Int? = nil, division: String? = nil) {
+    init(uid: String, name: String, email: String, phone: String, experience: Int, weeklyXP: Int? = nil, currentStreak: Int? = nil, division: String? = nil, hasSubscription: Bool? = nil) {
         self.uid = uid
         self.name = name
         self.email = email
@@ -33,5 +34,6 @@ struct AppUser {
         self.weeklyXP = weeklyXP
         self.currentStreak = currentStreak
         self.division = division
+        self.hasSubscription = hasSubscription
     }
 }

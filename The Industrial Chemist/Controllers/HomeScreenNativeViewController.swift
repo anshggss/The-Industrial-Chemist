@@ -121,18 +121,14 @@ final class HomeScreenNativeViewController: UIViewController {
                             let title = data["title"] as? String ?? "Untitled"
 
                             let progressInfo = progressById[expId]
-                            var status = progressInfo?.status ?? "In Progress"
-                            if status == "Locked" {
-                                status = "In Progress"
-                            }
+                            // If no progress document exists, experiment is locked
+                            var status = progressInfo?.status ?? "Locked"
                             let progress = progressInfo?.progress ?? 0.0
 
-                            if title == "Ammonia Process" {
-                                status = "Completed"
-                            } else if title == "Methanol Synthesis" {
+                            // Check if user has subscription - if yes, unlock all experiments
+                            let hasSubscription = UserManager.shared.currentUser?.hasSubscription ?? false
+                            if hasSubscription && status == "Locked" {
                                 status = "In Progress"
-                            } else if title == "Ostwald Process" {
-                                status = "Locked"
                             }
 
                             let iconName = "flame.fill"
