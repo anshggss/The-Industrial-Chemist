@@ -1,4 +1,6 @@
 import UIKit
+import FirebaseFirestore
+import FirebaseAuth
 
 // MARK: - Models
 
@@ -22,7 +24,7 @@ enum Division: String {
         switch self {
         case .bronze: return "shield.fill"
         case .silver: return "shield.lefthalf.filled"
-        case .gold: return "shield.checkered"
+        case .gold: return "star.circle.fill"
         case .platinum: return "star.shield.fill"
         case .diamond: return "diamond.fill"
         case .master: return "crown.fill"
@@ -66,29 +68,12 @@ enum Division: String {
 // MARK: - LeaderboardViewController
 
 class Leaderboard2ViewController: UIViewController {
-    
-    // MARK: - Dummy Data
-    
-    private let userStats = UserStats(
-        streak: 5,
-        totalXP: 2450,
-        weeklyXP: 380,
-        rank: 5,
-        division: .gold
-    )
-    
-    private let leaderboardData: [LeaderboardEntry] = [
-        LeaderboardEntry(rank: 1, name: "ChemMaster99", xp: 1250, profileImage: nil),
-        LeaderboardEntry(rank: 2, name: "ScienceQueen", xp: 1180, profileImage: nil),
-        LeaderboardEntry(rank: 3, name: "LabRat2024", xp: 1050, profileImage: nil),
-        LeaderboardEntry(rank: 4, name: "MoleculeMan", xp: 920, profileImage: nil),
-        LeaderboardEntry(rank: 5, name: "You", xp: 380, profileImage: nil),
-        LeaderboardEntry(rank: 6, name: "AtomicAnna", xp: 340, profileImage: nil),
-        LeaderboardEntry(rank: 7, name: "ReactionKing", xp: 290, profileImage: nil),
-        LeaderboardEntry(rank: 8, name: "BunsenBurner", xp: 245, profileImage: nil),
-        LeaderboardEntry(rank: 9, name: "PeriodicPete", xp: 180, profileImage: nil),
-        LeaderboardEntry(rank: 10, name: "CatalystCat", xp: 120, profileImage: nil)
-    ]
+
+    // MARK: - Data
+
+    private var userStats: UserStats?
+    private var leaderboardData: [LeaderboardEntry] = []
+    private var isLoading = false
     
     // MARK: - UI Elements
     
@@ -166,14 +151,74 @@ class Leaderboard2ViewController: UIViewController {
         view.backgroundColor = AppColors.background
         setupUI()
         setupTableView()
+        loadLeaderboardData()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // Refresh data when view appears
+        loadLeaderboardData()
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         DispatchQueue.main.async {
-                self.tableHeightConstraint?.constant = self.tableView.contentSize.height
-                self.view.layoutIfNeeded()
+            self.tableHeightConstraint?.constant = self.tableView.contentSize.height
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    // MARK: - Data Loading
+
+    private func loadLeaderboardData() {
+        guard !isLoading else { return }
+        isLoading = true
+
+        // Fetch user stats
+        ExperienceManager.shared.getUserStats { [weak self] stats in
+            guard let self = self else { return }
+
+            self.userStats = stats
+
+            // Fetch leaderboard
+            LeaderboardManager.shared.fetchLeaderboardWithCurrentUser { [weak self] entries, currentRank, error in
+                guard let self = self else { return }
+
+                self.isLoading = false
+
+                if let error = error {
+                    print("❌ Error loading leaderboard: \(error.localizedDescription)")
+                    return
+                }
+
+                self.leaderboardData = entries ?? []
+
+                // Update UI on main thread
+                DispatchQueue.main.async {
+                    self.refreshUI()
+                }
             }
+        }
+    }
+
+    private func refreshUI() {
+        // Update time remaining label
+        timeRemainingLabel.text = LeaderboardManager.shared.getTimeRemainingString()
+
+        // Reload stats container
+        statsContainerView.subviews.forEach { $0.removeFromSuperview() }
+        setupStatsContainer()
+
+        // Reload division card
+        divisionCardView.subviews.forEach { $0.removeFromSuperview() }
+        setupDivisionCard()
+
+        // Reload table
+        tableView.reloadData()
+        tableView.layoutIfNeeded()
+        tableHeightConstraint?.constant = tableView.contentSize.height
+        view.layoutIfNeeded()
     }
     
     // MARK: - Setup UI
@@ -207,20 +252,20 @@ class Leaderboard2ViewController: UIViewController {
             headerLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             headerLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             
-            // Stats Container
-            statsContainerView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 20),
-            statsContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            statsContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            statsContainerView.heightAnchor.constraint(equalToConstant: 120),
-            
             // Division Card
-            divisionCardView.topAnchor.constraint(equalTo: statsContainerView.bottomAnchor, constant: 16),
+            divisionCardView.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 20),
             divisionCardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             divisionCardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             divisionCardView.heightAnchor.constraint(equalToConstant: 160),
             
+            // Stats Container
+            statsContainerView.topAnchor.constraint(equalTo: divisionCardView.bottomAnchor, constant: 16),
+            statsContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            statsContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            statsContainerView.heightAnchor.constraint(equalToConstant: 120),
+            
             // Weekly Leaderboard Label
-            weeklyLeaderboardLabel.topAnchor.constraint(equalTo: divisionCardView.bottomAnchor, constant: 24),
+            weeklyLeaderboardLabel.topAnchor.constraint(equalTo: statsContainerView.bottomAnchor, constant: 24),
             weeklyLeaderboardLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             
             // Time Remaining
@@ -244,32 +289,77 @@ class Leaderboard2ViewController: UIViewController {
     }
     
     // MARK: - Stats Container
-    
+
     private func setupStatsContainer() {
+        guard let stats = userStats else {
+            // Show loading placeholders
+            let streakView = createStatCard(
+                icon: "flame.fill",
+                iconColor: UIColor(hex: "#FF6B35"),
+                iconBackgroundColor: UIColor(hex: "#FF6B35").withAlphaComponent(0.2),
+                value: "...",
+                label: "Day Streak"
+            )
+
+            let totalXPView = createStatCard(
+                icon: "bolt.fill",
+                iconColor: AppColors.progress,
+                iconBackgroundColor: AppColors.progress.withAlphaComponent(0.2),
+                value: "...",
+                label: "Total XP"
+            )
+
+            let rankView = createStatCard(
+                icon: "trophy.fill",
+                iconColor: UIColor(hex: "#FFD700"),
+                iconBackgroundColor: UIColor(hex: "#FFD700").withAlphaComponent(0.2),
+                value: "...",
+                label: "Your Rank"
+            )
+
+            let stackView = UIStackView(arrangedSubviews: [streakView, totalXPView, rankView])
+            stackView.axis = .horizontal
+            stackView.distribution = .fillEqually
+            stackView.spacing = 12
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+
+            statsContainerView.addSubview(stackView)
+            statsContainerView.backgroundColor = .clear
+            statsContainerView.layer.shadowOpacity = 0
+
+            NSLayoutConstraint.activate([
+                stackView.topAnchor.constraint(equalTo: statsContainerView.topAnchor),
+                stackView.leadingAnchor.constraint(equalTo: statsContainerView.leadingAnchor),
+                stackView.trailingAnchor.constraint(equalTo: statsContainerView.trailingAnchor),
+                stackView.bottomAnchor.constraint(equalTo: statsContainerView.bottomAnchor)
+            ])
+            return
+        }
+
         // Streak View
         let streakView = createStatCard(
             icon: "flame.fill",
             iconColor: UIColor(hex: "#FF6B35"),
             iconBackgroundColor: UIColor(hex: "#FF6B35").withAlphaComponent(0.2),
-            value: "\(userStats.streak)",
+            value: "\(stats.streak)",
             label: "Day Streak"
         )
-        
+
         // Total XP View
         let totalXPView = createStatCard(
             icon: "bolt.fill",
             iconColor: AppColors.progress,
             iconBackgroundColor: AppColors.progress.withAlphaComponent(0.2),
-            value: "\(userStats.totalXP)",
+            value: "\(stats.totalXP)",
             label: "Total XP"
         )
-        
+
         // Rank View
         let rankView = createStatCard(
             icon: "trophy.fill",
             iconColor: UIColor(hex: "#FFD700"),
             iconBackgroundColor: UIColor(hex: "#FFD700").withAlphaComponent(0.2),
-            value: "#\(userStats.rank)",
+            value: "#\(stats.rank)",
             label: "Your Rank"
         )
         
@@ -370,61 +460,76 @@ class Leaderboard2ViewController: UIViewController {
 
     
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Reload and update height
-        tableView.reloadData()
-        tableView.layoutIfNeeded()
-        tableHeightConstraint?.constant = tableView.contentSize.height
-    }
     // MARK: - Division Card
-    
+
     private func setupDivisionCard() {
+        guard let stats = userStats else {
+            // Show loading state
+            let loadingLabel = UILabel()
+            loadingLabel.text = "Loading..."
+            loadingLabel.font = .systemFont(ofSize: 18, weight: .semibold)
+            loadingLabel.textColor = AppColors.textPrimary.withAlphaComponent(0.6)
+            loadingLabel.textAlignment = .center
+            loadingLabel.translatesAutoresizingMaskIntoConstraints = false
+
+            divisionCardView.addSubview(loadingLabel)
+
+            NSLayoutConstraint.activate([
+                loadingLabel.centerXAnchor.constraint(equalTo: divisionCardView.centerXAnchor),
+                loadingLabel.centerYAnchor.constraint(equalTo: divisionCardView.centerYAnchor)
+            ])
+
+            divisionCardView.layer.shadowColor = UIColor.black.cgColor
+            divisionCardView.layer.shadowOpacity = 0.15
+            divisionCardView.layer.shadowRadius = 10
+            divisionCardView.layer.shadowOffset = CGSize(width: 0, height: 5)
+            return
+        }
+
         // Division Icon Container
         let divisionIconContainer = UIView()
-        divisionIconContainer.backgroundColor = userStats.division.color.withAlphaComponent(0.2)
+        divisionIconContainer.backgroundColor = stats.division.color.withAlphaComponent(0.2)
         divisionIconContainer.layer.cornerRadius = 35
         divisionIconContainer.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let divisionIcon = UIImageView()
-        divisionIcon.image = UIImage(systemName: userStats.division.imageName)
-        divisionIcon.tintColor = userStats.division.color
+        divisionIcon.image = UIImage(systemName: stats.division.imageName)
+        divisionIcon.tintColor = stats.division.color
         divisionIcon.contentMode = .scaleAspectFit
         divisionIcon.translatesAutoresizingMaskIntoConstraints = false
-        
+
         // Division Info
         let divisionLabel = UILabel()
-        divisionLabel.text = userStats.division.rawValue
+        divisionLabel.text = stats.division.rawValue
         divisionLabel.font = .systemFont(ofSize: 24, weight: .bold)
         divisionLabel.textColor = AppColors.textPrimary
         divisionLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let divisionSubtitle = UILabel()
         divisionSubtitle.text = "Current Division"
         divisionSubtitle.font = .systemFont(ofSize: 14, weight: .medium)
         divisionSubtitle.textColor = AppColors.textPrimary.withAlphaComponent(0.6)
         divisionSubtitle.translatesAutoresizingMaskIntoConstraints = false
-        
+
         // Weekly XP Badge
         let weeklyBadge = UIView()
         weeklyBadge.backgroundColor = AppColors.progress.withAlphaComponent(0.2)
         weeklyBadge.layer.cornerRadius = 12
         weeklyBadge.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let weeklyLabel = UILabel()
-        weeklyLabel.text = "+\(userStats.weeklyXP) XP this week"
+        weeklyLabel.text = "+\(stats.weeklyXP) XP this week"
         weeklyLabel.font = .systemFont(ofSize: 12, weight: .semibold)
         weeklyLabel.textColor = AppColors.progress
         weeklyLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         // Progress Container
         let progressContainer = UIView()
         progressContainer.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let progressLabel = UILabel()
-        if let nextDiv = userStats.division.nextDivision {
-            let xpNeeded = nextDiv.xpRequired - userStats.totalXP
+        if let nextDiv = stats.division.nextDivision {
+            let xpNeeded = nextDiv.xpRequired - stats.totalXP
             progressLabel.text = "\(xpNeeded) XP to \(nextDiv.rawValue)"
         } else {
             progressLabel.text = "Max Division Reached! 🎉"
@@ -432,19 +537,19 @@ class Leaderboard2ViewController: UIViewController {
         progressLabel.font = .systemFont(ofSize: 12, weight: .medium)
         progressLabel.textColor = AppColors.textPrimary.withAlphaComponent(0.7)
         progressLabel.translatesAutoresizingMaskIntoConstraints = false
-        
+
         let progressBar = UIProgressView(progressViewStyle: .default)
-        progressBar.progressTintColor = userStats.division.color
-        progressBar.trackTintColor = userStats.division.color.withAlphaComponent(0.2)
+        progressBar.progressTintColor = stats.division.color
+        progressBar.trackTintColor = stats.division.color.withAlphaComponent(0.2)
         progressBar.layer.cornerRadius = 4
         progressBar.clipsToBounds = true
         progressBar.translatesAutoresizingMaskIntoConstraints = false
-        
+
         // Calculate progress
-        if let nextDiv = userStats.division.nextDivision {
-            let currentMin = userStats.division.xpRequired
+        if let nextDiv = stats.division.nextDivision {
+            let currentMin = stats.division.xpRequired
             let nextMin = nextDiv.xpRequired
-            let progress = Float(userStats.totalXP - currentMin) / Float(nextMin - currentMin)
+            let progress = Float(stats.totalXP - currentMin) / Float(nextMin - currentMin)
             progressBar.progress = min(max(progress, 0), 1)
         } else {
             progressBar.progress = 1.0

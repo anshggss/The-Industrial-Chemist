@@ -23,12 +23,12 @@ final class HomeScreenNativeViewController: UIViewController {
     private var continueItem: HomeExperimentItem?
     private var lockedItems: [HomeExperimentItem] = []
 
-    // MARK: - Sections
     private enum Section: Int, CaseIterable {
         case greeting = 0
         case streak = 1
         case continueLearning = 2
-        case moreToLearn = 3
+        case calendar = 3
+        case moreToLearn = 4
     }
 
     // MARK: - Lifecycle
@@ -120,12 +120,32 @@ final class HomeScreenNativeViewController: UIViewController {
 
                             let title = data["title"] as? String ?? "Untitled"
 
+                            // Debug: Print actual title from Firebase
+                            print("🔍 DEBUG - Experiment ID: \(expId), Title: '\(title)'")
+
                             let progressInfo = progressById[expId]
-                            var status = progressInfo?.status ?? "In Progress"
-                            if status == "Locked" {
-                                status = "In Progress"
-                            }
+                            // If no progress document exists, experiment is locked
+                            var status = progressInfo?.status ?? "Locked"
                             let progress = progressInfo?.progress ?? 0.0
+
+                            print("🔍 DEBUG - Status before unlock logic: \(status)")
+
+                            // Ammonia/Haber Process is ALWAYS unlocked for all users (free and paid)
+                            // Only ammonia/haber is free - all other experiments require subscription
+                            let isAmmoniaProcess = title.lowercased().contains("ammonia") ||
+                                                   title.lowercased().contains("haber")
+                            print("🔍 DEBUG - Is Ammonia/Haber Process: \(isAmmoniaProcess)")
+
+                            // Check if user has subscription - if yes, unlock all experiments
+                            let hasSubscription = UserManager.shared.currentUser?.hasSubscription ?? false
+                            if status == "Locked" {
+                                if isAmmoniaProcess || hasSubscription {
+                                    status = "In Progress"
+                                    print("✅ DEBUG - Unlocking experiment: \(title)")
+                                }
+                            }
+
+                            print("🔍 DEBUG - Final status: \(status)")
 
                             let iconName = "flame.fill"
 
@@ -168,9 +188,9 @@ final class HomeScreenNativeViewController: UIViewController {
     }
 
     private func applyHomeLogic(items: [HomeExperimentItem]) {
-        // Continue item: first "In Progress", else first unlocked, else nil
+        // Continue item: Find the furthest "In Progress" experiment sequentially 
         var inProgress: HomeExperimentItem?
-        for item in items {
+        for item in items.reversed() {
             if item.status == "In Progress" {
                 inProgress = item
                 break
@@ -180,14 +200,15 @@ final class HomeScreenNativeViewController: UIViewController {
         if inProgress != nil {
             continueItem = inProgress
         } else {
-            var firstUnlocked: HomeExperimentItem?
-            for item in items {
+            // Find the furthest unlocked item if nothing is actively in progress
+            var latestUnlocked: HomeExperimentItem?
+            for item in items.reversed() {
                 if item.status != "Locked" {
-                    firstUnlocked = item
+                    latestUnlocked = item
                     break
                 }
             }
-            continueItem = firstUnlocked
+            continueItem = latestUnlocked
         }
 
         // Locked items: show up to 3 locked experiments
@@ -216,6 +237,7 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
 
         tableView.register(GreetingCell.self, forCellReuseIdentifier: GreetingCell.identifier)
         tableView.register(StreakTableViewCell.self, forCellReuseIdentifier: "StreakCell")
+        tableView.register(CalendarWidgetCell.self, forCellReuseIdentifier: CalendarWidgetCell.identifier)
         tableView.register(LearningCardCell.self, forCellReuseIdentifier: LearningCardCell.identifier)
         tableView.register(LockedTopicCell.self, forCellReuseIdentifier: LockedTopicCell.identifier)
 
@@ -246,8 +268,8 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
         case .greeting: return 1
         case .streak: return 1
         case .continueLearning:
-            // If nothing to continue, you can return 0 to hide this section row
             return (continueItem == nil) ? 0 : 1
+        case .calendar: return 1
         case .moreToLearn:
             return lockedItems.count
         }
@@ -267,7 +289,9 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
 
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = (sec == .continueLearning) ? "Continue Learning" : "More to Learn"
+        if sec == .continueLearning { label.text = "Continue Learning" }
+        else if sec == .moreToLearn { label.text = "More to Learn" }
+        
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         label.textColor = AppColors.cardPrimary
 
@@ -308,8 +332,14 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "StreakCell", for: indexPath) as? StreakTableViewCell else {
                 return UITableViewCell()
             }
-            // TODO: Replace with real streak logic if you track it in Firestore
-            cell.configure(days: 5)
+            let currentStreak = UserManager.shared.currentUser?.currentStreak ?? 0
+            cell.configure(days: currentStreak)
+            return cell
+
+        case .calendar:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CalendarWidgetCell.identifier, for: indexPath) as? CalendarWidgetCell else {
+                return UITableViewCell()
+            }
             return cell
 
         case .continueLearning:
@@ -343,16 +373,32 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
         tableView.deselectRow(at: indexPath, animated: true)
 
         guard let sec = Section(rawValue: indexPath.section) else { return }
+        
+        if sec == .moreToLearn {
+            let item = lockedItems[indexPath.row]
+            if item.status == "Locked" {
+                let alert = UIAlertController(title: "Experiment Locked", message: "Complete previous modules to unlock this one.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                present(alert, animated: true)
+            }
+            return
+        }
+        
         guard sec == .continueLearning else { return }
-        guard let item = continueItem else { return }
-        guard item.status != "Locked", let experiment = item.experiment else { return }
+        
+        guard let item = continueItem else { 
+            print("No continue item available")
+            return 
+        }
+        
+        guard item.status != "Locked", let experiment = item.experiment else { 
+            print("Failed to navigate. Item status: \(item.status), experiment is valid: \(item.experiment != nil)")
+            return 
+        }
 
         let setUpVC = SetUpViewController(experiment: experiment, nib: "SetUp")
-        setUpVC.isAtHome.toggle()
-
-        let navController = UINavigationController(rootViewController: setUpVC)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true)
+        setUpVC.isAtHome = true
+        navigationController?.pushViewController(setUpVC, animated: true)
     }
 }
 
@@ -413,6 +459,140 @@ final class GreetingCell: UITableViewCell {
         if hour >= 5 && hour < 12 { return "Good morning" }
         if hour >= 12 && hour < 17 { return "Good afternoon" }
         return "Good evening"
+    }
+}
+
+// MARK: - Greeting Cell
+//
+// MARK: - Calendar Widget Cell
+final class CalendarWidgetCell: UITableViewCell {
+    static let identifier = "CalendarWidgetCell"
+    private let cardView = UIView()
+    private let monthLabel = UILabel()
+    private let gridStack = UIStackView()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
+        backgroundColor = .clear
+        
+        cardView.backgroundColor = AppColors.cardPrimary
+        cardView.layer.cornerRadius = 16
+        cardView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(cardView)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM yyyy"
+        let currentMonthString = formatter.string(from: Date()).uppercased()
+        
+        monthLabel.text = currentMonthString
+        monthLabel.font = .systemFont(ofSize: 14, weight: .bold)
+        monthLabel.textColor = AppColors.textPrimary
+        monthLabel.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(monthLabel)
+        
+        gridStack.axis = .vertical
+        gridStack.spacing = 10
+        gridStack.distribution = .fillEqually
+        gridStack.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(gridStack)
+        
+        buildGrid()
+        
+        NSLayoutConstraint.activate([
+            cardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4),
+            cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
+            cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            
+            monthLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 16),
+            monthLabel.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
+            
+            gridStack.topAnchor.constraint(equalTo: monthLabel.bottomAnchor, constant: 16),
+            gridStack.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
+            gridStack.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
+            gridStack.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -20),
+            gridStack.heightAnchor.constraint(equalToConstant: 180)
+        ])
+    }
+    
+    required init?(coder: NSCoder) { fatalError() }
+    
+    private var trackedStreak: Int = 0
+    
+    func configure(streak: Int) {
+        self.trackedStreak = streak
+        for subview in gridStack.arrangedSubviews {
+            subview.removeFromSuperview()
+        }
+        buildGrid()
+    }
+    
+    private func buildGrid() {
+        let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        let headerRow = UIStackView()
+        headerRow.axis = .horizontal
+        headerRow.distribution = .fillEqually
+        for day in days {
+            let lbl = UILabel()
+            lbl.text = day
+            lbl.font = .systemFont(ofSize: 10, weight: .semibold)
+            lbl.textColor = .lightGray
+            lbl.textAlignment = .center
+            headerRow.addArrangedSubview(lbl)
+        }
+        gridStack.addArrangedSubview(headerRow)
+        
+        let targetEndDay = 30
+        let streakStartDay = max(1, targetEndDay - trackedStreak + 1)
+        
+        // Add 5 rows of dates
+        var dateCounter = 15
+        for _ in 0..<5 {
+            let row = UIStackView()
+            row.axis = .horizontal
+            row.distribution = .fillEqually
+            for _ in 0..<7 {
+                let circleView = UIView()
+                // Color dots matching backwards from the 30th matching streak size
+                let isCompleted = dateCounter >= streakStartDay && dateCounter <= targetEndDay
+                let isCurrentMonth = dateCounter <= 31
+                
+                let dayContainer = UIView()
+                circleView.translatesAutoresizingMaskIntoConstraints = false
+                circleView.layer.cornerRadius = 13
+                circleView.layer.borderWidth = (isCompleted || !isCurrentMonth) ? 0 : 1
+                circleView.layer.borderColor = UIColor.lightGray.cgColor
+                circleView.backgroundColor = isCompleted ? AppColors.completed : .clear
+                
+                let dayLabel = UILabel()
+                if isCurrentMonth {
+                    dayLabel.text = "\(dateCounter)"
+                } else {
+                    dayLabel.text = "\(dateCounter - 31)"
+                }
+                dateCounter += 1
+                
+                dayLabel.font = .systemFont(ofSize: 12, weight: .bold)
+                dayLabel.textColor = isCompleted ? .white : AppColors.textPrimary
+                dayLabel.textAlignment = .center
+                dayLabel.translatesAutoresizingMaskIntoConstraints = false
+                
+                dayContainer.addSubview(circleView)
+                circleView.addSubview(dayLabel)
+                
+                NSLayoutConstraint.activate([
+                    circleView.centerXAnchor.constraint(equalTo: dayContainer.centerXAnchor),
+                    circleView.centerYAnchor.constraint(equalTo: dayContainer.centerYAnchor),
+                    circleView.widthAnchor.constraint(equalToConstant: 26),
+                    circleView.heightAnchor.constraint(equalToConstant: 26),
+                    dayLabel.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
+                    dayLabel.centerYAnchor.constraint(equalTo: circleView.centerYAnchor)
+                ])
+                row.addArrangedSubview(dayContainer)
+            }
+            gridStack.addArrangedSubview(row)
+        }
     }
 }
 

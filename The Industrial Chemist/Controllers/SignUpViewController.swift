@@ -222,6 +222,10 @@ class SignUpViewController: UIViewController {
                 "email": email,
                 "phone": phone,
                 "experience": 0,
+                "weeklyXP": 0,
+                "currentStreak": 0,
+                "lastActivityDate": FieldValue.serverTimestamp(),
+                "division": "Bronze",
                 "createdAt": FieldValue.serverTimestamp()
             ]) { error in
                 self.hideLoading()

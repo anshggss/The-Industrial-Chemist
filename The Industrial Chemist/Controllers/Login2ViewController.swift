@@ -199,6 +199,20 @@ final class Login2ViewController: UIViewController {
             case .success(let user):
                 UserManager.shared.currentUser = user
 
+                // Update login streak on successful login
+                ExperienceManager.shared.updateLoginStreak { success, newStreak in
+                    if success {
+                        print("✅ Login streak updated to: \(newStreak)")
+                    }
+                }
+
+                // Check and update subscription status
+                SubscriptionManager.shared.checkSubscriptionStatus { isSubscribed in
+                    if isSubscribed {
+                        SubscriptionManager.shared.updateFirebaseSubscription(isSubscribed: true)
+                    }
+                }
+
                 self.seedProgressIfNeeded(uid: uid) { [weak self] in
                     guard let self else { return }
                     self.hideLoading()
@@ -231,7 +245,11 @@ final class Login2ViewController: UIViewController {
                     name: data["name"] as? String ?? (name ?? ""),
                     email: data["email"] as? String ?? (email ?? ""),
                     phone: data["phone"] as? String ?? "",
-                    experience: data["experience"] as? Int ?? 0
+                    experience: data["experience"] as? Int ?? 0,
+                    weeklyXP: data["weeklyXP"] as? Int,
+                    currentStreak: data["currentStreak"] as? Int,
+                    division: data["division"] as? String,
+                    hasSubscription: data["hasSubscription"] as? Bool
                 )
                 completion(.success(user))
                 return
@@ -244,6 +262,12 @@ final class Login2ViewController: UIViewController {
                 "email": email ?? "",
                 "phone": "",
                 "experience": 0,
+                "weeklyXP": 0,
+                "currentStreak": 0,
+                "lastActivityDate": FieldValue.serverTimestamp(),
+                "lastLoginDate": FieldValue.serverTimestamp(),
+                "division": "Bronze",
+                "hasSubscription": false,
                 "createdAt": FieldValue.serverTimestamp()
             ]
 
@@ -258,7 +282,11 @@ final class Login2ViewController: UIViewController {
                     name: name ?? "",
                     email: email ?? "",
                     phone: "",
-                    experience: 0
+                    experience: 0,
+                    weeklyXP: 0,
+                    currentStreak: 0,
+                    division: "Bronze",
+                    hasSubscription: false
                 )
                 completion(.success(user))
             }
@@ -303,6 +331,8 @@ final class Login2ViewController: UIViewController {
                     }
 
                     let firstExperimentId = firstDoc.documentID
+                    let firstExperimentTitle = firstDoc.data()["title"] as? String ?? "Unknown"
+                    print("🔍 DEBUG Signup - Unlocking first experiment: ID=\(firstExperimentId), Title='\(firstExperimentTitle)'")
 
                     progressRef.document(firstExperimentId).setData([
                         "status": "In Progress",
@@ -310,7 +340,9 @@ final class Login2ViewController: UIViewController {
                         "updatedAt": FieldValue.serverTimestamp()
                     ], merge: true) { error in
                         if let error {
-                            print("Seed progress error:", error)
+                            print("❌ Seed progress error:", error)
+                        } else {
+                            print("✅ Successfully unlocked first experiment: \(firstExperimentTitle)")
                         }
                         completion()
                     }

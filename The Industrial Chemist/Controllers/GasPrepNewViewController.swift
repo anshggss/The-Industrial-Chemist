@@ -39,7 +39,7 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
         return sc
     }()
 
-    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    private let tableView = UITableView(frame: .zero, style: .plain)
 
     private let emptyStateLabel: UILabel = {
         let label = UILabel()
@@ -124,11 +124,24 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
                             let time = data["time"] as? String ?? ""
 
                             let progressInfo = progressByExperimentId[expId]
-                            var status = progressInfo?.status ?? "In Progress"
-                            if status == "Locked" {
-                                status = "In Progress"
-                            }
+                            // If no progress document exists, experiment is locked
+                            var status = progressInfo?.status ?? "Locked"
                             let progValue = progressInfo?.progress ?? 0.0
+
+                            // Ammonia/Haber Process is ALWAYS unlocked for all users (free and paid)
+                            // Only ammonia/haber is free - all other experiments require subscription
+                            let isAmmoniaProcess = title.lowercased().contains("ammonia") ||
+                                                   title.lowercased().contains("haber")
+                            print("🔍 DEBUG GasPrep - Experiment: '\(title)', Is free experiment: \(isAmmoniaProcess)")
+
+                            // Check if user has subscription - if yes, unlock all experiments
+                            let hasSubscription = UserManager.shared.currentUser?.hasSubscription ?? false
+                            if status == "Locked" {
+                                if isAmmoniaProcess || hasSubscription {
+                                    status = "In Progress"
+                                    print("✅ DEBUG GasPrep - Unlocking: \(title)")
+                                }
+                            }
 
                             var experimentModel: Experiment? = nil
                             if status != "Locked" {
@@ -299,7 +312,7 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
         }
 
         emptyStateLabel.isHidden = !filteredExperiments.isEmpty
-        tableView.isHidden = filteredExperiments.isEmpty
+        tableView.isHidden = false
         tableView.reloadData()
     }
 
@@ -378,11 +391,20 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
     // MARK: - Locked Alert
     private func showLockedAlert() {
         let alert = UIAlertController(
-            title: "Experiment Locked",
-            message: "Complete the previous experiments to unlock this one.",
+            title: "Experiment Locked 🔒",
+            message: "Complete the previous experiments to unlock this one, or subscribe to unlock all experiments instantly!",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.addAction(UIAlertAction(title: "Subscribe", style: .default, handler: { _ in
+            self.showSubscriptionInfo()
+        }))
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
         present(alert, animated: true)
+    }
+
+    private func showSubscriptionInfo() {
+        let subscriptionVC = SubscriptionViewController()
+        subscriptionVC.modalPresentationStyle = .fullScreen
+        present(subscriptionVC, animated: true)
     }
 }
