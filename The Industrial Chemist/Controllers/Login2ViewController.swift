@@ -331,6 +331,8 @@ final class Login2ViewController: UIViewController {
                     }
 
                     let firstExperimentId = firstDoc.documentID
+                    let firstExperimentTitle = firstDoc.data()["title"] as? String ?? "Unknown"
+                    print("🔍 DEBUG Signup - Unlocking first experiment: ID=\(firstExperimentId), Title='\(firstExperimentTitle)'")
 
                     progressRef.document(firstExperimentId).setData([
                         "status": "In Progress",
@@ -338,7 +340,9 @@ final class Login2ViewController: UIViewController {
                         "updatedAt": FieldValue.serverTimestamp()
                     ], merge: true) { error in
                         if let error {
-                            print("Seed progress error:", error)
+                            print("❌ Seed progress error:", error)
+                        } else {
+                            print("✅ Successfully unlocked first experiment: \(firstExperimentTitle)")
                         }
                         completion()
                     }

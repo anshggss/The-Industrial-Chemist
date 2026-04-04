@@ -128,10 +128,20 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
                             var status = progressInfo?.status ?? "Locked"
                             let progValue = progressInfo?.progress ?? 0.0
 
+                            // Ammonia/Haber Process is ALWAYS unlocked for all users (free and paid)
+                            // Check for multiple possible title variations
+                            let isAmmoniaProcess = title.lowercased().contains("ammonia") ||
+                                                   title.lowercased().contains("haber") ||
+                                                   title.lowercased().contains("contact")
+                            print("🔍 DEBUG GasPrep - Experiment: '\(title)', Is free experiment: \(isAmmoniaProcess)")
+
                             // Check if user has subscription - if yes, unlock all experiments
                             let hasSubscription = UserManager.shared.currentUser?.hasSubscription ?? false
-                            if hasSubscription && status == "Locked" {
-                                status = "In Progress"
+                            if status == "Locked" {
+                                if isAmmoniaProcess || hasSubscription {
+                                    status = "In Progress"
+                                    print("✅ DEBUG GasPrep - Unlocking: \(title)")
+                                }
                             }
 
                             var experimentModel: Experiment? = nil

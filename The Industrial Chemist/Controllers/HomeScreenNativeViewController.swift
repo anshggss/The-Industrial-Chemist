@@ -120,16 +120,33 @@ final class HomeScreenNativeViewController: UIViewController {
 
                             let title = data["title"] as? String ?? "Untitled"
 
+                            // Debug: Print actual title from Firebase
+                            print("🔍 DEBUG - Experiment ID: \(expId), Title: '\(title)'")
+
                             let progressInfo = progressById[expId]
                             // If no progress document exists, experiment is locked
                             var status = progressInfo?.status ?? "Locked"
                             let progress = progressInfo?.progress ?? 0.0
 
+                            print("🔍 DEBUG - Status before unlock logic: \(status)")
+
+                            // Ammonia/Haber Process is ALWAYS unlocked for all users (free and paid)
+                            // Check for multiple possible title variations
+                            let isAmmoniaProcess = title.lowercased().contains("ammonia") ||
+                                                   title.lowercased().contains("haber") ||
+                                                   title.lowercased().contains("contact")
+                            print("🔍 DEBUG - Is Ammonia/Haber Process: \(isAmmoniaProcess)")
+
                             // Check if user has subscription - if yes, unlock all experiments
                             let hasSubscription = UserManager.shared.currentUser?.hasSubscription ?? false
-                            if hasSubscription && status == "Locked" {
-                                status = "In Progress"
+                            if status == "Locked" {
+                                if isAmmoniaProcess || hasSubscription {
+                                    status = "In Progress"
+                                    print("✅ DEBUG - Unlocking experiment: \(title)")
+                                }
                             }
+
+                            print("🔍 DEBUG - Final status: \(status)")
 
                             let iconName = "flame.fill"
 
