@@ -131,10 +131,9 @@ final class HomeScreenNativeViewController: UIViewController {
                             print("🔍 DEBUG - Status before unlock logic: \(status)")
 
                             // Ammonia/Haber Process is ALWAYS unlocked for all users (free and paid)
-                            // Check for multiple possible title variations
+                            // Only ammonia/haber is free - all other experiments require subscription
                             let isAmmoniaProcess = title.lowercased().contains("ammonia") ||
-                                                   title.lowercased().contains("haber") ||
-                                                   title.lowercased().contains("contact")
+                                                   title.lowercased().contains("haber")
                             print("🔍 DEBUG - Is Ammonia/Haber Process: \(isAmmoniaProcess)")
 
                             // Check if user has subscription - if yes, unlock all experiments

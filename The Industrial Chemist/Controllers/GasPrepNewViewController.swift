@@ -129,10 +129,9 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
                             let progValue = progressInfo?.progress ?? 0.0
 
                             // Ammonia/Haber Process is ALWAYS unlocked for all users (free and paid)
-                            // Check for multiple possible title variations
+                            // Only ammonia/haber is free - all other experiments require subscription
                             let isAmmoniaProcess = title.lowercased().contains("ammonia") ||
-                                                   title.lowercased().contains("haber") ||
-                                                   title.lowercased().contains("contact")
+                                                   title.lowercased().contains("haber")
                             print("🔍 DEBUG GasPrep - Experiment: '\(title)', Is free experiment: \(isAmmoniaProcess)")
 
                             // Check if user has subscription - if yes, unlock all experiments
