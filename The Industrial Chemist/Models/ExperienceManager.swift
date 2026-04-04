@@ -74,6 +74,9 @@ class ExperienceManager {
                 // Update UserManager
                 self.refreshCurrentUser()
 
+                // Check for achievement unlocks
+                self.checkAndUnlockAchievements { _ in }
+
                 completion(true, nil)
             }
         }
@@ -128,6 +131,9 @@ class ExperienceManager {
 
                 // Update UserManager
                 self.refreshCurrentUser()
+
+                // Check for achievement unlocks
+                self.checkAndUnlockAchievements { _ in }
 
                 completion(true, newStreak)
             }
@@ -284,7 +290,7 @@ class ExperienceManager {
         }
     }
 
-    private func getUserRank(uid: String, completion: @escaping (Int) -> Void) {
+    func getUserRank(uid: String, completion: @escaping (Int) -> Void) {
         // Query users with higher XP
         db.collection("users")
             .order(by: "experience", descending: true)
@@ -307,5 +313,114 @@ class ExperienceManager {
                     completion(documents.count + 1)
                 }
             }
+    }
+
+    // MARK: - Achievements
+
+    /// Fetches unlocked achievements for the current user
+    func getUnlockedAchievements(completion: @escaping ([String]?) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            completion(nil)
+            return
+        }
+
+        db.collection("users").document(uid).getDocument { snapshot, error in
+            if let error = error {
+                print("❌ Error fetching achievements: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+
+            guard let data = snapshot?.data() else {
+                completion([])
+                return
+            }
+
+            let achievements = data["achievements"] as? [String] ?? []
+            completion(achievements)
+        }
+    }
+
+    /// Checks and unlocks achievements based on user's current stats
+    func checkAndUnlockAchievements(completion: @escaping (Bool) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            completion(false)
+            return
+        }
+
+        let userRef = db.collection("users").document(uid)
+
+        // Fetch user data and progress
+        userRef.getDocument { [weak self] snapshot, error in
+            guard let self = self else { return }
+
+            if let error = error {
+                print("❌ Error fetching user for achievements: \(error.localizedDescription)")
+                completion(false)
+                return
+            }
+
+            guard let data = snapshot?.data() else {
+                completion(false)
+                return
+            }
+
+            let totalXP = data["experience"] as? Int ?? 0
+            let currentStreak = data["currentStreak"] as? Int ?? 0
+            var newUnlocks: [String] = []
+
+            // Check XP milestone (1000 XP)
+            if totalXP >= 1000 {
+                newUnlocks.append("xp_milestone")
+            }
+
+            // Check streak master (7 days)
+            if currentStreak >= 7 {
+                newUnlocks.append("streak_master")
+            }
+
+            // Check first experiment and all experiments
+            db.collection("users").document(uid).collection("progress")
+                .whereField("status", isEqualTo: "Completed")
+                .getDocuments { snapshot, error in
+                    if let error = error {
+                        print("❌ Error fetching completed experiments: \(error.localizedDescription)")
+                        completion(false)
+                        return
+                    }
+
+                    let completedCount = snapshot?.documents.count ?? 0
+
+                    // First experiment
+                    if completedCount >= 1 {
+                        newUnlocks.append("first_experiment")
+                    }
+
+                    // All experiments (assuming total count is known - adjust as needed)
+                    // For now, we'll check if they've completed a high number
+                    // You may want to get the actual total experiment count from your data
+                    if completedCount >= 10 {
+                        newUnlocks.append("all_experiments")
+                    }
+
+                    // Update Firebase with new unlocks using arrayUnion (atomic operation)
+                    if !newUnlocks.isEmpty {
+                        userRef.updateData([
+                            "achievements": FieldValue.arrayUnion(newUnlocks)
+                        ]) { error in
+                            if let error = error {
+                                print("❌ Error updating achievements: \(error.localizedDescription)")
+                                completion(false)
+                            } else {
+                                print("✅ Achievements unlocked: \(newUnlocks)")
+                                completion(true)
+                            }
+                        }
+                    } else {
+                        // No new achievements to unlock
+                        completion(true)
+                    }
+                }
+        }
     }
 }

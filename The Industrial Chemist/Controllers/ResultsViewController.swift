@@ -136,6 +136,13 @@ class ResultsViewController: UIViewController {
 
                     // Unlock next experiment after completion
                     self.unlockNextExperiment(currentExperimentId: experimentId, uid: uid)
+
+                    // Check for achievement unlocks
+                    ExperienceManager.shared.checkAndUnlockAchievements { success in
+                        if success {
+                            print("✅ Achievements checked after experiment completion")
+                        }
+                    }
                 }
 
                 // Award XP

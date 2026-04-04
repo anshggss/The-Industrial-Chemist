@@ -11,6 +11,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Profile2ViewController" customModule="The_Industrial_Chemist" customModuleProvider="target">
             <connections>
+                <outlet property="achievement1ImageView" destination="t79-gj-zZg" id="a1i-img-001"/>
+                <outlet property="achievement1Label" destination="Wa8-KL-JMQ" id="a1l-lbl-001"/>
+                <outlet property="achievement2ImageView" destination="eeu-pO-eRA" id="a2i-img-002"/>
+                <outlet property="achievement2Label" destination="NWc-GJ-2M0" id="a2l-lbl-002"/>
+                <outlet property="achievement3ImageView" destination="dqM-cg-Q2U" id="a3i-img-003"/>
+                <outlet property="achievement3Label" destination="2gu-z0-xRC" id="a3l-lbl-003"/>
+                <outlet property="achievement4ImageView" destination="ygW-rG-QKh" id="a4i-img-004"/>
+                <outlet property="achievement4Label" destination="2Iw-Jo-0Dl" id="a4l-lbl-004"/>
                 <outlet property="avatarImageView" destination="oxG-Ql-W2d" id="dVb-cb-PNW"/>
                 <outlet property="rubyLabel" destination="2ko-7a-6A2" id="pw6-QI-jmx"/>
                 <outlet property="settingsButton" destination="lOt-Kk-mxb" id="GkS-mV-JJD"/>
