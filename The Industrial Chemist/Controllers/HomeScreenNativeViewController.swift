@@ -475,11 +475,19 @@ final class CalendarWidgetCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         backgroundColor = .clear
-        
+
         cardView.backgroundColor = AppColors.cardPrimary
         cardView.layer.cornerRadius = 16
         cardView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(cardView)
+
+        // Listen for login date updates
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleLoginDateUpdate),
+            name: ExperienceManager.loginDateUpdatedNotification,
+            object: nil
+        )
         
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
@@ -512,24 +520,47 @@ final class CalendarWidgetCell: UITableViewCell {
             gridStack.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
             gridStack.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
             gridStack.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: -20),
-            gridStack.heightAnchor.constraint(equalToConstant: 180)
+            gridStack.heightAnchor.constraint(greaterThanOrEqualToConstant: 210)
         ])
     }
     
     required init?(coder: NSCoder) { fatalError() }
-    
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     private var trackedStreak: Int = 0
-    
+    private var loginDays: Set<Int> = []
+
+    @objc private func handleLoginDateUpdate() {
+        // Reload calendar data when login date is updated
+        configure(streak: trackedStreak)
+    }
+
     func configure(streak: Int) {
         self.trackedStreak = streak
-        for subview in gridStack.arrangedSubviews {
-            subview.removeFromSuperview()
+
+        // Fetch real login data from Firebase
+        let calendar = Calendar.current
+        let now = Date()
+        let year = calendar.component(.year, from: now)
+        let month = calendar.component(.month, from: now)
+
+        ExperienceManager.shared.getLoginDaysForMonth(year: year, month: month) { [weak self] days in
+            DispatchQueue.main.async {
+                self?.loginDays = days
+                for subview in self?.gridStack.arrangedSubviews ?? [] {
+                    subview.removeFromSuperview()
+                }
+                self?.buildGrid()
+            }
         }
-        buildGrid()
     }
     
     private func buildGrid() {
-        let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        // Days header (Sun, Mon, Tue, etc.)
+        let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
         let headerRow = UIStackView()
         headerRow.axis = .horizontal
         headerRow.distribution = .fillEqually
@@ -542,54 +573,78 @@ final class CalendarWidgetCell: UITableViewCell {
             headerRow.addArrangedSubview(lbl)
         }
         gridStack.addArrangedSubview(headerRow)
-        
-        let targetEndDay = 30
-        let streakStartDay = max(1, targetEndDay - trackedStreak + 1)
-        
-        // Add 5 rows of dates
-        var dateCounter = 15
-        for _ in 0..<5 {
+
+        // Get current month info
+        let calendar = Calendar.current
+        let now = Date()
+        let components = calendar.dateComponents([.year, .month], from: now)
+        guard let firstDayOfMonth = calendar.date(from: components) else { return }
+
+        // Get number of days in current month
+        let range = calendar.range(of: .day, in: .month, for: now)
+        let numberOfDays = range?.count ?? 30
+
+        // Get weekday of first day (1 = Sunday, 2 = Monday, etc.)
+        let firstWeekday = calendar.component(.weekday, from: firstDayOfMonth)
+        let startingEmptyCells = firstWeekday - 1 // Number of empty cells before day 1
+
+        // Calculate total cells needed
+        let totalCells = startingEmptyCells + numberOfDays
+        let numberOfRows = (totalCells + 6) / 7 // Round up to nearest week
+
+        // Build calendar grid
+        var dayCounter = 1
+        var cellIndex = 0
+
+        for _ in 0..<numberOfRows {
             let row = UIStackView()
             row.axis = .horizontal
             row.distribution = .fillEqually
+
             for _ in 0..<7 {
-                let circleView = UIView()
-                // Color dots matching backwards from the 30th matching streak size
-                let isCompleted = dateCounter >= streakStartDay && dateCounter <= targetEndDay
-                let isCurrentMonth = dateCounter <= 31
-                
                 let dayContainer = UIView()
-                circleView.translatesAutoresizingMaskIntoConstraints = false
-                circleView.layer.cornerRadius = 13
-                circleView.layer.borderWidth = (isCompleted || !isCurrentMonth) ? 0 : 1
-                circleView.layer.borderColor = UIColor.lightGray.cgColor
-                circleView.backgroundColor = isCompleted ? AppColors.completed : .clear
-                
-                let dayLabel = UILabel()
-                if isCurrentMonth {
-                    dayLabel.text = "\(dateCounter)"
-                } else {
-                    dayLabel.text = "\(dateCounter - 31)"
+
+                // Check if this cell should have a day number
+                if cellIndex >= startingEmptyCells && dayCounter <= numberOfDays {
+                    // This is a valid day in the current month
+                    let isCompleted = loginDays.contains(dayCounter)
+                    let isToday = calendar.component(.day, from: now) == dayCounter
+
+                    let circleView = UIView()
+                    circleView.translatesAutoresizingMaskIntoConstraints = false
+                    circleView.layer.cornerRadius = 13
+                    circleView.backgroundColor = isCompleted ? AppColors.completed : .clear
+
+                    if !isCompleted {
+                        circleView.layer.borderWidth = 1
+                        circleView.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.3).cgColor
+                    }
+
+                    let dayLabel = UILabel()
+                    dayLabel.text = "\(dayCounter)"
+                    dayLabel.font = .systemFont(ofSize: 12, weight: isToday ? .heavy : .bold)
+                    dayLabel.textColor = isCompleted ? .white : AppColors.textPrimary
+                    dayLabel.textAlignment = .center
+                    dayLabel.translatesAutoresizingMaskIntoConstraints = false
+
+                    dayContainer.addSubview(circleView)
+                    circleView.addSubview(dayLabel)
+
+                    NSLayoutConstraint.activate([
+                        circleView.centerXAnchor.constraint(equalTo: dayContainer.centerXAnchor),
+                        circleView.centerYAnchor.constraint(equalTo: dayContainer.centerYAnchor),
+                        circleView.widthAnchor.constraint(equalToConstant: 26),
+                        circleView.heightAnchor.constraint(equalToConstant: 26),
+                        dayLabel.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
+                        dayLabel.centerYAnchor.constraint(equalTo: circleView.centerYAnchor)
+                    ])
+
+                    dayCounter += 1
                 }
-                dateCounter += 1
-                
-                dayLabel.font = .systemFont(ofSize: 12, weight: .bold)
-                dayLabel.textColor = isCompleted ? .white : AppColors.textPrimary
-                dayLabel.textAlignment = .center
-                dayLabel.translatesAutoresizingMaskIntoConstraints = false
-                
-                dayContainer.addSubview(circleView)
-                circleView.addSubview(dayLabel)
-                
-                NSLayoutConstraint.activate([
-                    circleView.centerXAnchor.constraint(equalTo: dayContainer.centerXAnchor),
-                    circleView.centerYAnchor.constraint(equalTo: dayContainer.centerYAnchor),
-                    circleView.widthAnchor.constraint(equalToConstant: 26),
-                    circleView.heightAnchor.constraint(equalToConstant: 26),
-                    dayLabel.centerXAnchor.constraint(equalTo: circleView.centerXAnchor),
-                    dayLabel.centerYAnchor.constraint(equalTo: circleView.centerYAnchor)
-                ])
+                // Else: leave cell empty (for days before 1st or after last day)
+
                 row.addArrangedSubview(dayContainer)
+                cellIndex += 1
             }
             gridStack.addArrangedSubview(row)
         }

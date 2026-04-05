@@ -2,13 +2,19 @@ import SwiftUI
 
 struct StreakCalendarView: View {
 
-    let activeDays: Set<Int>
+    @State private var activeDays: Set<Int> = []
     let freezeDays: Set<Int>
 
     @State private var currentDate = Date()
     @State private var flamePulse = false
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 14), count: 7)
+
+    // Initialize with optional activeDays (for backwards compatibility)
+    init(activeDays: Set<Int> = [], freezeDays: Set<Int> = []) {
+        self._activeDays = State(initialValue: activeDays)
+        self.freezeDays = freezeDays
+    }
 
     // MARK: - Derived values
     private var today: Int {
@@ -72,6 +78,33 @@ struct StreakCalendarView: View {
                 .fill(Color(red: 75/255, green: 43/255, blue: 119/255))
         )
         .padding(.horizontal, 16)
+        .onAppear {
+            loadLoginData()
+            // Listen for login date updates
+            NotificationCenter.default.addObserver(
+                forName: ExperienceManager.loginDateUpdatedNotification,
+                object: nil,
+                queue: .main
+            ) { _ in
+                self.loadLoginData()
+            }
+        }
+        .onChange(of: currentDate) { _ in
+            loadLoginData()
+        }
+    }
+
+    // MARK: - Data Loading
+    private func loadLoginData() {
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: currentDate)
+        let month = calendar.component(.month, from: currentDate)
+
+        ExperienceManager.shared.getLoginDaysForMonth(year: year, month: month) { loginDays in
+            DispatchQueue.main.async {
+                self.activeDays = loginDays
+            }
+        }
     }
 
     // MARK: - Single Day Cell

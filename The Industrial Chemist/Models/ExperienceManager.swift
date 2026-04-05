@@ -13,6 +13,9 @@ class ExperienceManager {
     static let shared = ExperienceManager()
     private let db = Firestore.firestore()
 
+    // Notification name for login date updates
+    static let loginDateUpdatedNotification = Notification.Name("LoginDateUpdated")
+
     private init() {}
 
     // XP rewards for different actions
@@ -110,14 +113,24 @@ class ExperienceManager {
 
             let currentStreak = userDocument.data()?["currentStreak"] as? Int ?? 0
             let lastLoginDate = userDocument.data()?["lastLoginDate"] as? Timestamp
+            let existingLoginDates = userDocument.data()?["loginDates"] as? [String] ?? []
 
             // Calculate new streak based on login
             let newStreak = self.calculateLoginStreak(currentStreak: currentStreak, lastLoginDate: lastLoginDate)
 
-            // Update user document with new streak and last login date
+            // Get today's date string (yyyy-MM-dd) in local timezone
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            dateFormatter.timeZone = TimeZone.current
+            let todayString = dateFormatter.string(from: Date())
+
+            print("🔍 DEBUG - Adding login date: \(todayString)")
+
+            // Update user document with new streak, last login date, and add today to login dates array
             transaction.updateData([
                 "currentStreak": newStreak,
-                "lastLoginDate": FieldValue.serverTimestamp()
+                "lastLoginDate": FieldValue.serverTimestamp(),
+                "loginDates": FieldValue.arrayUnion([todayString])
             ], forDocument: userRef)
 
             return newStreak
@@ -134,6 +147,9 @@ class ExperienceManager {
 
                 // Check for achievement unlocks
                 self.checkAndUnlockAchievements { _ in }
+
+                // Post notification to update calendars
+                NotificationCenter.default.post(name: ExperienceManager.loginDateUpdatedNotification, object: nil)
 
                 completion(true, newStreak)
             }
@@ -313,6 +329,55 @@ class ExperienceManager {
                     completion(documents.count + 1)
                 }
             }
+    }
+
+    // MARK: - Login History
+
+    /// Fetches login days for a specific month (returns Set of day numbers)
+    func getLoginDaysForMonth(year: Int, month: Int, completion: @escaping (Set<Int>) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            completion([])
+            return
+        }
+
+        db.collection("users").document(uid).getDocument { snapshot, error in
+            if let error = error {
+                print("❌ Error fetching login dates: \(error.localizedDescription)")
+                completion([])
+                return
+            }
+
+            guard let data = snapshot?.data() else {
+                completion([])
+                return
+            }
+
+            let loginDates = data["loginDates"] as? [String] ?? []
+            print("🔍 DEBUG - All login dates from Firebase: \(loginDates)")
+
+            // Filter dates for the requested month and extract day numbers
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            dateFormatter.timeZone = TimeZone.current
+
+            var loginDays: Set<Int> = []
+            for dateString in loginDates {
+                if let date = dateFormatter.date(from: dateString) {
+                    let calendar = Calendar.current
+                    let components = calendar.dateComponents([.year, .month, .day], from: date)
+
+                    print("🔍 DEBUG - Checking date: \(dateString) -> year:\(components.year ?? 0), month:\(components.month ?? 0), day:\(components.day ?? 0)")
+
+                    if components.year == year && components.month == month {
+                        loginDays.insert(components.day ?? 0)
+                        print("✅ DEBUG - Matched! Adding day \(components.day ?? 0)")
+                    }
+                }
+            }
+
+            print("✅ Found \(loginDays.count) login days for \(year)-\(month): \(loginDays)")
+            completion(loginDays)
+        }
     }
 
     // MARK: - Achievements
