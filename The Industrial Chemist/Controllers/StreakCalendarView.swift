@@ -29,6 +29,13 @@ struct StreakCalendarView: View {
         Calendar.current.range(of: .day, in: .month, for: currentDate)?.count ?? 30
     }
 
+    private var firstWeekdayOffset: Int {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month], from: currentDate)
+        guard let firstDay = calendar.date(from: components) else { return 0 }
+        return calendar.component(.weekday, from: firstDay) - 1 // 0 = Sunday
+    }
+
     private var monthTitle: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
@@ -66,6 +73,10 @@ struct StreakCalendarView: View {
 
             // MARK: - Dates
             LazyVGrid(columns: columns, spacing: 18) {
+                // Empty cells to offset day 1 to the correct weekday column
+                ForEach(0..<firstWeekdayOffset, id: \.self) { _ in
+                    Color.clear.frame(width: 42, height: 42)
+                }
                 ForEach(1...daysInMonth, id: \.self) { day in
                     dayCell(day)
                 }
