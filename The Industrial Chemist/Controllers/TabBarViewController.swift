@@ -68,6 +68,9 @@ class TabBarViewController: UITabBarController {
         let learnVC = UINavigationController(rootViewController: ModuleViewController())
 
         let leaderBoardVC = Leaderboard2ViewController(nibName: "Leaderboard2", bundle: nil)
+
+        let communityVC = UINavigationController(rootViewController: CommunityViewController())
+
         let profileVC = Profile2ViewController(nibName: "Profile2", bundle: nil)
 
         homeVC.tabBarItem = UITabBarItem(
@@ -88,6 +91,12 @@ class TabBarViewController: UITabBarController {
             selectedImage: UIImage(systemName: "trophy.fill")
         )
 
+        communityVC.tabBarItem = UITabBarItem(
+            title: "Community",
+            image: UIImage(systemName: "person.3"),
+            selectedImage: UIImage(systemName: "person.3.fill")
+        )
+
         profileVC.tabBarItem = UITabBarItem(
             title: "Profile",
             image: UIImage(systemName: "person"),
@@ -98,6 +107,7 @@ class TabBarViewController: UITabBarController {
             homeVC,
             learnVC,
             leaderBoardVC,
+            communityVC,
             profileVC
         ]
     }
