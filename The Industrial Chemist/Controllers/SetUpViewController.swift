@@ -28,9 +28,8 @@ class SetUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpLabel.text = experiment.setup[0]
-        analogyLabel.text = experiment.setup[1]
-        // Do any additional setup after loading the view.
+        setUpLabel.text = experiment.setup.indices.contains(0) ? experiment.setup[0] : ""
+        analogyLabel.text = experiment.setup.indices.contains(1) ? experiment.setup[1] : ""
     }
 
     @IBAction func proceedPressed(_ sender: UIButton) {
