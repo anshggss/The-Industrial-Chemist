@@ -40,6 +40,7 @@ struct Post {
     let authorUID: String
     let authorName: String
     let createdAt: Date
+    var likeCount: Int
 
     init?(id: String, data: [String: Any]) {
         guard let title = data["title"] as? String,
@@ -50,6 +51,7 @@ struct Post {
         self.body = body
         self.authorUID = authorUID
         self.authorName = data["authorName"] as? String ?? "Unknown"
+        self.likeCount = data["likeCount"] as? Int ?? 0
         if let ts = data["createdAt"] as? Timestamp {
             self.createdAt = ts.dateValue()
         } else {

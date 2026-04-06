@@ -214,6 +214,46 @@ extension CommunityViewController: UITableViewDataSource, UITableViewDelegate {
         let detailVC = CommunityDetailViewController(community: community)
         navigationController?.pushViewController(detailVC, animated: true)
     }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let community = communities[indexPath.row]
+        guard community.createdBy == Auth.auth().currentUser?.uid else { return nil }
+
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { [weak self] _, _, completion in
+            self?.confirmDeleteCommunity(community, at: indexPath)
+            completion(true)
+        }
+        deleteAction.image = UIImage(systemName: "trash.fill")
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+
+    private func confirmDeleteCommunity(_ community: Community, at indexPath: IndexPath) {
+        let alert = UIAlertController(
+            title: "Delete Community",
+            message: "Are you sure you want to delete \"\(community.name)\"? This cannot be undone.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            self?.deleteCommunity(community, at: indexPath)
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
+    }
+
+    private func deleteCommunity(_ community: Community, at indexPath: IndexPath) {
+        db.collection("communities").document(community.id).delete { [weak self] error in
+            guard let self = self else { return }
+            if let error = error {
+                print("Error deleting community: \(error)")
+                return
+            }
+            DispatchQueue.main.async {
+                self.communities.remove(at: indexPath.row)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                self.emptyLabel.isHidden = !self.communities.isEmpty
+            }
+        }
+    }
 }
 
 // MARK: - CommunityCell
