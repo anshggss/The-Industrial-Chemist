@@ -14,13 +14,11 @@ class SubscriptionManager: NSObject {
     static let shared = SubscriptionManager()
 
     // MARK: - Product Identifiers
-    // TODO: Replace these with your actual App Store Connect product IDs
     enum ProductID: String {
-        case monthlySubscription = "com.industrialchemist.premium.monthly"
-        case yearlySubscription = "com.industrialchemist.premium.yearly"
+        case premiumSubscription = "com.industrialchemist.premium.monthly"
 
         static var allCases: [ProductID] {
-            return [.monthlySubscription, .yearlySubscription]
+            return [.premiumSubscription]
         }
     }
 

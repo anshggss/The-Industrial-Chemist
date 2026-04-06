@@ -18,10 +18,13 @@ final class HomeScreenNativeViewController: UIViewController {
         let progress: Double        // 0...1
         let experiment: Experiment? // built only if unlocked
         let iconName: String
+        let hasRealProgress: Bool   // true only if a Firestore progress doc exists
     }
 
     private var continueItem: HomeExperimentItem?
+    private var continueItemIsStarted: Bool = false  // false = auto-unlocked but never opened
     private var lockedItems: [HomeExperimentItem] = []
+    private var currentStreak: Int = 0
 
     private enum Section: Int, CaseIterable {
         case greeting = 0
@@ -76,6 +79,22 @@ final class HomeScreenNativeViewController: UIViewController {
             return
         }
 
+        // Fetch streak from user document
+        db.collection("users").document(uid).getDocument { [weak self] snapshot, _ in
+            guard let self = self else { return }
+            let streak = snapshot?.data()?["currentStreak"] as? Int ?? 0
+            DispatchQueue.main.async {
+                self.currentStreak = streak
+                if let idx = self.tableView.indexPathsForVisibleRows?.first(where: { $0.section == Section.streak.rawValue }) {
+                    self.tableView.reloadRows(at: [idx], with: .none)
+                }
+                // Also reload calendar row so it picks up login days
+                if let calIdx = self.tableView.indexPathsForVisibleRows?.first(where: { $0.section == Section.calendar.rawValue }) {
+                    self.tableView.reloadRows(at: [calIdx], with: .none)
+                }
+            }
+        }
+
         db.collection("experiments")
             .order(by: "order")
             .getDocuments { [weak self] expSnapshot, expError in
@@ -120,37 +139,30 @@ final class HomeScreenNativeViewController: UIViewController {
 
                             let title = data["title"] as? String ?? "Untitled"
 
-                            // Debug: Print actual title from Firebase
-                            print("🔍 DEBUG - Experiment ID: \(expId), Title: '\(title)'")
-
                             let progressInfo = progressById[expId]
+                            let hasRealProgress = progressInfo != nil
                             // If no progress document exists, experiment is locked
                             var status = progressInfo?.status ?? "Locked"
                             let progress = progressInfo?.progress ?? 0.0
 
-                            print("🔍 DEBUG - Status before unlock logic: \(status)")
-
                             // Ammonia/Haber Process is ALWAYS unlocked for all users (free and paid)
-                            // Only ammonia/haber is free - all other experiments require subscription
                             let isAmmoniaProcess = title.lowercased().contains("ammonia") ||
                                                    title.lowercased().contains("haber")
-                            print("🔍 DEBUG - Is Ammonia/Haber Process: \(isAmmoniaProcess)")
 
                             // Check if user has subscription - if yes, unlock all experiments
                             let hasSubscription = UserManager.shared.currentUser?.hasSubscription ?? false
-                            if status == "Locked" {
-                                if isAmmoniaProcess || hasSubscription {
-                                    status = "In Progress"
-                                    print("✅ DEBUG - Unlocking experiment: \(title)")
-                                }
-                            }
+                            let isUnlocked = isAmmoniaProcess || hasSubscription
 
-                            print("🔍 DEBUG - Final status: \(status)")
+                            // Promote display status so we can build the experiment model,
+                            // but hasRealProgress tracks whether the user has actually opened it
+                            if status == "Locked" && isUnlocked {
+                                status = "In Progress"
+                            }
 
                             let iconName = "flame.fill"
 
                             var experimentModel: Experiment? = nil
-                            if status != "Locked" {
+                            if isUnlocked || status != "Locked" {
                                 let testExperiment = data["testExperiment"] as? String ?? ""
                                 let setup = data["setup"] as? [String] ?? []
                                 let build = data["build"] as? [String] ?? []
@@ -177,7 +189,8 @@ final class HomeScreenNativeViewController: UIViewController {
                                 status: status,
                                 progress: progress,
                                 experiment: experimentModel,
-                                iconName: iconName
+                                iconName: iconName,
+                                hasRealProgress: hasRealProgress
                             )
                             merged.append(item)
                         }
@@ -188,30 +201,33 @@ final class HomeScreenNativeViewController: UIViewController {
     }
 
     private func applyHomeLogic(items: [HomeExperimentItem]) {
-        // Continue item: Find the furthest "In Progress" experiment sequentially 
-        var inProgress: HomeExperimentItem?
+        // Priority 1: real Firestore "In Progress" item (user has actually opened it)
+        var realInProgress: HomeExperimentItem?
         for item in items.reversed() {
-            if item.status == "In Progress" {
-                inProgress = item
+            if item.status == "In Progress" && item.hasRealProgress {
+                realInProgress = item
                 break
             }
         }
 
-        if inProgress != nil {
-            continueItem = inProgress
+        if let real = realInProgress {
+            // User has genuinely started — show "Continue Learning"
+            continueItem = real
+            continueItemIsStarted = true
         } else {
-            // Find the furthest unlocked item if nothing is actively in progress
-            var latestUnlocked: HomeExperimentItem?
-            for item in items.reversed() {
-                if item.status != "Locked" {
-                    latestUnlocked = item
+            // No real progress yet — find auto-unlocked experiment to show as "Start Learning"
+            var autoUnlocked: HomeExperimentItem?
+            for item in items {
+                if item.status == "In Progress" && !item.hasRealProgress {
+                    autoUnlocked = item
                     break
                 }
             }
-            continueItem = latestUnlocked
+            continueItem = autoUnlocked
+            continueItemIsStarted = false
         }
 
-        // Locked items: show up to 3 locked experiments
+        // Locked items: only truly locked experiments (not auto-unlocked ones)
         var locked: [HomeExperimentItem] = []
         for item in items {
             if item.status == "Locked" {
@@ -289,7 +305,7 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
 
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        if sec == .continueLearning { label.text = "Continue Learning" }
+        if sec == .continueLearning { label.text = continueItemIsStarted ? "Continue Learning" : "Start Learning" }
         else if sec == .moreToLearn { label.text = "More to Learn" }
         
         label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
@@ -332,7 +348,6 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "StreakCell", for: indexPath) as? StreakTableViewCell else {
                 return UITableViewCell()
             }
-            let currentStreak = UserManager.shared.currentUser?.currentStreak ?? 0
             cell.configure(days: currentStreak)
             return cell
 
@@ -340,6 +355,7 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CalendarWidgetCell.identifier, for: indexPath) as? CalendarWidgetCell else {
                 return UITableViewCell()
             }
+            cell.configure(streak: currentStreak)
             return cell
 
         case .continueLearning:
@@ -349,10 +365,11 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
 
             // continueItem is guaranteed to exist since numberOfRows returns 0 otherwise
             let item = continueItem!
+            let subtitle = continueItemIsStarted ? "Resume your last experiment" : "Tap to begin this experiment"
 
             cell.configure(
                 title: item.title,
-                subtitle: "Resume your last experiment",
+                subtitle: subtitle,
                 progress: Float(item.progress),
                 iconName: item.iconName
             )
@@ -385,15 +402,14 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
         }
         
         guard sec == .continueLearning else { return }
-        
-        guard let item = continueItem else { 
-            print("No continue item available")
-            return 
-        }
-        
-        guard item.status != "Locked", let experiment = item.experiment else { 
-            print("Failed to navigate. Item status: \(item.status), experiment is valid: \(item.experiment != nil)")
-            return 
+
+        guard let item = continueItem, let experiment = item.experiment else { return }
+
+        // First time opening: save a Firestore progress doc so "Continue Learning" appears on return
+        if !continueItemIsStarted, let uid = Auth.auth().currentUser?.uid {
+            db.collection("users").document(uid)
+                .collection("progress").document(item.id)
+                .setData(["status": "In Progress", "progress": 0.0], merge: true)
         }
 
         let setUpVC = SetUpViewController(experiment: experiment, nib: "SetUp")

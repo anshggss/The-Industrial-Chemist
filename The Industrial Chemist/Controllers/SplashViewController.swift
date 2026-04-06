@@ -63,7 +63,11 @@ class SplashViewController: UIViewController {
                     name: data["name"] as? String ?? "",
                     email: data["email"] as? String ?? "",
                     phone: data["phone"] as? String ?? "",
-                    experience: data["experience"] as? Int ?? 0
+                    experience: data["experience"] as? Int ?? 0,
+                    weeklyXP: data["weeklyXP"] as? Int,
+                    currentStreak: data["currentStreak"] as? Int,
+                    division: data["division"] as? String,
+                    hasSubscription: data["hasSubscription"] as? Bool
                 )
                 UserManager.shared.currentUser = user
                 self?.showMainApp()
