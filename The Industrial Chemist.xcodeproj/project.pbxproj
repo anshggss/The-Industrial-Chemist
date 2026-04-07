@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0F94D98C2EC1C01F004CD94C /* README.MD in Sources */ = {isa = PBXBuildFile; fileRef = 0F94D94E2EC1C01F004CD94C /* README.MD */; };
 		0FB7D5E92ECD9A0400361C2C /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 0FB7D5E82ECD9A0400361C2C /* FSCalendar */; };
 		36B5D1652F356EAA00470BFD /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 36B5D1642F356EAA00470BFD /* GoogleSignIn */; };
 		36B5D1672F356EAA00470BFD /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 36B5D1662F356EAA00470BFD /* GoogleSignInSwift */; };
