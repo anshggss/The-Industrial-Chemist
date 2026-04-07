@@ -174,7 +174,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 42KW75DX94;
+				DEVELOPMENT_TEAM = MQPXFK255Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "The Industrial Chemist/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "The Industrial Chemist";
@@ -207,7 +207,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 42KW75DX94;
+				DEVELOPMENT_TEAM = MQPXFK255Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "The Industrial Chemist/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "The Industrial Chemist";

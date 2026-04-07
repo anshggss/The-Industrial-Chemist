@@ -15,10 +15,11 @@ final class HomeScreenNativeViewController: UIViewController {
         let id: String
         let title: String
         let status: String          // "Locked" / "In Progress" / "Completed"
-        let progress: Double        // 0...1
+        var progress: Double        // 0...1
         let experiment: Experiment? // built only if unlocked
         let iconName: String
         let hasRealProgress: Bool   // true only if a Firestore progress doc exists
+        let updatedAt: Date?        // from progress doc
     }
 
     private var continueItem: HomeExperimentItem?
@@ -45,12 +46,44 @@ final class HomeScreenNativeViewController: UIViewController {
         configureNavigationBar()
         setupTableView()
 
+        // Observe experiment completion to refresh home data immediately
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleExperimentCompleted),
+            name: ResultsViewController.experimentCompletedNotification,
+            object: nil
+        )
+
+        // Observe streak/login updates
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleExperimentCompleted),
+            name: ExperienceManager.loginDateUpdatedNotification,
+            object: nil
+        )
+
+        // Observe global stats updates (XP, level, etc.)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleExperimentCompleted),
+            name: ExperienceManager.statsUpdatedNotification,
+            object: nil
+        )
+
         fetchHomeData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Refresh to reflect updated progress/status
+        fetchHomeData()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc private func handleExperimentCompleted() {
         fetchHomeData()
     }
 
@@ -118,15 +151,16 @@ final class HomeScreenNativeViewController: UIViewController {
                             return
                         }
 
-                        // progress lookup: experimentId -> (status, progress)
-                        var progressById: [String: (status: String, progress: Double)] = [:]
+                        // progress lookup: experimentId -> (status, progress, updatedAt)
+                        var progressById: [String: (status: String, progress: Double, updatedAt: Date?)] = [:]
                         let progressDocs = progSnapshot?.documents ?? []
 
                         for doc in progressDocs {
                             let data = doc.data()
                             let status = data["status"] as? String ?? "Locked"
                             let progress = data["progress"] as? Double ?? 0.0
-                            progressById[doc.documentID] = (status: status, progress: progress)
+                            let updatedAt = (data["updatedAt"] as? Timestamp)?.dateValue()
+                            progressById[doc.documentID] = (status: status, progress: progress, updatedAt: updatedAt)
                         }
 
                         // Merge into items
@@ -190,41 +224,58 @@ final class HomeScreenNativeViewController: UIViewController {
                                 progress: progress,
                                 experiment: experimentModel,
                                 iconName: iconName,
-                                hasRealProgress: hasRealProgress
+                                hasRealProgress: hasRealProgress,
+                                updatedAt: progressInfo?.updatedAt
                             )
                             merged.append(item)
                         }
 
-                        self.applyHomeLogic(items: merged)
+                        // Calculate Module-Level Progress for the Home Screen
+                        // According to user request: Home should show 50% (category avg)
+                        // while Module screen shows 100% (specific experiment context)
+                        var gpTotal: Double = 0
+                        var gpCount = 0
+                        for item in merged {
+                            // Assume non-acid experiments are part of the main module
+                            if !item.title.lowercased().contains("acid") {
+                                gpCount += 1
+                                gpTotal += item.progress
+                            }
+                        }
+                        let moduleAvg = gpCount > 0 ? (gpTotal / Double(gpCount)) : 0.0
+
+                        // Apply logic to select the mission, but override progress with module average
+                        self.applyHomeLogic(items: merged, moduleProgress: moduleAvg)
                     })
             }
     }
 
-    private func applyHomeLogic(items: [HomeExperimentItem]) {
-        // Priority 1: real Firestore "In Progress" item (user has actually opened it)
-        var realInProgress: HomeExperimentItem?
-        for item in items.reversed() {
-            if item.status == "In Progress" && item.hasRealProgress {
-                realInProgress = item
-                break
-            }
+    private func applyHomeLogic(items: [HomeExperimentItem], moduleProgress: Double) {
+        // Priority 1: The most recently updated experiment
+        let sortedByRecent = items.filter { $0.hasRealProgress }.sorted {
+            ($0.updatedAt ?? Date.distantPast) > ($1.updatedAt ?? Date.distantPast)
         }
-
-        if let real = realInProgress {
-            // User has genuinely started — show "Continue Learning"
-            continueItem = real
+        
+        if let mostRecent = sortedByRecent.first {
+            var updatedItem = mostRecent
+            // Override with module-level progress for the Home dashboard display
+            updatedItem.progress = moduleProgress 
+            continueItem = updatedItem
             continueItemIsStarted = true
         } else {
-            // No real progress yet — find auto-unlocked experiment to show as "Start Learning"
-            var autoUnlocked: HomeExperimentItem?
+            // Priority 2: First available experiment
+            var nextToStart: HomeExperimentItem?
             for item in items {
                 if item.status == "In Progress" && !item.hasRealProgress {
-                    autoUnlocked = item
+                    nextToStart = item
                     break
                 }
             }
-            continueItem = autoUnlocked
-            continueItemIsStarted = false
+            if var item = nextToStart {
+                item.progress = moduleProgress
+                continueItem = item
+                continueItemIsStarted = false
+            }
         }
 
         // Locked items: only truly locked experiments (not auto-unlocked ones)

@@ -31,6 +31,7 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
     }()
 
     private let continueCard = UIView()
+    private let continueSubtitleLabel = UILabel()
     private let progressView = UIProgressView(progressViewStyle: .default)
 
     private let segmentControl: UISegmentedControl = {
@@ -64,7 +65,23 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
         setupTableView()
         layoutUI()
 
+        // Observe experiment completion to refresh immediately
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleRefresh),
+            name: ResultsViewController.experimentCompletedNotification,
+            object: nil
+        )
+
         fetchExperimentsAndProgress()
+    }
+
+    @objc private func handleRefresh() {
+        fetchExperimentsAndProgress()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -136,7 +153,11 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
 
                             // Check if user has subscription - if yes, unlock all experiments
                             let hasSubscription = UserManager.shared.currentUser?.hasSubscription ?? false
-                            if status == "Locked" {
+                            
+                            // 100% Progress / 100XP Logic: If progress is maxed, it IS completed.
+                            if progValue >= 1.0 {
+                                status = "Completed"
+                            } else if status == "Locked" {
                                 if isAmmoniaProcess || hasSubscription {
                                     status = "In Progress"
                                     print("✅ DEBUG GasPrep - Unlocking: \(title)")
@@ -192,7 +213,16 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
                 break
             }
         }
-        progressView.progress = Float(inProgressItem?.progress ?? 0.0)
+        
+        let itemToShow = inProgressItem ?? allExperiments.first(where: { $0.status != "Locked" })
+        
+        if let item = itemToShow {
+            continueSubtitleLabel.text = item.title
+            progressView.progress = Float(item.progress)
+            continueCard.isHidden = false
+        } else {
+            continueCard.isHidden = true
+        }
     }
 
     // MARK: - Continue Card
@@ -213,11 +243,10 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
         title.textColor = AppColors.textPrimary.withAlphaComponent(0.7)
         title.translatesAutoresizingMaskIntoConstraints = false
 
-        let subtitle = UILabel()
-        subtitle.text = "Gas Preparation"
-        subtitle.font = .systemFont(ofSize: 32, weight: .bold)
-        subtitle.textColor = AppColors.textPrimary
-        subtitle.translatesAutoresizingMaskIntoConstraints = false
+        continueSubtitleLabel.text = "Gas Preparation"
+        continueSubtitleLabel.font = .systemFont(ofSize: 32, weight: .bold)
+        continueSubtitleLabel.textColor = AppColors.textPrimary
+        continueSubtitleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         progressView.progress = 0.0
         progressView.progressTintColor = AppColors.progress
@@ -227,7 +256,7 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
         progressView.translatesAutoresizingMaskIntoConstraints = false
 
         continueCard.addSubview(title)
-        continueCard.addSubview(subtitle)
+        continueCard.addSubview(continueSubtitleLabel)
         continueCard.addSubview(progressView)
 
         NSLayoutConstraint.activate([
@@ -238,8 +267,8 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
             progressView.bottomAnchor.constraint(equalTo: continueCard.bottomAnchor, constant: -15),
             progressView.trailingAnchor.constraint(equalTo: continueCard.trailingAnchor, constant: -18),
 
-            subtitle.leadingAnchor.constraint(equalTo: continueCard.leadingAnchor, constant: 10),
-            subtitle.bottomAnchor.constraint(equalTo: progressView.topAnchor, constant: -15)
+            continueSubtitleLabel.leadingAnchor.constraint(equalTo: continueCard.leadingAnchor, constant: 10),
+            continueSubtitleLabel.bottomAnchor.constraint(equalTo: progressView.topAnchor, constant: -15)
         ])
     }
 

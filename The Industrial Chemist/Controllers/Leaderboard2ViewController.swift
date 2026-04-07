@@ -151,6 +151,23 @@ class Leaderboard2ViewController: UIViewController {
         view.backgroundColor = AppColors.background
         setupUI()
         setupTableView()
+        
+        // Subscribe to stats updates (XP, rank, weeklyXP)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleStatsUpdate),
+            name: ExperienceManager.statsUpdatedNotification,
+            object: nil
+        )
+        
+        loadLeaderboardData()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc private func handleStatsUpdate() {
         loadLeaderboardData()
     }
 

@@ -42,6 +42,22 @@ class Profile2ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        
+        // Subscribe to stats updates (XP, rank, etc)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleStatsUpdate),
+            name: ExperienceManager.statsUpdatedNotification,
+            object: nil
+        )
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc private func handleStatsUpdate() {
+        loadProfileData()
     }
 
     override func viewWillAppear(_ animated: Bool) {

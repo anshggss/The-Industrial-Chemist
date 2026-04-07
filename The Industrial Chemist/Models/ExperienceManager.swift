@@ -15,6 +15,7 @@ class ExperienceManager {
 
     // Notification name for login date updates
     static let loginDateUpdatedNotification = Notification.Name("LoginDateUpdated")
+    static let statsUpdatedNotification = Notification.Name("UserStatsUpdated")
 
     private init() {}
 
@@ -79,6 +80,9 @@ class ExperienceManager {
 
                 // Check for achievement unlocks
                 self.checkAndUnlockAchievements { _ in }
+                
+                // 🔔 Notify ALL pages that stats have changed (XP, division, lastActivity)
+                NotificationCenter.default.post(name: ExperienceManager.statsUpdatedNotification, object: nil)
 
                 completion(true, nil)
             }
@@ -150,6 +154,9 @@ class ExperienceManager {
 
                 // Post notification to update calendars
                 NotificationCenter.default.post(name: ExperienceManager.loginDateUpdatedNotification, object: nil)
+                
+                // 🔔 Notify ALL pages that stats (streak/XP) have changed
+                NotificationCenter.default.post(name: ExperienceManager.statsUpdatedNotification, object: nil)
 
                 completion(true, newStreak)
             }

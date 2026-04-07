@@ -1,13 +1,47 @@
-import UIKit
+import FirebaseFirestore
+import FirebaseAuth
 
 class ModuleViewController: UIViewController {
 
+    private let db = Firestore.firestore()
     private let scrollView = UIScrollView()
     private let contentView = UIView()
+    private let stackView = UIStackView()
+    
+    private var gasPrepProgress: Float = 0.0
+    private var gasPrepCount: Int = 0 
+    private var gasPrepCompleted: Int = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        
+        // Refresh on completion
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(fetchModuleData),
+            name: ResultsViewController.experimentCompletedNotification,
+            object: nil
+        )
+
+        // Observe global stats updates (XP, level, etc.)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(fetchModuleData),
+            name: ExperienceManager.statsUpdatedNotification,
+            object: nil
+        )
+        
+        fetchModuleData()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchModuleData()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     private func setupUI() {
@@ -30,47 +64,11 @@ class ModuleViewController: UIViewController {
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
-
-        let subtitleLabel = UILabel()
-        subtitleLabel.text = "Continue your learning journey"
-        subtitleLabel.textColor = .lightGray
-        subtitleLabel.font = .systemFont(ofSize: 17, weight: .medium)
-
-        let gasPrepCard = createModuleCard(
-            title: "Gas Preparation", 
-            subtitle: "Continue Understanding", 
-            progressText: "50%", 
-            progressValue: 0.5, 
-            isLocked: false, 
-            action: #selector(gasPrepTapped)
-        )
-
-        let upNextLabel = UILabel()
-        upNextLabel.text = "Up Next"
-        upNextLabel.textColor = .white
-        upNextLabel.font = .systemFont(ofSize: 22, weight: .bold)
-
-        let acidBaseCard = createModuleCard(
-            title: "Acid Base Preparation", 
-            subtitle: "Start Learning", 
-            progressText: "0%", 
-            progressValue: 0.0, 
-            isLocked: true, 
-            action: #selector(acidBaseTapped)
-        )
-
-        let stack = UIStackView(arrangedSubviews: [
-            subtitleLabel, 
-            gasPrepCard, 
-            upNextLabel, 
-            acidBaseCard
-        ])
-        stack.axis = .vertical
-        stack.spacing = 24
-        stack.setCustomSpacing(12, after: upNextLabel)
-
-        contentView.addSubview(stack)
-        stack.translatesAutoresizingMaskIntoConstraints = false
+        
+        stackView.axis = .vertical
+        stackView.spacing = 24
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(stackView)
 
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -84,11 +82,87 @@ class ModuleViewController: UIViewController {
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
-            stack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            stack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            stack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30)
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30)
         ])
+    }
+
+    @objc private func fetchModuleData() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        db.collection("experiments").getDocuments { [weak self] expSnapshot, _ in
+            guard let self = self else { return }
+            let allExperiments = expSnapshot?.documents ?? []
+            
+            self.db.collection("users").document(uid).collection("progress").getDocuments { [weak self] progSnapshot, _ in
+                guard let self = self else { return }
+                let progressDocs = progSnapshot?.documents ?? []
+                var progressMap: [String: Double] = [:]
+                for doc in progressDocs {
+                    progressMap[doc.documentID] = doc.data()["progress"] as? Double ?? 0.0
+                }
+                
+                // Calculate Gas Prep progress
+                // Since there is no module field yet, we assume all current experiments are Gas Prep
+                // except if they are acid-base
+                var gpTotal: Double = 0
+                var gpCount = 0
+                var gpMax: Double = 0
+                
+                for exp in allExperiments {
+                    let title = exp.data()["title"] as? String ?? ""
+                    if !title.lowercased().contains("acid") {
+                        gpCount += 1
+                        let prog = progressMap[exp.documentID] ?? 0.0
+                        gpTotal += prog
+                        if prog > gpMax { gpMax = prog }
+                    }
+                }
+                
+                // User Request: Home = 50% (avg), Module Page = 100% (max/specific completion)
+                self.updateUI(gasPrepProgress: Float(gpMax))
+            }
+        }
+    }
+
+    private func updateUI(gasPrepProgress: Float) {
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+
+        let subtitleLabel = UILabel()
+        subtitleLabel.text = "Continue your learning journey"
+        subtitleLabel.textColor = .lightGray
+        subtitleLabel.font = .systemFont(ofSize: 17, weight: .medium)
+        stackView.addArrangedSubview(subtitleLabel)
+
+        let gasPrepSubtitle = gasPrepProgress >= 1.0 ? "Module Completed" : "Continue Understanding"
+        let gasPrepCard = createModuleCard(
+            title: "Gas Preparation", 
+            subtitle: gasPrepSubtitle, 
+            progressText: "\(Int(gasPrepProgress * 100))%", 
+            progressValue: gasPrepProgress, 
+            isLocked: false, 
+            action: #selector(gasPrepTapped)
+        )
+        stackView.addArrangedSubview(gasPrepCard)
+
+        let upNextLabel = UILabel()
+        upNextLabel.text = "Up Next"
+        upNextLabel.textColor = .white
+        upNextLabel.font = .systemFont(ofSize: 22, weight: .bold)
+        stackView.addArrangedSubview(upNextLabel)
+        stackView.setCustomSpacing(12, after: upNextLabel)
+
+        let acidBaseCard = createModuleCard(
+            title: "Acid Base Preparation", 
+            subtitle: "Start Learning", 
+            progressText: "0%", 
+            progressValue: 0.0, 
+            isLocked: true, 
+            action: #selector(acidBaseTapped)
+        )
+        stackView.addArrangedSubview(acidBaseCard)
     }
 
     private func createModuleCard(title: String, subtitle: String, progressText: String, progressValue: Float, isLocked: Bool, action: Selector) -> UIView {

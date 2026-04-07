@@ -5,6 +5,9 @@ import FirebaseFirestore
 
 class ResultsViewController: UIViewController {
 
+    // MARK: - Notifications
+    static let experimentCompletedNotification = Notification.Name("ExperimentCompleted")
+
     @IBOutlet weak var videoView: UIView!
     @IBOutlet weak var takeawaysLabel: UILabel!
 
@@ -123,7 +126,7 @@ class ResultsViewController: UIViewController {
 
             // Only award XP if not already completed
             if status != "Completed" {
-                // Mark experiment as completed
+            // Mark experiment as completed
                 self.db.collection("users").document(uid).collection("progress").document(experimentId).setData([
                     "status": "Completed",
                     "progress": 1.0,
@@ -133,6 +136,12 @@ class ResultsViewController: UIViewController {
                         print("❌ Error marking experiment complete: \(error.localizedDescription)")
                         return
                     }
+
+                    // 🔔 Notify Home and Learn screens to refresh
+                    NotificationCenter.default.post(
+                        name: ResultsViewController.experimentCompletedNotification,
+                        object: nil
+                    )
 
                     // Unlock next experiment after completion
                     self.unlockNextExperiment(currentExperimentId: experimentId, uid: uid)
