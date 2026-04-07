@@ -38,8 +38,8 @@ final class HomeScreenNativeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = "Home"
-        navigationController?.navigationBar.prefersLargeTitles = true
+        title = ""
+        navigationController?.navigationBar.prefersLargeTitles = false
 
         view.backgroundColor = AppColors.background
         configureNavigationBar()
@@ -50,6 +50,7 @@ final class HomeScreenNativeViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         // Refresh to reflect updated progress/status
         fetchHomeData()
     }
@@ -172,6 +173,7 @@ final class HomeScreenNativeViewController: UIViewController {
                                 let model = data["model"] as? String ?? ""
 
                                 experimentModel = Experiment(
+                                    id: expId,
                                     title: title,
                                     testExperiment: testExperiment,
                                     setup: setup,
@@ -263,7 +265,7 @@ extension HomeScreenNativeViewController: UITableViewDelegate, UITableViewDataSo
         view.addSubview(tableView)
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -443,7 +445,7 @@ final class GreetingCell: UITableViewCell {
         selectionStyle = .none
 
         greetingLabel.translatesAutoresizingMaskIntoConstraints = false
-        greetingLabel.font = UIFont.systemFont(ofSize: 28, weight: .bold)
+        greetingLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         greetingLabel.textColor = AppColors.cardPrimary
         contentView.addSubview(greetingLabel)
 

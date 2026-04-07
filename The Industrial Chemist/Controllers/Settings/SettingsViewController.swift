@@ -7,12 +7,9 @@ class SettingsViewController: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .grouped)
 
     private let accountItems = [
-        "Preferences",
         "Profile",
         "Notifications",
-        "Courses",
         "Chemist for Schools",
-        "Social accounts",
         "Privacy settings"
     ]
 
@@ -40,13 +37,19 @@ class SettingsViewController: UIViewController {
     // MARK: - View Configuration
 
     private func configureView() {
-        view.backgroundColor = UIColor(red: 24/255, green: 4/255, blue: 46/255, alpha: 1)
+        view.backgroundColor = AppColors.background
 
         title = "Settings"
         navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor: UIColor.white
-        ]
+
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = AppColors.background
+        appearance.titleTextAttributes = [.foregroundColor: AppColors.cardPrimary]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.tintColor = AppColors.cardPrimary
     }
 
     private func configureTableView() {
@@ -237,13 +240,10 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         switch indexPath.section {
         case 0:
             switch indexPath.row {
-            case 0: vc = PreferencesViewController(nibName: "Preferences", bundle: nil)
-            case 1: vc = ProfileSettingsViewController(nibName: "ProfileSettings", bundle: nil)
-            case 2: vc = NotificationsViewController(nibName: "Notifications", bundle: nil)
-            case 3: vc = nil // Courses
-            case 4: vc = CFSViewController(nibName: "CFS", bundle: nil)
-            case 5: vc = SocialSettingsViewController(nibName: "SocialSettings", bundle: nil)
-            case 6: vc = PrivacyViewController(nibName: "Privacy", bundle: nil)
+            case 0: vc = ProfileSettingsViewController(nibName: "ProfileSettings", bundle: nil)
+            case 1: vc = NotificationsViewController(nibName: "Notifications", bundle: nil)
+            case 2: vc = CFSViewController(nibName: "CFS", bundle: nil)
+            case 3: vc = PrivacyViewController(nibName: "Privacy", bundle: nil)
             default: vc = nil
             }
         case 1: // Subscription

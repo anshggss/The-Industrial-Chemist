@@ -63,12 +63,15 @@ class TabBarViewController: UITabBarController {
     // MARK: - View Controllers
     private func setupViewControllers() {
 
-        let homeVC = HomeScreenNativeViewController(nibName: "HomeScreenNative", bundle: nil)
+        let homeVC = UINavigationController(rootViewController: HomeScreenNativeViewController(nibName: "HomeScreenNative", bundle: nil))
 
         let learnVC = UINavigationController(rootViewController: ModuleViewController())
 
         let leaderBoardVC = Leaderboard2ViewController(nibName: "Leaderboard2", bundle: nil)
-        let profileVC = Profile2ViewController(nibName: "Profile2", bundle: nil)
+
+        let communityVC = UINavigationController(rootViewController: CommunityViewController())
+
+        let profileVC = UINavigationController(rootViewController: Profile2ViewController())
 
         homeVC.tabBarItem = UITabBarItem(
             title: "Home",
@@ -88,6 +91,12 @@ class TabBarViewController: UITabBarController {
             selectedImage: UIImage(systemName: "trophy.fill")
         )
 
+        communityVC.tabBarItem = UITabBarItem(
+            title: "Community",
+            image: UIImage(systemName: "person.3"),
+            selectedImage: UIImage(systemName: "person.3.fill")
+        )
+
         profileVC.tabBarItem = UITabBarItem(
             title: "Profile",
             image: UIImage(systemName: "person"),
@@ -97,6 +106,7 @@ class TabBarViewController: UITabBarController {
         viewControllers = [
             homeVC,
             learnVC,
+            communityVC,
             leaderBoardVC,
             profileVC
         ]

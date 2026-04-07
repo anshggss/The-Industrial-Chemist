@@ -32,6 +32,16 @@ class SetUpViewController: UIViewController {
         analogyLabel.text = experiment.setup.indices.contains(1) ? experiment.setup[1] : ""
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
     @IBAction func proceedPressed(_ sender: UIButton) {
         let theoryVC = TheoryViewController(experiment: experiment)
         theoryVC.isAtHome = isAtHome
