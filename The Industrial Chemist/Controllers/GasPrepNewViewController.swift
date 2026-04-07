@@ -154,6 +154,7 @@ final class GasPrepNewViewController: UIViewController, UITableViewDelegate, UIT
                                 let model = data["model"] as? String ?? ""
 
                                 experimentModel = Experiment(
+                                    id: expId,
                                     title: title,
                                     testExperiment: testExperiment,
                                     setup: setup,

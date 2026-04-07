@@ -51,8 +51,8 @@ class ResultsViewController: UIViewController {
         takeawaysLabel.text = experiment.results
         playLoopingVideo()
 
-        // Award XP for completing the experiment
-        awardExperienceForCompletion()
+        // Mark experiment as completed and award XP
+        markCompletedAndAwardXP()
     }
 
     override func viewDidLayoutSubviews() {
@@ -111,14 +111,13 @@ class ResultsViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
 
-    // MARK: - Experience Award
+    // MARK: - Completion
 
-    private func awardExperienceForCompletion() {
+    private func markCompletedAndAwardXP() {
         guard !hasAwardedXP else { return }
         guard let uid = Auth.auth().currentUser?.uid else { return }
 
-        // Check if this experiment has already been completed
-        let experimentId = getExperimentId(for: experiment.title)
+        let experimentId = experiment.id
 
         db.collection("users").document(uid).collection("progress").document(experimentId).getDocument { [weak self] snapshot, error in
             guard let self = self else { return }
@@ -173,13 +172,6 @@ class ResultsViewController: UIViewController {
                 print("ℹ️ Experiment already completed, no XP awarded")
             }
         }
-    }
-
-    private func getExperimentId(for title: String) -> String {
-        // Create a consistent ID from the experiment title
-        return title.lowercased()
-            .replacingOccurrences(of: " ", with: "_")
-            .replacingOccurrences(of: "-", with: "_")
     }
 
     private func unlockNextExperiment(currentExperimentId: String, uid: String) {

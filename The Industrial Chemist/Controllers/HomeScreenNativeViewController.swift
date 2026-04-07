@@ -173,6 +173,7 @@ final class HomeScreenNativeViewController: UIViewController {
                                 let model = data["model"] as? String ?? ""
 
                                 experimentModel = Experiment(
+                                    id: expId,
                                     title: title,
                                     testExperiment: testExperiment,
                                     setup: setup,

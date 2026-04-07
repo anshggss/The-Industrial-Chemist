@@ -1,4 +1,5 @@
 struct Experiment {
+    var id: String
     var title: String
     var testExperiment: String
     var setup: [String]
