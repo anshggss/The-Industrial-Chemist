@@ -71,7 +71,7 @@ class TabBarViewController: UITabBarController {
 
         let communityVC = UINavigationController(rootViewController: CommunityViewController())
 
-        let profileVC = Profile2ViewController(nibName: "Profile2", bundle: nil)
+        let profileVC = UINavigationController(rootViewController: Profile2ViewController())
 
         homeVC.tabBarItem = UITabBarItem(
             title: "Home",

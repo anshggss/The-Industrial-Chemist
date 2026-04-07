@@ -37,13 +37,19 @@ class SettingsViewController: UIViewController {
     // MARK: - View Configuration
 
     private func configureView() {
-        view.backgroundColor = UIColor(red: 24/255, green: 4/255, blue: 46/255, alpha: 1)
+        view.backgroundColor = AppColors.background
 
         title = "Settings"
         navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor: UIColor.white
-        ]
+
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = AppColors.background
+        appearance.titleTextAttributes = [.foregroundColor: AppColors.cardPrimary]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.tintColor = AppColors.cardPrimary
     }
 
     private func configureTableView() {

@@ -1,47 +1,24 @@
-//
-//  Profile2ViewController.swift
-//  The Industrial Chemist
-//
-//  Created by user@14 on 15/12/25.
-//
-
 import UIKit
 
 class Profile2ViewController: UIViewController {
-    // MARK: - User Info Outlets
-    @IBOutlet weak var usernameLabel: UILabel!
-    @IBOutlet weak var avatarImageView: UIImageView!
 
-    // MARK: - Stats Outlets
-    @IBOutlet weak var streakLabel: UILabel!
-    @IBOutlet weak var xpLabel: UILabel!
-    @IBOutlet weak var rubyLabel: UILabel!
-    @IBOutlet weak var topFinishLabel: UILabel!
-
-    // MARK: - Achievement Outlets
-    @IBOutlet weak var achievement1ImageView: UIImageView!
-    @IBOutlet weak var achievement2ImageView: UIImageView!
-    @IBOutlet weak var achievement3ImageView: UIImageView!
-    @IBOutlet weak var achievement4ImageView: UIImageView!
-
-    @IBOutlet weak var achievement1Label: UILabel!
-    @IBOutlet weak var achievement2Label: UILabel!
-    @IBOutlet weak var achievement3Label: UILabel!
-    @IBOutlet weak var achievement4Label: UILabel!
-
-    // MARK: - Other Outlets
-    @IBOutlet weak var settingsButton: UIButton!
-
-    // MARK: - Properties
-    private var loadingView: UIView?
-    private var isLoading: Bool = false
+    // MARK: - State
+    private var isLoading = false
     private var userStats: UserStats?
     private var achievements: [Achievement] = []
 
+    // MARK: - UI
+    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+
     // MARK: - Lifecycle
+
+    init() { super.init(nibName: nil, bundle: nil) }
+    required init?(coder: NSCoder) { super.init(coder: coder) }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        setupNav()
+        setupTableView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -50,150 +27,209 @@ class Profile2ViewController: UIViewController {
     }
 
     // MARK: - Setup
-    private func setupUI() {
-        if let user = UserManager.shared.currentUser {
-            usernameLabel.text = user.name
-        }
+
+    private func setupNav() {
+        title = "Profile"
+        navigationController?.navigationBar.prefersLargeTitles = false
+
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = AppColors.background
+        appearance.titleTextAttributes = [.foregroundColor: AppColors.cardPrimary]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.tintColor = AppColors.cardPrimary
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "gearshape"),
+            style: .plain,
+            target: self,
+            action: #selector(settingsPressed)
+        )
+    }
+
+    private func setupTableView() {
+        view.backgroundColor = AppColors.background
+        tableView.backgroundColor = AppColors.background
+        tableView.separatorColor = AppColors.cardPrimary.withAlphaComponent(0.12)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        tableView.tableHeaderView = makeProfileHeader()
+    }
+
+    private func makeProfileHeader() -> UIView {
+        let width = UIScreen.main.bounds.width
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: width, height: 110))
+
+        let avatar = UIImageView(image: UIImage(systemName: "person.crop.circle.fill"))
+        avatar.tintColor = AppColors.progress
+        avatar.contentMode = .scaleAspectFit
+        avatar.translatesAutoresizingMaskIntoConstraints = false
+
+        let nameLabel = UILabel()
+        nameLabel.text = UserManager.shared.currentUser?.name ?? "—"
+        nameLabel.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        nameLabel.textColor = AppColors.cardPrimary
+        nameLabel.textAlignment = .center
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        let emailLabel = UILabel()
+        emailLabel.text = UserManager.shared.currentUser?.email ?? ""
+        emailLabel.font = UIFont.systemFont(ofSize: 13)
+        emailLabel.textColor = AppColors.cardPrimary.withAlphaComponent(0.55)
+        emailLabel.textAlignment = .center
+        emailLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        container.addSubview(avatar)
+        container.addSubview(nameLabel)
+        container.addSubview(emailLabel)
+
+        NSLayoutConstraint.activate([
+            avatar.topAnchor.constraint(equalTo: container.topAnchor, constant: 12),
+            avatar.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            avatar.widthAnchor.constraint(equalToConstant: 60),
+            avatar.heightAnchor.constraint(equalToConstant: 60),
+
+            nameLabel.topAnchor.constraint(equalTo: avatar.bottomAnchor, constant: 8),
+            nameLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
+            nameLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -20),
+
+            emailLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2),
+            emailLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor)
+        ])
+
+        return container
     }
 
     // MARK: - Data Loading
+
     private func loadProfileData() {
         guard !isLoading else { return }
         isLoading = true
-        showLoading()
+        navigationItem.rightBarButtonItem?.isEnabled = false
 
         let group = DispatchGroup()
         var statsResult: UserStats?
-        var achievementsResult: [String]?
+        var achievementsResult: [String] = []
         var fetchError: Error?
 
-        // Fetch user stats
         group.enter()
         ExperienceManager.shared.getUserStats { stats in
             statsResult = stats
-            if stats == nil {
-                fetchError = NSError(domain: "Profile", code: 404, userInfo: [NSLocalizedDescriptionKey: "Failed to load profile stats"])
-            }
+            if stats == nil { fetchError = NSError(domain: "Profile", code: 404,
+                userInfo: [NSLocalizedDescriptionKey: "Failed to load stats"]) }
             group.leave()
         }
 
-        // Fetch achievements
         group.enter()
         ExperienceManager.shared.getUnlockedAchievements { unlocked in
             achievementsResult = unlocked ?? []
             group.leave()
         }
 
-        // Wait for both to complete
         group.notify(queue: .main) { [weak self] in
             guard let self = self else { return }
             self.isLoading = false
-            self.hideLoading()
-
+            self.navigationItem.rightBarButtonItem?.isEnabled = true
             if let error = fetchError {
-                self.showErrorAlert(error: error)
+                self.showError(error)
             } else {
                 self.userStats = statsResult
-                self.achievements = Achievement.withUnlockedIds(achievementsResult ?? [])
-                self.refreshUI()
+                self.achievements = Achievement.withUnlockedIds(achievementsResult)
+                self.tableView.tableHeaderView = self.makeProfileHeader()
+                self.tableView.reloadData()
             }
         }
-    }
-
-    // MARK: - UI Updates
-    private func refreshUI() {
-        // Update username
-        if let user = UserManager.shared.currentUser {
-            usernameLabel.text = user.name
-        }
-
-        // Update stats
-        if let stats = userStats {
-            streakLabel.text = "\(stats.streak) days"
-            xpLabel.text = "\(stats.totalXP) XP"
-            rubyLabel.text = stats.division.rawValue
-            topFinishLabel.text = "#\(stats.rank)"
-        }
-
-        // Update achievements
-        updateAchievementsUI()
-    }
-
-    private func updateAchievementsUI() {
-        let imageViews = [achievement1ImageView, achievement2ImageView,
-                          achievement3ImageView, achievement4ImageView]
-        let labels = [achievement1Label, achievement2Label,
-                      achievement3Label, achievement4Label]
-
-        for (index, achievement) in achievements.enumerated() {
-            guard index < imageViews.count else { break }
-
-            if achievement.isUnlocked {
-                imageViews[index]?.image = UIImage(named: achievement.imageName)
-                imageViews[index]?.alpha = 1.0
-                labels[index]?.text = achievement.title
-                labels[index]?.alpha = 1.0
-            } else {
-                imageViews[index]?.image = UIImage(named: achievement.imageName)
-                imageViews[index]?.alpha = 0.3
-                labels[index]?.text = "Locked"
-                labels[index]?.alpha = 0.5
-            }
-        }
-    }
-
-    // MARK: - Loading State
-    private func showLoading() {
-        // Remove existing loading view if any
-        loadingView?.removeFromSuperview()
-
-        // Create semi-transparent overlay
-        let overlay = UIView(frame: view.bounds)
-        overlay.backgroundColor = UIColor.black.withAlphaComponent(0.5)
-        overlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
-        // Add activity indicator
-        let activityIndicator = UIActivityIndicatorView(style: .large)
-        activityIndicator.color = .white
-        activityIndicator.center = overlay.center
-        activityIndicator.startAnimating()
-        overlay.addSubview(activityIndicator)
-
-        view.addSubview(overlay)
-        loadingView = overlay
-        view.isUserInteractionEnabled = false
-    }
-
-    private func hideLoading() {
-        loadingView?.removeFromSuperview()
-        loadingView = nil
-        view.isUserInteractionEnabled = true
-    }
-
-    // MARK: - Error Handling
-    private func showErrorAlert(error: Error) {
-        let alert = UIAlertController(
-            title: "Error Loading Profile",
-            message: error.localizedDescription,
-            preferredStyle: .alert
-        )
-
-        alert.addAction(UIAlertAction(title: "Retry", style: .default) { [weak self] _ in
-            self?.loadProfileData()
-        })
-
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-
-        present(alert, animated: true)
     }
 
     // MARK: - Actions
-    @IBAction func settingsPressed(_ sender: UIButton) {
-        let vc = SettingsViewController(nibName: "Settings", bundle: nil)
 
-        vc.modalPresentationStyle = .automatic
-        vc.modalTransitionStyle = .coverVertical
+    @objc private func settingsPressed() {
+        let settingsVC = SettingsViewController(nibName: "Settings", bundle: nil)
+        let nav = UINavigationController(rootViewController: settingsVC)
+        nav.modalPresentationStyle = .automatic
+        present(nav, animated: true)
+    }
 
-        self.present(vc, animated: true, completion: nil)
+    private func showError(_ error: Error) {
+        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Retry", style: .default) { [weak self] _ in self?.loadProfileData() })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
+    }
+}
+
+// MARK: - Table
+
+extension Profile2ViewController: UITableViewDataSource, UITableViewDelegate {
+
+    func numberOfSections(in tableView: UITableView) -> Int { 2 }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        section == 0 ? 4 : achievements.count
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        section == 0 ? "Stats" : "Achievements"
+    }
+
+    func tableView(_ tableView: UITableView,
+                   willDisplayHeaderView view: UIView, forSection section: Int) {
+        (view as? UITableViewHeaderFooterView)?.textLabel?.textColor = AppColors.cardPrimary.withAlphaComponent(0.6)
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.selectionStyle = .none
+        cell.backgroundColor = AppColors.cardPrimary.withAlphaComponent(0.07)
+
+        if indexPath.section == 0 {
+            configureStatCell(cell, row: indexPath.row)
+        } else {
+            configureAchievementCell(cell, achievement: achievements[indexPath.row])
+        }
+        return cell
+    }
+
+    private func configureStatCell(_ cell: UITableViewCell, row: Int) {
+        var config = cell.defaultContentConfiguration()
+
+        let (icon, color, title, value): (String, UIColor, String, String) = {
+            switch row {
+            case 0: return ("flame.fill",   .systemOrange, "Streak",           userStats.map { "\($0.streak) days" } ?? "—")
+            case 1: return ("bolt.fill",    .systemYellow, "Total XP",         userStats.map { "\($0.totalXP) XP" } ?? "—")
+            case 2: return ("shield.fill",  AppColors.progress, "Division",    userStats?.division.rawValue ?? "—")
+            default: return ("trophy.fill", .systemBlue,   "Leaderboard Rank", userStats.map { "#\($0.rank)" } ?? "—")
+            }
+        }()
+
+        config.image = UIImage(systemName: icon)
+        config.imageProperties.tintColor = color
+        config.text = title
+        config.textProperties.color = AppColors.cardPrimary
+        config.secondaryText = value
+        config.secondaryTextProperties.color = AppColors.cardPrimary.withAlphaComponent(0.55)
+        cell.contentConfiguration = config
+    }
+
+    private func configureAchievementCell(_ cell: UITableViewCell, achievement: Achievement) {
+        var config = cell.defaultContentConfiguration()
+        config.image = UIImage(systemName: "rosette")
+        config.imageProperties.tintColor = achievement.isUnlocked ? .systemYellow : AppColors.cardPrimary.withAlphaComponent(0.2)
+        config.text = achievement.title
+        config.textProperties.color = achievement.isUnlocked ? AppColors.cardPrimary : AppColors.cardPrimary.withAlphaComponent(0.4)
+        config.secondaryText = achievement.description
+        config.secondaryTextProperties.color = AppColors.cardPrimary.withAlphaComponent(0.35)
+        cell.contentConfiguration = config
     }
 }
