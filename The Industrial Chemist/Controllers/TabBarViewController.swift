@@ -106,8 +106,8 @@ class TabBarViewController: UITabBarController {
         viewControllers = [
             homeVC,
             learnVC,
-            leaderBoardVC,
             communityVC,
+            leaderBoardVC,
             profileVC
         ]
     }
