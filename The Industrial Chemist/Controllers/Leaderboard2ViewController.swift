@@ -163,10 +163,6 @@ class Leaderboard2ViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        DispatchQueue.main.async {
-            self.tableHeightConstraint?.constant = self.tableView.contentSize.height
-            self.view.layoutIfNeeded()
-        }
     }
 
     // MARK: - Data Loading
@@ -214,10 +210,9 @@ class Leaderboard2ViewController: UIViewController {
         divisionCardView.subviews.forEach { $0.removeFromSuperview() }
         setupDivisionCard()
 
-        // Reload table
+        // Reload table and update height from row count
         tableView.reloadData()
-        tableView.layoutIfNeeded()
-        tableHeightConstraint?.constant = tableView.contentSize.height
+        tableHeightConstraint?.constant = CGFloat(leaderboardData.count) * 80
         view.layoutIfNeeded()
     }
     
@@ -241,12 +236,12 @@ class Leaderboard2ViewController: UIViewController {
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            // Content View
-            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            // Content View — must pin to contentLayoutGuide so scrollView knows total content height
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
             
             // Header
             headerLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
@@ -279,9 +274,7 @@ class Leaderboard2ViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -40)
         ])
         
-        // Calculate based on number of rows (80 height per row + some padding)
-        let tableHeight = CGFloat(leaderboardData.count) * 80 + 20
-        tableHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: tableHeight)
+        tableHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
         tableHeightConstraint?.isActive = true
         
         setupStatsContainer()
