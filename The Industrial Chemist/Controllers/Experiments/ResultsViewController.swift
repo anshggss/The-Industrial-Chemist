@@ -6,10 +6,8 @@ import FirebaseFirestore
 class ResultsViewController: UIViewController {
 
     @IBOutlet weak var videoView: UIView!
-    @IBOutlet weak var takeawaysLabel: UILabel!
 
-    @IBOutlet weak var homeButton: UIButton!
-    var isAtHome: Bool = false
+    private let homeButton = UIButton(type: .system)
 
     let experiment: Experiment
     private let db = Firestore.firestore()
@@ -42,9 +40,8 @@ class ResultsViewController: UIViewController {
 
         videoView.layer.cornerRadius = 20
         videoView.clipsToBounds = true
-
-        takeawaysLabel.text = experiment.results
         playLoopingVideo()
+        setupHomeButton()
         setupKnowMoreButton()
 
         // Mark experiment as completed and award XP
@@ -56,11 +53,6 @@ class ResultsViewController: UIViewController {
         playerLayer?.frame = videoView.bounds
     }
 
-    @IBAction func homeButtonPressed(_ sender: UIButton) {
-        let tabBarVC = TabBarViewController()
-        tabBarVC.modalPresentationStyle = .fullScreen
-        present(tabBarVC, animated: false)
-    }
 
     private func playLoopingVideo() {
 
@@ -101,6 +93,36 @@ class ResultsViewController: UIViewController {
     @objc private func loopVideo() {
         player?.seek(to: .zero)
         player?.play()
+    }
+
+    // MARK: - Home Button
+
+    private func setupHomeButton() {
+        var config = UIButton.Configuration.filled()
+        config.title = "Go to Home"
+        config.image = UIImage(systemName: "house.fill")
+        config.imagePlacement = .leading
+        config.imagePadding = 8
+        config.baseBackgroundColor = UIColor(hex: "#E6C9FF")
+        config.baseForegroundColor = UIColor(hex: "#1A0129")
+        config.cornerStyle = .large
+        homeButton.configuration = config
+        homeButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        homeButton.translatesAutoresizingMaskIntoConstraints = false
+        homeButton.addTarget(self, action: #selector(homeTapped), for: .touchUpInside)
+
+        view.addSubview(homeButton)
+
+        NSLayoutConstraint.activate([
+            homeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            homeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            homeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            homeButton.heightAnchor.constraint(equalToConstant: 52)
+        ])
+    }
+
+    @objc private func homeTapped() {
+        navigationController?.popToRootViewController(animated: true)
     }
 
     // MARK: - Know More

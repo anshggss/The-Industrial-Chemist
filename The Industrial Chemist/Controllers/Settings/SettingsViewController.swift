@@ -1,5 +1,6 @@
 import UIKit
 import FirebaseAuth
+import SafariServices
 
 
 class SettingsViewController: UIViewController {
@@ -10,7 +11,6 @@ class SettingsViewController: UIViewController {
         "Profile",
         "Notifications",
         "Chemist for Schools",
-        "Privacy settings"
     ]
 
     private let subscriptionItems = [
@@ -22,9 +22,12 @@ class SettingsViewController: UIViewController {
         "Feedback"
     ]
 
+    private let dataItems = [
+        "Your Data"
+    ]
+
     private let legalItems = [
         "Terms",
-        "Privacy Policy",
         "Acknowledgements"
     ]
 
@@ -177,14 +180,15 @@ class SettingsViewController: UIViewController {
 
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
 
-    func numberOfSections(in tableView: UITableView) -> Int { 4 }
+    func numberOfSections(in tableView: UITableView) -> Int { 5 }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0: return accountItems.count
         case 1: return subscriptionItems.count
         case 2: return supportItems.count
-        case 3: return legalItems.count
+        case 3: return dataItems.count
+        case 4: return legalItems.count
         default: return 0
         }
     }
@@ -195,6 +199,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         case 0: return "ACCOUNT"
         case 1: return "SUBSCRIPTION"
         case 2: return "SUPPORT"
+        case 3: return "DATA"
         default: return nil
         }
     }
@@ -212,13 +217,14 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 
         let text: String
-        let isLegal = indexPath.section == 3
+        let isLegal = indexPath.section == 4
 
         switch indexPath.section {
         case 0: text = accountItems[indexPath.row]
         case 1: text = subscriptionItems[indexPath.row]
         case 2: text = supportItems[indexPath.row]
-        case 3: text = legalItems[indexPath.row]
+        case 3: text = dataItems[indexPath.row]
+        case 4: text = legalItems[indexPath.row]
         default: text = ""
         }
 
@@ -243,7 +249,6 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             case 0: vc = ProfileSettingsViewController(nibName: "ProfileSettings", bundle: nil)
             case 1: vc = NotificationsViewController(nibName: "Notifications", bundle: nil)
             case 2: vc = CFSViewController(nibName: "CFS", bundle: nil)
-            case 3: vc = PrivacyViewController(nibName: "Privacy", bundle: nil)
             default: vc = nil
             }
         case 1: // Subscription
@@ -251,9 +256,20 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             return
         case 2: // Support
             vc = nil
-        case 3: // Legal
-            if indexPath.row == 1 {
-                vc = PrivacyViewController(nibName: "Privacy", bundle: nil)
+        case 3: // Data
+            let dataVC = DataViewController()
+            navigationController?.pushViewController(dataVC, animated: true)
+            return
+        case 4: // Legal
+            if indexPath.row == 0 {
+                // Terms & Conditions
+                if let url = URL(string: "https://theindustrialchemist.shadyggs.xyz/terms&conditions") {
+                    let safari = SFSafariViewController(url: url)
+                    safari.preferredBarTintColor = UIColor(hex: "#1A0129")
+                    safari.preferredControlTintColor = UIColor(hex: "#E6C9FF")
+                    present(safari, animated: true)
+                }
+                return
             } else {
                 vc = nil
             }

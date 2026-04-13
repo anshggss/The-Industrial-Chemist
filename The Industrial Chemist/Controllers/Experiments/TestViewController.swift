@@ -105,7 +105,6 @@ class TestViewController: UIViewController {
     
     @IBAction func nextButtonPressed(_ sender: UIButton) {
         let resultsVC = ResultsViewController(experiment: experiment)
-        resultsVC.isAtHome = isAtHome
         self.navigationController?.pushViewController(resultsVC, animated: false)
     }
     
