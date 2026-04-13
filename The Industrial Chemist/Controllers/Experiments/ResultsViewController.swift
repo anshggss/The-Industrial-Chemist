@@ -6,10 +6,8 @@ import FirebaseFirestore
 class ResultsViewController: UIViewController {
 
     @IBOutlet weak var videoView: UIView!
-    @IBOutlet weak var takeawaysLabel: UILabel!
 
-    @IBOutlet weak var homeButton: UIButton!
-    var isAtHome: Bool = false
+    private let homeButton = UIButton(type: .system)
 
     let experiment: Experiment
     private let db = Firestore.firestore()
@@ -40,16 +38,11 @@ class ResultsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if !isAtHome {
-            // remove Home button
-            homeButton.isHidden = true
-        }
-
         videoView.layer.cornerRadius = 20
         videoView.clipsToBounds = true
-
-        takeawaysLabel.text = experiment.results
         playLoopingVideo()
+        setupHomeButton()
+        setupKnowMoreButton()
 
         // Mark experiment as completed and award XP
         markCompletedAndAwardXP()
@@ -60,11 +53,6 @@ class ResultsViewController: UIViewController {
         playerLayer?.frame = videoView.bounds
     }
 
-    @IBAction func homeButtonPressed(_ sender: UIButton) {
-        let tabBarVC = TabBarViewController()
-        tabBarVC.modalPresentationStyle = .fullScreen
-        present(tabBarVC, animated: false)
-    }
 
     private func playLoopingVideo() {
 
@@ -105,6 +93,68 @@ class ResultsViewController: UIViewController {
     @objc private func loopVideo() {
         player?.seek(to: .zero)
         player?.play()
+    }
+
+    // MARK: - Home Button
+
+    private func setupHomeButton() {
+        var config = UIButton.Configuration.filled()
+        config.title = "Go to Home"
+        config.image = UIImage(systemName: "house.fill")
+        config.imagePlacement = .leading
+        config.imagePadding = 8
+        config.baseBackgroundColor = UIColor(hex: "#E6C9FF")
+        config.baseForegroundColor = UIColor(hex: "#1A0129")
+        config.cornerStyle = .large
+        homeButton.configuration = config
+        homeButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        homeButton.translatesAutoresizingMaskIntoConstraints = false
+        homeButton.addTarget(self, action: #selector(homeTapped), for: .touchUpInside)
+
+        view.addSubview(homeButton)
+
+        NSLayoutConstraint.activate([
+            homeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            homeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            homeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            homeButton.heightAnchor.constraint(equalToConstant: 52)
+        ])
+    }
+
+    @objc private func homeTapped() {
+        navigationController?.popToRootViewController(animated: true)
+    }
+
+    // MARK: - Know More
+
+    private func setupKnowMoreButton() {
+        let button = UIButton(type: .system)
+        button.setTitle("Know More", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor(red: 0.53, green: 0.27, blue: 0.75, alpha: 1)
+        button.layer.cornerRadius = 14
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(knowMoreTapped), for: .touchUpInside)
+
+        let icon = UIImage(systemName: "sparkles")
+        button.setImage(icon, for: .normal)
+        button.tintColor = .white
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -6, bottom: 0, right: 0)
+
+        view.addSubview(button)
+
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            button.bottomAnchor.constraint(equalTo: homeButton.topAnchor, constant: -12),
+            button.heightAnchor.constraint(equalToConstant: 52)
+        ])
+    }
+
+    @objc private func knowMoreTapped() {
+        let vc = KnowMoreViewController(experiment: experiment)
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     deinit {
